@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Home from './Pages/Home';
+import Page404 from "./Pages/Page404";
+import CountryView from "./Pages/CountryView";
+import CountryDetail from "./Pages/CountryDetail";
+import NewspaperView from "./Pages/NewspaperView";
+import NewspaperDetail from "./Pages/NewspaperDetail";
+import About from "./Pages/About";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+<>
+<Router>
+<ToastContainer />
+<Routes>
+
+        <Route path="/country-view" element={<CountryView />} />
+        <Route path="/country-detail" element={<CountryDetail />} /> 
+        <Route path="/newspaper-view" element={<NewspaperView />} />
+        <Route path="/newspaper-detail" element={<NewspaperDetail />} /> 
+        <Route path="/about" element={<About />} /> 
+        
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Page404 />} />
+</Routes>
+</Router>
+</>
+)
 }
 
+
+
 export default App;
+
