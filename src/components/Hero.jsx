@@ -95,7 +95,7 @@ const Hero = () => {
 //-----------GET THE NO. NEGATIVE ARTICLES BY EACH COUNTRY CALCULATE THEIR RANKS BASED ON THAT AND UPDATE THE DATA ARRAY--------------------------------
 
 
-  const [isDataReady, setIsDataReady] = useState(false);
+  // const [isDataReady, setIsDataReady] = useState(false);
 
   const [data, setData] = useState([
     {
@@ -263,11 +263,9 @@ const [updatedData, setUpdatedData] = ([]);
             return { ...item, value: matchingCountry.rank };
           }
           return item;
-        }); 
-//------------------------- WORKS TILL HERE JUST NEED TO SEND RANKS TO DATA----------------
-       
+        });    
         setData(tempUpdatedData);
-        setIsDataReady(true);
+        // setIsDataReady(true);
         console.log(data);
         
   
@@ -474,7 +472,7 @@ let countryName;
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className="ml-20 flex m-2 mt-5 mb-20">
-        {isDataReady && (<WorldMap
+       <WorldMap
           className="world-map"
           color="gray"
           // title="Top 10 Populous Countries"
@@ -483,7 +481,7 @@ let countryName;
           data={data}
           onClickFunction={clickAction}
           styleFunction={getStyle}
-        />)}
+        />
 
         <div className="bg-white m-auto ml-38 p-4 rounded shadow-md w-2/8 pl-2">
           <div className="cursor-pointer bg-white flex space-x-5 items-center  m-2  rounded-3xl ">
