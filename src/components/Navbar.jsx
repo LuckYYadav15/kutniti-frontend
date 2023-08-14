@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import logo from "../assets/kutniti-Logo.png";
+import logo from "../assets/Kutniti-logo.png";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className='h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px] mx-auto px-4 '>
+    <div className='shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px] mx-auto px-4 '>
       
       <Link to="/" className='home-link flex'>
       <img

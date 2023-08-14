@@ -4,7 +4,7 @@ import Hero from '../components/Hero';
 import Navbar from '../components/Navbar';
 import Newsletter from '../components/Newsletter';
 import { WorldMap } from 'world-svg';
-import backgroundImage from "../assets/background.png"
+import Background from "../assets/backgroundMain.jpg";
 
 function Home() {
 
@@ -14,17 +14,17 @@ function Home() {
   const containerStyle = {
     margin: "0 0 0 0",
     padding: "0 0 0 0",
-    backgroundImage: `url(${backgroundImage})`, // Set the background image
+    backgroundImage: `url(${Background})`, // Set the background image
     backgroundSize: 'cover', // Adjust background sizing
     backgroundRepeat: 'no-repeat', // Prevent repeating of background image
     backgroundColor: '#f2f2f2',
-    width: '100vw',
-    height: '150vh',
+    width: '100%',
+    className: 'w-full',
     // Add other styles as needed
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className='w-full'>
  
       <Navbar />
       {/* <WorldMap onCountryClick={handleCountryClick} landColor="green"/> */}
