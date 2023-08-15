@@ -13,6 +13,7 @@ import "rc-slider/assets/index.css";
 import { useMediaQuery } from "react-responsive";
 import VerticalColors from "../assets/vertical-percent.png";
 import HorizontalColors from "../assets/horizontalColors.png";
+import SmallPieChart from "../graphs/SmallPieChart";
 
 const Hero = () => {
   const months = [
@@ -464,7 +465,6 @@ const Hero = () => {
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className="parent-div overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-16 lg:mb-20">
         <div className="bg-white shadow-2xl p-10 rounded-2xl relative child-div w-full mx-auto md:ml-10 lg:ml-20 md:w-3/5 lg:w-2/3">
-          
           {!isLaptop && (
             <div className="absolute top-8 left-0 ml-2 bg-white p-0 rounded-lg ">
               <img src={VerticalColors} alt="flagImg" className="h-40 w-3" />
@@ -483,98 +483,99 @@ const Hero = () => {
           />
         </div>
 
-        <div className=" rounded-lg mx-auto md:mr-10 lg:ml-5 lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/2">
-          <div className=" m-auto ml-38 p-4  w-2/8 pl-2">
-            <div className="bg-white rounded-lg shadow-lg p-5 cursor-pointer bg-white flex space-x-5 items-center">
-              <div className="rounded-lg pl-10 overflow-hidden">
-                <img
-                  src={flagImg}
-                  alt="flagImg"
-                  className="w-20 h-12 rounded-lg"
-                />
-              </div>
-
-              <div className="text-xl ">
-                <div className="text-sm text-gray-400">Country</div>
-                <div className="text-2xl">{countryData.Name}</div>
-              </div>
-
-              <div className="h-8 bg-gray-300 w-px m-2"></div>
-
-              <div className="text-xl ">
-                <div className="text-sm text-gray-400">Continent</div>
-                <div className="text-2xl">{countryData.continent}</div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg">
-              <div className="cursor-pointer  flex  items-center  m-2 p-2">
-                <div className="text-xl">
-                  <div className="text-1xl">Articles published in march</div>
+        {!isMobile && (
+          <div className=" rounded-lg mx-auto md:mr-10 lg:ml-5 lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/2">
+            <div className=" m-auto ml-38 p-4  w-2/8 pl-2">
+              <div className="bg-white rounded-lg shadow-lg p-5 cursor-pointer bg-white flex space-x-5 items-center">
+                <div className="rounded-lg pl-10 overflow-hidden">
+                  <img
+                    src={flagImg}
+                    alt="flagImg"
+                    className="w-20 h-12 rounded-lg"
+                  />
                 </div>
+
+                <div className="text-xl ">
+                  <div className="text-sm text-gray-400">Country</div>
+                  <div className="text-2xl">{countryData.Name}</div>
+                </div>
+
                 <div className="h-8 bg-gray-300 w-px m-2"></div>
-                <div className="text-xl">
-                  <div className="text-2xl">{countryData.Value}</div>
+
+                <div className="text-xl ">
+                  <div className="text-sm text-gray-400">Continent</div>
+                  <div className="text-2xl">{countryData.continent}</div>
                 </div>
               </div>
 
-              <div className="pb-4">
-                <PieChartComponent />
-                <div className="flex">
-                  {countryData.positive && (
-                    <p className="text-green-500 m-auto ">
-                      Positive: {countryData.positive}
-                    </p>
-                  )}
-                  {countryData.negative && (
-                    <p className="text-red-500 m-auto ">
-                      Negative: {countryData.negative}
-                    </p>
-                  )}
-                  {countryData.neutral && (
-                    <p className="text-blue-500 m-auto ">
-                      Neutral: {countryData.neutral}
-                    </p>
-                  )}
+              <div className="bg-white rounded-lg shadow-lg">
+                <div className="cursor-pointer  flex  items-center  m-2 p-2">
+                  <div className="text-xl">
+                    <div className="text-1xl">Articles published in march</div>
+                  </div>
+                  <div className="h-8 bg-gray-300 w-px m-2"></div>
+                  <div className="text-xl">
+                    <div className="text-2xl">{countryData.Value}</div>
+                  </div>
+                </div>
+
+                <div className="pb-4">
+                  <PieChartComponent />
+                  <div className="flex">
+                    {countryData.positive && (
+                      <p className="text-green-500 m-auto ">
+                        Positive: {countryData.positive}
+                      </p>
+                    )}
+                    {countryData.negative && (
+                      <p className="text-red-500 m-auto ">
+                        Negative: {countryData.negative}
+                      </p>
+                    )}
+                    {countryData.neutral && (
+                      <p className="text-blue-500 m-auto ">
+                        Neutral: {countryData.neutral}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="flex ml-10">
-        {!isMobile && (
+      {!isMobile && (
+        <div className="flex ml-10">
           <div className="ml-10 w-1/4  p-0 mt-4 ">
             <img src={HorizontalColors} alt="flagImg" className="h-10" />
           </div>
-        )}
-<div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white mx-5 p-0">
-        <div className=" mx-2 pb-7 pt-3 px-5  w-2/3">
-          <div className="">
-            <Slider
-              min={0}
-              max={11}
-              marks={months.reduce((acc, month, index) => {
-                acc[index] = month;
-                return acc;
-              }, {})}
-              step={1}
-              value={selectedMonth}
-              onChange={handleSliderChange}
-            />
+
+          <div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white mx-5 p-0">
+            <div className=" mx-2 pb-7 pt-3 px-5  w-2/3">
+              <div className="">
+                <Slider
+                  min={0}
+                  max={11}
+                  marks={months.reduce((acc, month, index) => {
+                    acc[index] = month;
+                    return acc;
+                  }, {})}
+                  step={1}
+                  value={selectedMonth}
+                  onChange={handleSliderChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <button className="bg-black text-white rounded-full px-3 py-2 mx-3 mt-2">
+                All Time
+              </button>
+            </div>
           </div>
         </div>
-
-        <div>
-          <button className="bg-black text-white rounded-full px-3 py-2 mx-3 mt-2">
-            All Time
-          </button>
-        </div>
-
-
-        </div>
-      </div>
+      )}
 
       {/* <MonthPicker onChange={(date)=>{console.log(date);}} /> */}
       {/* <div className="flex items-center justify-center h-full">
@@ -587,6 +588,37 @@ const Hero = () => {
           className="bg-gray-200 px-4 py-2 rounded-md text-gray-800 cursor-pointer"
         />
       </div> */}
+      {!isLaptop && (
+      <div className="flex">
+        <div>
+          <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
+            <div className="rounded-lg overflow-hidden mr-3 ">
+              <img src={flagImg} alt="flagImg" className="h-10 rounded-lg" />
+            </div>
+
+            <div className="text-2xl">{countryData.Name}</div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+            <div className="text-1xl">Articles published in march</div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+          <div className="">
+  <span className="m-1" style={{ color: '#17fc03' }}>Positive</span>
+  <span className="m-1" style={{ color: '#ff2b47' }}>Negative</span>
+  <span className="m-1" style={{ color: '#f5f247' }}>Neutral</span>
+</div>
+
+          </div>
+
+        </div>
+
+        <div className="bg-white rounded-lg shadow-2xl m-auto">
+          <SmallPieChart />
+        </div>
+      </div>
+      )}
     </div>
   );
 };
