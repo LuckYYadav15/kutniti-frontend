@@ -14,6 +14,7 @@ import { useMediaQuery } from "react-responsive";
 import VerticalColors from "../assets/vertical-percent.png";
 import HorizontalColors from "../assets/horizontalColors.png";
 import SmallPieChart from "../graphs/SmallPieChart";
+import MicroPieChart from "../graphs/MicroPieChart";
 
 const Hero = () => {
   const months = [
@@ -217,7 +218,8 @@ const Hero = () => {
     }, // uae
   ]);
 
-  const [updatedData, setUpdatedData] = [];
+  const [selectedColor, setSelectedColor] = useState(0);
+  
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -419,16 +421,16 @@ const Hero = () => {
     countrySize,
   }) => {
     let fillColor = "rgb(166, 162, 162)"; // Default color
-
-    if (countryValue >= 1 && countryValue <= 3) {
+    
+    if ((countryValue >= 1 && countryValue <= 3) && (selectedColor==0 || selectedColor==1) ) {
       fillColor = "rgb(217, 22, 22)"; // Red
-    } else if (countryValue >= 4 && countryValue <= 5) {
+    } else if ((countryValue >= 4 && countryValue <= 5) && (selectedColor==0 || selectedColor==3) ){
       fillColor = "rgb(255, 153, 51)"; // Orange
-    } else if (countryValue >= 6 && countryValue <= 7) {
+    } else if ((countryValue >= 6 && countryValue <= 7)&& (selectedColor==0 || selectedColor==4) ) {
       fillColor = "rgb(235, 231, 9)"; // Yellow
-    } else if (countryValue >= 8 && countryValue <= 10) {
+    } else if ((countryValue >= 8 && countryValue <= 10)&& (selectedColor==0 || selectedColor==2) ) {
       fillColor = "rgb(102, 255, 51)"; // Green
-    } else if (countryValue >= 11 && countryValue <= 13) {
+    } else if ((countryValue >= 11 && countryValue <= 13)&& (selectedColor==0 || selectedColor==5) ) {
       fillColor = "rgb(51, 204, 51)"; // Dark Green
     }
 
@@ -454,6 +456,14 @@ const Hero = () => {
   ];
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
+  const changeToRed =()=>{
+    setSelectedColor(1);
+  }
+
+  const changeToGreen =()=>{
+    setSelectedColor(2);
+  }
+
   return (
     <div className="mb-10 md:mb-20 lg:mb-32 w-full">
       <h1 className="text-2xl md:text-4xl text-center pt-8 md:pt-16 lg:pt-32">
@@ -464,7 +474,7 @@ const Hero = () => {
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className="parent-div overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-16 lg:mb-20">
-        <div className="bg-white shadow-2xl p-10 rounded-2xl relative child-div w-full mx-auto md:ml-10 lg:ml-20 md:w-3/5 lg:w-2/3">
+        <div className="bg-white shadow-2xl p-5 rounded-2xl relative child-div w-full mx-auto md:ml-10 lg:ml-20 md:w-3/5 lg:w-2/3">
           {!isLaptop && (
             <div className="absolute top-8 left-0 ml-2 bg-white p-0 rounded-lg ">
               <img src={VerticalColors} alt="flagImg" className="h-40 w-3" />
@@ -589,36 +599,91 @@ const Hero = () => {
         />
       </div> */}
       {!isLaptop && (
-      <div className="flex">
         <div>
-          <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
-            <div className="rounded-lg overflow-hidden mr-3 ">
-              <img src={flagImg} alt="flagImg" className="h-10 rounded-lg" />
+        <div className="flex">
+          <div>
+            <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
+              <div className="rounded-lg overflow-hidden mr-3 ">
+                <img src={flagImg} alt="flagImg" className="h-10 rounded-lg" />
+              </div>
+
+              <div className="text-2xl">{countryData.Name}</div>
             </div>
 
-            <div className="text-2xl">{countryData.Name}</div>
+            <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+              <div className="text-1xl">Articles published in march</div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+              <div className="">
+                <span className="m-1" style={{ color: "#17fc03" }}>
+                  Positive
+                </span>
+                <span className="m-1" style={{ color: "#ff2b47" }}>
+                  Negative
+                </span>
+                <span className="m-1" style={{ color: "#f5f247" }}>
+                  Neutral
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-            <div className="text-1xl">Articles published in march</div>
+          <div className="bg-white rounded-lg shadow-2xl m-auto">
+            <SmallPieChart />
           </div>
+        </div>
+<div className="mx-5">
+        <button className="w-full m-auto  bg-black text-white py-2 px-4 rounded-lg">
+      See More
+    </button>
+    </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-          <div className="">
-  <span className="m-1" style={{ color: '#17fc03' }}>Positive</span>
-  <span className="m-1" style={{ color: '#ff2b47' }}>Negative</span>
-  <span className="m-1" style={{ color: '#f5f247' }}>Neutral</span>
+        </div>
+      )}
+
+
+      <div className="text-center">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+          onClick={changeToRed}
+        >
+          Change to Red
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={changeToGreen}
+        >
+          Change to Green
+        </button>
+      </div>
+ {/* ADD DIFF Micro charts here */}
+
+<div className="flex">
+<MicroPieChart
+  hoveredPositive={3}
+  hoveredNegative={40}
+/>
+
+<MicroPieChart
+  hoveredPositive={30}
+  hoveredNegative={40}
+/>
+
+<MicroPieChart
+  hoveredPositive={10}
+  hoveredNegative={40}
+/>
+<MicroPieChart
+  hoveredPositive={40}
+  hoveredNegative={10}
+/>
+<MicroPieChart
+  hoveredPositive={50}
+  hoveredNegative={10}
+/>
 </div>
 
-          </div>
-
-        </div>
-
-        <div className="bg-white rounded-lg shadow-2xl m-auto">
-          <SmallPieChart />
-        </div>
-      </div>
-      )}
     </div>
   );
 };
