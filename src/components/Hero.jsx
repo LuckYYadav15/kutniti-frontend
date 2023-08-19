@@ -424,11 +424,11 @@ const Hero = () => {
     
     if ((countryValue >= 1 && countryValue <= 3) && (selectedColor==0 || selectedColor==1) ) {
       fillColor = "rgb(217, 22, 22)"; // Red
-    } else if ((countryValue >= 4 && countryValue <= 5) && (selectedColor==0 || selectedColor==3) ){
+    } else if ((countryValue >= 4 && countryValue <= 5) && (selectedColor==0 || selectedColor==2) ){
       fillColor = "rgb(255, 153, 51)"; // Orange
-    } else if ((countryValue >= 6 && countryValue <= 7)&& (selectedColor==0 || selectedColor==4) ) {
+    } else if ((countryValue >= 6 && countryValue <= 7)&& (selectedColor==0 || selectedColor==3) ) {
       fillColor = "rgb(235, 231, 9)"; // Yellow
-    } else if ((countryValue >= 8 && countryValue <= 10)&& (selectedColor==0 || selectedColor==2) ) {
+    } else if ((countryValue >= 8 && countryValue <= 10)&& (selectedColor==0 || selectedColor==4) ) {
       fillColor = "rgb(102, 255, 51)"; // Green
     } else if ((countryValue >= 11 && countryValue <= 13)&& (selectedColor==0 || selectedColor==5) ) {
       fillColor = "rgb(51, 204, 51)"; // Dark Green
@@ -460,8 +460,17 @@ const Hero = () => {
     setSelectedColor(1);
   }
 
-  const changeToGreen =()=>{
+  const changeToOrange =()=>{
     setSelectedColor(2);
+  }
+  const changeToYellow =()=>{
+    setSelectedColor(3);
+  }
+  const changeToLightGreen =()=>{
+    setSelectedColor(4);
+  }
+  const changeToGreen =()=>{
+    setSelectedColor(5);
   }
 
   return (
@@ -557,9 +566,38 @@ const Hero = () => {
 
       {!isMobile && (
         <div className="flex ml-10">
-          <div className="ml-10 w-1/4  p-0 mt-4 ">
-            <img src={HorizontalColors} alt="flagImg" className="h-10" />
-          </div>
+        <div className="text-center">
+        <button
+          className="bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-5 rounded-bl-2xl rounded-tl-2xl"
+          onClick={changeToRed}
+        >
+          0%
+        </button>
+        <button
+          className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-5 "
+          onClick={changeToOrange}
+        >
+          25%
+        </button>
+        <button
+          className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-1 px-5 "
+          onClick={changeToYellow}
+        >
+          50%
+        </button>
+        <button
+          className="bg-green-300 hover:bg-green-500 text-white font-bold py-1 px-5 "
+          onClick={changeToLightGreen}
+        >
+          75%
+        </button>
+        <button
+          className="bg-green-600 hover:bg-green-800 text-white font-bold py-1 px-5 rounded-br-2xl rounded-tr-2xl"
+          onClick={changeToGreen}
+        >
+          100%
+        </button>
+      </div>
 
           <div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white mx-5 p-0">
             <div className=" mx-2 pb-7 pt-3 px-5  w-2/3">
@@ -643,20 +681,7 @@ const Hero = () => {
       )}
 
 
-      <div className="text-center">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-          onClick={changeToRed}
-        >
-          Change to Red
-        </button>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={changeToGreen}
-        >
-          Change to Green
-        </button>
-      </div>
+      
  {/* ADD DIFF Micro charts here */}
 
 <div className="flex">
