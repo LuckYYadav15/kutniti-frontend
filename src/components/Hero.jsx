@@ -15,6 +15,8 @@ import VerticalColors from "../assets/vertical-percent.png";
 import HorizontalColors from "../assets/horizontalColors.png";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
+import HorizontalBar from "../graphs/HorizontalBar";
+import BarChartComponent from "../graphs/BarChartComponent";
 
 const Hero = () => {
   const months = [
@@ -708,6 +710,8 @@ const Hero = () => {
   hoveredNegative={10}
 />
 </div>
+<HorizontalBar/>
+<BarChartComponent/>
 
     </div>
   );
