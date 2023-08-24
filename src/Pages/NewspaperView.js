@@ -1,116 +1,184 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import "../Styles/Staff.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { PieChart, Pie, Sector } from "recharts";
+import flagImg from "../assets/flag.jpeg";
+import mapImg from "../assets/map.png";
+import PieChartComponent from "../graphs/PieChartComponent";
+import PieChartSimple from "../graphs/PieChartSimple";
+import locationImg from "../assets/location.webp";
+import backgroundImage from "../assets/backgroundMain.jpg";
+import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import Slider from "rc-slider";
+
 
 function NewspaperView() {
-  const [newspaperFilter, setNewspaperFilter] = useState({});
-  const [hoveredNewspaper, setHoveredNewspaper] = useState(null);
 
+  const currentYear = new Date().getFullYear();
+
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [newspaperFilter, setnewspaperFilter] = useState({});
+  const [hoveredNewspaper, setHoveredNewspaper] = useState(null);
+  const [lastHovered, setLastHovered] = useState(null);
   const [newspaperData, setNewspaperData] = useState([
-    { name: 'United States', code: 'US' },
-    { name: 'Canada', code: 'CA' },
-    { name: 'United Kingdom', code: 'GB' },
-    { name: 'Australia', code: 'AU' },
+    { name: "France", code: "FR", positive: 8, negative: 28, neutral: 3 },
+    { name: "Australia", code: "AU", positive: 18, negative: 5, neutral: 9 },
+    { name: "China", code: "CN", positive: 34, negative: 117, neutral: 7 },
+    { name: "United States", code: "US", positive: 23, negative: 258, neutral: 6 },
+    { name: "Singapore", code: "SP", positive: 89, negative: 28, neutral: 43 },
+    { name: "Canada", code: "CA", positive: 58, negative: 68, neutral: 35 },
+    { name: "Brazil", code: "BR", positive: 58, negative: 28, neutral: 3 },
+    { name: "Japan", code: "JP", positive: 58, negative: 28, neutral: 6 },
+    { name: "Nigeria", code: "NG", positive: 8, negative: 28, neutral: 33 },
+    { name: "Pakistan", code: "PK", positive: 1, negative: 98, neutral: 2 },
+    { name: "Russia", code: "RU", positive: 108, negative: 78, neutral: 37 },
+    { name: "UAE", code: "AE", positive: 98, negative: 78, neutral: 32 },
   ]);
 
-  const handleNewspaperHover = (country) => {
-    setHoveredNewspaper(country);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  
+  const handleMonthChange = (newMonth) => {
+    setSelectedMonth(newMonth);
+    // console.log(newMonth);
+  };
+
+  const handleSliderChange = (value) => {
+    setSelectedMonth(value);
+    console.log("Selected Month:", months[value]);
+  };
+  const handleNewspaperHover = (newspaper) => {
+    setHoveredNewspaper(newspaper);
+    setLastHovered(newspaper);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/apis/country_search/', newspaperFilter);
+      const response = await axios.post(
+        "http://localhost:8000/apis/newspaper_search/",
+        newspaperFilter
+      );
       setNewspaperData(response.data);
-      // console.log(countryData);
-      
+      // console.log(newspaperData);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to fetch data from server');
+      toast.error("Failed to fetch data from server");
     }
   };
 
   const handleChange = (event) => {
-    setNewspaperFilter({ ...newspaperFilter, [event.target.name]: event.target.value });
+    setnewspaperFilter({
+      ...newspaperFilter,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleClick = (newspaper) => {
+    
+    console.log(newspaper);
+    
+    window.localStorage.setItem("hoveredNewspaper", newspaper.name);
+    window.localStorage.setItem("hoveredPositive", newspaper.positive);
+    window.localStorage.setItem("hoveredNegative", newspaper.negative);
+    window.localStorage.setItem("hoveredNeutral", newspaper.neutral);
+    window.dispatchEvent(new Event("storage"));
+    window.location.href = "http://localhost:3000/newspaper-detail";
+  };
+
+  const containerStyle = {
+    margin: "0 0 0 0",
+    padding: "0 0 0 0",
+    backgroundImage: `url(${backgroundImage})`, // Set the background image
+    backgroundSize: "cover", // Adjust background sizing
+    backgroundRepeat: "no-repeat", // Prevent repeating of background image
+    backgroundColor: "#f2f2f2",
+    width: "100vw",
+    height: "100%",
+    // Add other styles as needed
   };
 
 
-  const handleClick = (cid) => {
-    window.localStorage.setItem("selectedcountryId", cid);
-    window.dispatchEvent(new Event("storage")); 
-    window.location.href = "http://localhost:3000/newspaper-detail";
-};
 
 
-return (
-  <div className='bg-cover '>
-      <Navbar />
-      <div className="flex h-screen">
-  <div className="w-1/2 bg-gray-200 p-4 overflow-y-auto">
-    <div className="flex flex-wrap gap-4">
-      {newspaperData.map((country) => (
-        <div
-          key={country.code}
-          className="cursor-pointer w-1/4 p-4 bg-gray-200 rounded shadow-md"
-          onClick={() => handleClick(country.code)}
-          onMouseEnter={() => handleNewspaperHover(country)}
-          onMouseLeave={() => setHoveredNewspaper(null)}
-        >
-          <div className="rounded bg-gray-200">
-            <div className="text-lg">{country.code}</div>
-            <div className="text-xl font-bold">{country.name}</div>
+  return (
+<div id="pie-chart" style={containerStyle}>
+  <Navbar />
+  <div className="m-5 invisible">
+    Hidden Text Area
+  </div>
+  <div className="flex">
+    <div className="m-7 p-5 rounded-2xl border border-gray-600 w-full mt-20">
+      <div className="m-5 p-5 w-full">
+      <div className="flex mb-10">
+        <h2 className="text-2xl font-bold mb-5">
+          Countries ranked by their perception of India
+        </h2>
+        <div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white ml-5 mr-2 px-3">
+            <div className=" mx-2 pb-7 pt-3   w-3/4">
+              <div className="">
+                <Slider
+                  min={0}
+                  max={11}
+                  marks={months.reduce((acc, month, index) => {
+                    acc[index] = month;
+                    return acc;
+                  }, {})}
+                  step={1}
+                  value={selectedMonth}
+                  onChange={handleSliderChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <button className="bg-black text-white rounded-full px-3 py-2 mx-3 mt-2">
+                All Time
+              </button>
+            </div>
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-  <div className="w-1/2 bg-gray-100 p-4">
-    {hoveredNewspaper && (
-      <div className="bg-white p-4 rounded shadow-md">
-        <h2 className="text-xl font-bold mb-2">Country Details</h2>
-        <div>
-          <h3 className="text-lg font-bold">Country Code</h3>
-          <p className="text-lg">{hoveredNewspaper.code}</p>
-        </div>
-        <div className="mt-4">
-          <h3 className="text-lg font-bold">Country Name</h3>
-          <p className="text-lg">{hoveredNewspaper.name}</p>
+        <div className="min-h-screen">
+          {newspaperData.map((newspaper, index) => (
+            <div key={index} onClick={() => handleClick(newspaper)}>
+              <div className="flex justify-between p-4 mx-2">
+                <h2 className="text-lg font-semibold">
+                  {newspaper.name}
+                </h2>
+                <p>{newspaper.code}</p>
+                <div>
+                  <SingleHorizontalBar
+                    positiveValue={newspaper.positive}
+                    negativeValue={newspaper.negative}
+                    neutralValue={newspaper.neutral}
+                  />
+                </div>
+              </div>
+              <hr className="border-t-2 border-black w-full" />
+            </div>
+          ))}
         </div>
       </div>
-    )}
+    </div>
   </div>
+  <Footer />
 </div>
 
-  <Footer />
-    </div>
-);
-
-
-
-  // return (
-  //       <ul className="">
-  //         {countryData?.map((node) => {
-  //           return (
-  //             <li className='m-5 p-5 hover:cursor-pointer' key={node.pnumber} onClick={() => handleClick(node.pnumber)}>
-  //   <div
-  //     className={`rounded-2xl bg-white bg-opacity-20 p-10 flex space-x-20`}
-  //     style={{backdropFilter: 'blur(10px)'}}>
-  //      <div className="  text-2xl">{node.pnumber}</div>
-  //      <div className="  text-2xl">{node.ptype}</div>
-  //      <div className="  text-2xl">{node.rent}</div>
-  //      <div className="  text-2xl">{node.address}</div>
-  //      <div className="  text-2xl">Rooms: {node.rooms}</div>
-  //      {/* <div className="  text-2xl">Is Available: {node.isavailable}</div> */}
-  //               </div>
-  //             </li>
-  //           );
-  //         })}
-  //       </ul>
-  // );
+  );
 }
 
 export default NewspaperView;

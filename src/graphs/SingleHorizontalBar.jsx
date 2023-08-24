@@ -78,7 +78,7 @@ class ApexChart extends React.Component {
 
   render() {
     return (
-        <div id="chart" style={{ width: '150%', marginTop: '-30px', marginBottom: '-30px' }}>
+        <div id="chart" style={{ width: '200%', marginTop: '-30px', marginBottom: '-30px' }}>
         <ReactApexChart
           options={this.state.options}
           series={this.state.series}

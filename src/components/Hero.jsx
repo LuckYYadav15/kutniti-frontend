@@ -18,6 +18,7 @@ import MicroPieChart from "../graphs/MicroPieChart";
 import HorizontalBar from "../graphs/HorizontalBar";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import { Tooltip } from 'antd';
 
 
 const Hero = () => {
@@ -42,6 +43,8 @@ const Hero = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [oneCountry, setOneCountry] = useState([]);
 
+  
+  
   const handleMonthChange = (newMonth) => {
     setSelectedMonth(newMonth);
     // console.log(newMonth);
@@ -51,6 +54,8 @@ const Hero = () => {
     setSelectedMonth(value);
     console.log("Selected Month:", months[value]);
   };
+
+  
 
   const handleYearChange = (newYear) => {
     setSelectedYear(newYear);
