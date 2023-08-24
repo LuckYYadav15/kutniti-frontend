@@ -17,6 +17,8 @@ import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
 import HorizontalBar from "../graphs/HorizontalBar";
 import BarChartComponent from "../graphs/BarChartComponent";
+import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+
 
 const Hero = () => {
   const months = [
@@ -685,7 +687,7 @@ const Hero = () => {
 
       
  {/* ADD DIFF Micro charts here */}
-
+{/* 
 <div className="flex">
 <MicroPieChart
   hoveredPositive={3}
@@ -712,6 +714,13 @@ const Hero = () => {
 </div>
 <HorizontalBar/>
 <BarChartComponent/>
+
+<SingleHorizontalBar
+  positiveValue={5}
+  negativeValue={10}
+  neutralValue={8}
+/> 
+*/}
 
     </div>
   );

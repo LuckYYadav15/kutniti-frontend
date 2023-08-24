@@ -80,9 +80,9 @@ export default function PieChartComponent() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [shouldRender, setShouldRender] = useState(false);
   const [data, setData]= useState([
-    { name: "Positive", value: 0, color: "#5b8f47" }, // Add color property
+    { name: "Positive", value: 0, color: "#00f050" }, // Add color property
     { name: "Negative", value: 0, color: "#ff2b47" },
-    { name: "Neutral", value: 0, color: "#5b8fa9" },
+    { name: "Neutral", value: 0, color: "#fff000" },
     { name: "test", value: 0, color: "#5b8fa9" }
   ])
     

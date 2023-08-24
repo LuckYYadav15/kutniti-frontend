@@ -15,6 +15,9 @@ import flagImg from "../assets/flag.jpeg";
 import leftArrow from "../assets/leftArrow.png";
 import share from "../assets/shareButton.png";
 import backgroundImage from "../assets/backgroundMain.jpg";
+import usaXindia from "../assets/usaxindia.png";
+import BarChartComponent from "../graphs/BarChartComponent";
+import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 
 function CountryDetails() {
   const [graphData, setGraphData] = useState([
@@ -23,6 +26,16 @@ function CountryDetails() {
     { name: "Neutral", value: 0 },
     { name: "test", value: 0 },
   ]);
+
+  const newspaperData = [
+    { name: "Times Gazette", articles: 150 },
+    { name: "Morning Chronicle", articles: 120 },
+    { name: "Evening Post", articles: 200 },
+    { name: "Sunrise News", articles: 90},
+    { name: "Metro Journal", articles: 180 },
+    { name: "Times Gazette", articles: 150},
+    { name: "Morning Chronicle", articles: 120 }
+  ];
 
   const [countryData, setCountryData] = useState({
     name: "",
@@ -91,7 +104,7 @@ function CountryDetails() {
     backgroundRepeat: "no-repeat", // Prevent repeating of background image
     backgroundColor: "#f2f2f2",
     width: "100vw",
-    height: "150vh",
+    height: "100%",
     // Add other styles as needed
   };
 
@@ -109,14 +122,13 @@ function CountryDetails() {
       <Navbar />
       <div className="flex ">
         <div className="">
-          <h1 className="font-bold text-4xl p-7  invisible">
+          <h1 className="font-bold text-4xl p-7 invisible">
             Country Dashboard
           </h1>
 
           <div className=" m-7 p-5 rounded-2xl border border-gray-600">
             <div className="">
-
-              <div className="opacity-75 bg-white flex justify-between items-center rounded-xl shadow-lg h-12 p-2">
+              <div className="bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl h-12 p-2 mb-5">
                 <div className="flex">
                   <div className="rounded-lg overflow-hidden  ">
                     <img
@@ -140,7 +152,7 @@ function CountryDetails() {
 
                 <div className="  ">
                   <button
-                    className="bg-white cursor-pointer text-white font-bold  rounded"
+                    className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
                     onClick={handleDownload}
                   >
                     <img
@@ -153,100 +165,181 @@ function CountryDetails() {
               </div>
             </div>
 
+            <div className="bg-opacity-20 bg-white items-center rounded-xl shadow-lg p-2 h-30">
+              <div className="text-2xl">
+                <p className="mx-2 mt-2 mb-4">Why USA matters to India</p>
+                <div className="flex justify-between">
+                  <div className="pt-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                    <div className="flex justify-center">
+                      <img
+                        src={usaXindia}
+                        alt="Relation Image"
+                        className=" rounded-lg"
+                      />
+                    </div>
+                    <div className="my-2 text-center">
+                      <p className="text-gray-600 text-base">
+                        This is some sample text below the image.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* <div className="h-12 bg-gray-300 w-px ml-5 mr-50"></div> */}
+
+              {/* <div className="text-xl ml-10 mr-50">
+                  <div className="text-sm text-gray-400">Continent</div>
+                  <div className="text-2xl">Asia</div>
+                </div> */}
+            </div>
+
             <div className="flex justify-between ">
               {/* 1 */}
               <div>
-                <div className="cursor-pointer bg-white m-10 w-80 h-130 rounded-3xl overflow-hidden shadow-lg">
-                  <div className=" m-5 ">
-                    <div className="text-sm text-gray-400">Map</div>
-                    <div className="text-2xl">Australia</div>
+                <div className="bg-white items-center rounded-3xl  justify-between flex m-3">
+                  <div className="pb-2 ">
+                    <p className="flex justify-center text-2xl mt-5">
+                      Sentiment of USA towards India
+                    </p>
+                    <PieChartComponent />
+                    <div className="flex">
+                      <p className="text-green-500 ml-10 m-3">
+                        Positive: {countryData.positive}
+                      </p>
+                      <p className="text-red-500 m-3">
+                        Negative: {countryData.negative}
+                      </p>
+                      <p className="text-yellow-300 m-3">
+                        Neutral: {countryData.neutral}
+                      </p>
+                    </div>
                   </div>
-                  <img
-                    src={mapImg}
-                    alt="map image"
-                    className="ml-10 w-40 rounded-lg"
-                  />
                 </div>
-                <div className="ml-10 w-80 bg-white p-0 rounded-lg">
-                  <div className="flex justify-between">
-                    {colors.map((color, index) => (
-                      <div
-                        key={index}
-                        className={`w-1/5 h-10 ${color} text-white flex items-center justify-center`}
-                      >
-                        {texts[index]}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center border m-auto  bg-white p-auto ">
-                    {" "}
-                    <p className="m-auto text-sm text-gray-400">
-                      Negative
-                    </p>{" "}
-                    <p className="m-auto text-sm text-gray-400">Perception</p>{" "}
-                    <p className="m-auto text-sm text-gray-400">Positive</p>{" "}
+
+                <div>
+                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg">
+                    <p className="text-gray-700 ">
+                      This is some sample text inside the box.
+                    </p>
+
+                    <div className="w-px h-6 bg-gray-800 mx-4"></div>
+                    <p className="text-gray-700 text-base">150</p>
                   </div>
                 </div>
               </div>
 
               {/* 2 */}
-              <div className="bg-white items-center rounded-3xl  justify-between flex m-3">
-                <div className="pb-2 ">
-                  <PieChartComponent />
-                  <div className="flex">
-                    <p className="text-green-500 ml-10 m-3">
-                      Positive: {countryData.positive}
-                    </p>
-                    <p className="text-red-500 m-3">
-                      Negative: {countryData.negative}
-                    </p>
-                    <p className="text-yellow-300 m-3">
-                      Neutral: {countryData.neutral}
-                    </p>
-                  </div>
-                </div>
-              </div>
 
-              {/* 3 */}
-
-              <div className="bg-white m-10 rounded-3xl ">
-                <img
-                  src={CountryLocation}
-                  alt="map image"
-                  className="w-200 rounded-lg h-auto"
-                />
-                <img
-                  src={CountryLocation}
-                  alt="map image"
-                  className="w-200 rounded-lg h-auto"
-                />
+              <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000">
+                <BarChartComponent />
               </div>
             </div>
 
-            <div className="flex justify-between m-0 p-0">
-              {/* 4 */}
-              <div className="flex">
-                <div className="w-100 h-50 m-10 p-10  bg-white">
-                  <p className="invisible">
-                    Newspapers List Newspapers List Newspapers List Newspapers
-                    List Newspapers ListNewspapers
-                  </p>
-                  <div className="text-center my-1">
-                    <h2 className="text-4xl font-bold mb-5  ">
-                      Country's Newspapers{" "}
-                    </h2>
-                  </div>
+            <div className="flex">
+              <div className="m-10 p-5 w-full">
+                <div className=" my-1">
+                  <h2 className="text-2xl font-bold mb-5  ">
+                    Most Read Newspapers of USA
+                  </h2>
                 </div>
-              </div>
-
-              {/* 5 */}
-
-              <div className="cursor-pointer bg-white m-10 w-auto m-3 p-3 rounded-3xl shadow-lg">
-                <div
-                  id="line-chart"
-                  className="bg-white items-center justify-between"
-                >
-                  <LineChartComponent />
+                <div className=" items-center min-h-screen">
+                  {newspaperData.map((newspaper, index) => (
+                    <div className="">
+                      <div
+                        key={index}
+                        className="flex justify-between  p-4 mx-2 "
+                      >
+                        <h2 className="text-lg font-semibold">
+                          {newspaper.name}
+                        </h2>
+                        <p>Articles: {newspaper.articles}</p>
+                        <div>
+                          <SingleHorizontalBar
+                            positiveValue={10}
+                            negativeValue={10}
+                            neutralValue={10}
+                          />
+                        </div>
+                      </div>
+                      <hr className="border-t-2 border-black w-full" />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
