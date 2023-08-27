@@ -18,6 +18,9 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 import usaXindia from "../assets/usaxindia.png";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import { useMediaQuery } from "react-responsive";
+import SmallPieChart from "../graphs/SmallPieChart";
+import MicroPieChart from "../graphs/MicroPieChart";
 
 function CountryDetails() {
   const [graphData, setGraphData] = useState([
@@ -31,10 +34,10 @@ function CountryDetails() {
     { name: "Times Gazette", articles: 150 },
     { name: "Morning Chronicle", articles: 120 },
     { name: "Evening Post", articles: 200 },
-    { name: "Sunrise News", articles: 90},
+    { name: "Sunrise News", articles: 90 },
     { name: "Metro Journal", articles: 180 },
-    { name: "Times Gazette", articles: 150},
-    { name: "Morning Chronicle", articles: 120 }
+    { name: "Times Gazette", articles: 150 },
+    { name: "Morning Chronicle", articles: 120 },
   ];
 
   const [countryData, setCountryData] = useState({
@@ -44,6 +47,9 @@ function CountryDetails() {
     negative: 0,
     neutral: 0,
   });
+
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
+  const isLaptop = useMediaQuery({ minWidth: 780 });
 
   //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
   useEffect(() => {
@@ -103,8 +109,6 @@ function CountryDetails() {
     backgroundSize: "cover", // Adjust background sizing
     backgroundRepeat: "no-repeat", // Prevent repeating of background image
     backgroundColor: "#f2f2f2",
-    width: "100vw",
-    height: "100%",
     // Add other styles as needed
   };
 
@@ -118,19 +122,19 @@ function CountryDetails() {
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
   return (
-    <div id="pie-chart" style={containerStyle}>
+    <div style={containerStyle} className="w-full">
       <Navbar />
       <div className="flex ">
         <div className="">
-          <h1 className="font-bold text-4xl p-7 invisible">
-            Country Dashboard
+          <h1 className="font-bold text-3xl p-5 invisible">
+            Providing Free spacing
           </h1>
 
-          <div className=" m-7 p-5 rounded-2xl border border-gray-600">
+          <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600">
             <div className="">
-              <div className="bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl h-12 p-2 mb-5">
+              <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl h-12 p-2 mb-5">
                 <div className="flex">
-                  <div className="rounded-lg overflow-hidden  ">
+                  <div className="rounded-lg overflow-hidden ">
                     <img
                       src={flagImg}
                       alt="Flag Image"
@@ -142,13 +146,6 @@ function CountryDetails() {
                     <div className="text-2xl">{countryData.name}</div>
                   </div>
                 </div>
-
-                {/* <div className="h-12 bg-gray-300 w-px ml-5 mr-50"></div> */}
-
-                {/* <div className="text-xl ml-10 mr-50">
-                  <div className="text-sm text-gray-400">Continent</div>
-                  <div className="text-2xl">Asia</div>
-                </div> */}
 
                 <div className="  ">
                   <button
@@ -165,97 +162,99 @@ function CountryDetails() {
               </div>
             </div>
 
-            <div className="bg-opacity-20 bg-white items-center rounded-xl shadow-lg p-2 h-30">
+            <div className="bg-opacity-40 bg-white items-center rounded-xl shadow-lg p-2 h-30">
               <div className="text-2xl">
                 <p className="mx-2 mt-2 mb-4">Why USA matters to India</p>
                 <div className="flex justify-between">
-                  <div className="pt-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
+                  <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
+                    <div className="pt-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30 ">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
+                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
+                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
+                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
+                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                    <div className="flex justify-center">
-                      <img
-                        src={usaXindia}
-                        alt="Relation Image"
-                        className=" rounded-lg"
-                      />
-                    </div>
-                    <div className="my-2 text-center">
-                      <p className="text-gray-600 text-base">
-                        This is some sample text below the image.
-                      </p>
+                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
+                      <div className="flex justify-center">
+                        <img
+                          src={usaXindia}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
+                      </div>
+                      <div className="my-2 text-center">
+                        <p className="text-gray-600 text-base">
+                          This is some sample text below the image.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -269,7 +268,7 @@ function CountryDetails() {
                 </div> */}
             </div>
 
-            <div className="flex justify-between ">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* 1 */}
               <div>
                 <div className="bg-white items-center rounded-3xl  justify-between flex m-3">
@@ -277,18 +276,40 @@ function CountryDetails() {
                     <p className="flex justify-center text-2xl mt-5">
                       Sentiment of USA towards India
                     </p>
-                    <PieChartComponent />
-                    <div className="flex">
-                      <p className="text-green-500 ml-10 m-3">
-                        Positive: {countryData.positive}
-                      </p>
-                      <p className="text-red-500 m-3">
-                        Negative: {countryData.negative}
-                      </p>
-                      <p className="text-yellow-300 m-3">
-                        Neutral: {countryData.neutral}
-                      </p>
-                    </div>
+                    {isMobile && (
+                      <div className="flex">
+                        <SmallPieChart 
+                          hoveredPositive={10} hoveredNegative={20} hoveredNeutral={5}
+                        />
+                        <div>
+                          <p className="text-green-500 m-3">
+                            Positive: {countryData.positive}
+                          </p>
+                          <p className="text-red-500 m-3">
+                            Negative: {countryData.negative}
+                          </p>
+                          <p className="text-yellow-300 m-3">
+                            Neutral: {countryData.neutral}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {isLaptop && (
+                      <div>
+                        <PieChartComponent hoveredPositive={10} hoveredNegative={20} hoveredNeutral={5} />
+                        <div className="flex">
+                          <p className="text-green-500 ml-10 m-3">
+                            Positive: {countryData.positive}
+                          </p>
+                          <p className="text-red-500 m-3">
+                            Negative: {countryData.negative}
+                          </p>
+                          <p className="text-yellow-300 m-3">
+                            Neutral: {countryData.neutral}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -306,42 +327,96 @@ function CountryDetails() {
 
               {/* 2 */}
 
-              <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000">
-                <BarChartComponent />
+              <div className="w-[340px] mt-5 lg:w-[500px]">
+                <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000 overflow-x-auto">
+                  <BarChartComponent />
+                </div>
               </div>
             </div>
 
             <div className="flex">
-              <div className="m-10 p-5 w-full">
-                <div className=" my-1">
-                  <h2 className="text-2xl font-bold mb-5  ">
-                    Most Read Newspapers of USA
-                  </h2>
-                </div>
-                <div className=" items-center min-h-screen">
-                  {newspaperData.map((newspaper, index) => (
-                    <div className="">
-                      <div
-                        key={index}
-                        className="flex justify-between  p-4 mx-2 "
-                      >
-                        <h2 className="text-lg font-semibold">
-                          {newspaper.name}
-                        </h2>
-                        <p>Articles: {newspaper.articles}</p>
-                        <div>
-                          <SingleHorizontalBar
-                            positiveValue={10}
-                            negativeValue={10}
-                            neutralValue={10}
-                          />
+              {isLaptop && (
+                <div className="m-10 p-5 w-full">
+                  <div className=" my-1">
+                    <h2 className="text-2xl font-bold mb-5  ">
+                      Most Read Newspapers of USA
+                    </h2>
+                  </div>
+
+                  <div className=" items-center min-h-screen">
+                    {newspaperData.map((newspaper, index) => (
+                      <div className="">
+                        <div
+                          key={index}
+                          className="flex justify-between  p-4 mx-2 "
+                        >
+                          <h2 className="text-lg font-semibold">
+                            {newspaper.name}
+                          </h2>
+                          <p>Articles: {newspaper.articles}</p>
+
+                          <div className="">
+                            <SingleHorizontalBar
+                              positiveValue={10}
+                              negativeValue={10}
+                              neutralValue={10}
+                            />
+                          </div>
                         </div>
+                        <hr className="border-t-2 border-black w-full" />
                       </div>
-                      <hr className="border-t-2 border-black w-full" />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {isMobile && (
+                <div className="m-1 mt-5 p-1 w-full">
+                  <div className=" my-1">
+                    <h2 className="text-2xl font-bold mb-5">
+                      Most Read Newspapers of USA
+                    </h2>
+                  </div>
+                  <div className=" items-center min-h-screen">
+                    {newspaperData.map((newspaper, index) => (
+                      <div className="">
+                        <div key={index} className="grid grid-cols-5  gap-4">
+                        <p>
+                          Logo
+                        </p>
+                          <h2 className="text-lg ">
+                            {newspaper.name}
+                          </h2>
+                          <div className="flex ">
+                            <p className="text-lg mt-2">57</p>
+                            <MicroPieChart
+                              hoveredPositive={10}
+                              hoveredNegative={40}
+                            />
+                          </div>
+
+                          <div className="flex ">
+                            <p className="text-lg mt-2">57</p>
+                            <MicroPieChart
+                              hoveredPositive={40}
+                              hoveredNegative={10}
+                            />
+                          </div>
+
+                          <div className="flex ">
+                            <p className="text-lg mt-2">57</p>
+                            <MicroPieChart
+                              hoveredPositive={50}
+                              hoveredNegative={10}
+                            />
+                          </div>
+                        </div>
+                        <hr className="border-t-2 border-black w-full" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

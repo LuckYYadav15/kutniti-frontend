@@ -18,7 +18,12 @@ import MicroPieChart from "../graphs/MicroPieChart";
 import HorizontalBar from "../graphs/HorizontalBar";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
+import "rc-slider/assets/index.css"; // Import the default CSS for the Slider component
+import "rc-tooltip/assets/bootstrap.css"; // Import the default CSS for the Slider tooltip
+import share from "../assets/shareButton.png";
+import html2canvas from "html2canvas";
+
 
 
 const Hero = () => {
@@ -43,41 +48,12 @@ const Hero = () => {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [oneCountry, setOneCountry] = useState([]);
 
-  
-  
-  const handleMonthChange = (newMonth) => {
-    setSelectedMonth(newMonth);
-    // console.log(newMonth);
-  };
-
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
-    console.log("Selected Month:", months[value]);
-  };
 
-  
-
-  const handleYearChange = (newYear) => {
-    setSelectedYear(newYear);
+    // console.log("Selected Month:", months[value]);
   };
-
-  const handlePrevMonth = () => {
-    if (selectedMonth === 0) {
-      setSelectedMonth(11);
-      setSelectedYear(selectedYear - 1);
-    } else {
-      setSelectedMonth(selectedMonth - 1);
-    }
-  };
-
-  const handleNextMonth = () => {
-    if (selectedMonth === 11) {
-      setSelectedMonth(0);
-      setSelectedYear(selectedYear + 1);
-    } else {
-      setSelectedMonth(selectedMonth + 1);
-    }
-  };
+  // console.log(selectedMonth);
 
   // SAMPLE DATA FOR COUNTRY
 
@@ -104,10 +80,10 @@ const Hero = () => {
 
   // const [isDataReady, setIsDataReady] = useState(false);
 
+  const [monthwiseData, setMonthwiseData] = useState([]);
   const [data, setData] = useState([
     {
       country: "fr",
-      continent: "Europe",
       value: 1,
       name: "France",
       code: "FR",
@@ -117,7 +93,6 @@ const Hero = () => {
     }, // france
     {
       country: "au",
-      continent: "Australia",
       value: 2,
       name: "Australia",
       code: "AU",
@@ -127,7 +102,6 @@ const Hero = () => {
     }, // australia
     {
       country: "cn",
-      continent: "Asia",
       value: 3,
       name: "China",
       code: "CN",
@@ -137,7 +111,6 @@ const Hero = () => {
     }, // china
     {
       country: "us",
-      continent: "North America",
       value: 4,
       name: "United States",
       code: "US",
@@ -147,7 +120,6 @@ const Hero = () => {
     }, // united states
     {
       country: "sp",
-      continent: "Asia",
       value: 5,
       name: "Singapore",
       code: "SP",
@@ -157,7 +129,6 @@ const Hero = () => {
     }, // singapore
     {
       country: "ca",
-      continent: "North America",
       value: 6,
       name: "Canada",
       code: "CA",
@@ -166,18 +137,7 @@ const Hero = () => {
       neutral: 0,
     }, // canada
     {
-      country: "br",
-      continent: "South America",
-      value: 7,
-      name: "Brazil",
-      code: "BR",
-      positive: 0,
-      negative: 0,
-      neutral: 0,
-    }, // brazil
-    {
       country: "jp",
-      continent: "Asia",
       value: 8,
       name: "Japan",
       code: "JP",
@@ -187,7 +147,6 @@ const Hero = () => {
     }, // japan
     {
       country: "ng",
-      continent: "Africa",
       value: 9,
       name: "Nigeria",
       code: "NG",
@@ -197,7 +156,6 @@ const Hero = () => {
     }, // nigeria
     {
       country: "pk",
-      continent: "Asia",
       value: 10,
       name: "Pakistan",
       code: "PK",
@@ -207,7 +165,6 @@ const Hero = () => {
     }, // pakistan
     {
       country: "ru",
-      continent: "Asia",
       value: 11,
       name: "Russia",
       code: "RU",
@@ -217,7 +174,6 @@ const Hero = () => {
     }, // russia
     {
       country: "ae",
-      continent: "Asia",
       value: 12,
       name: "UAE",
       code: "AE",
@@ -228,7 +184,6 @@ const Hero = () => {
   ]);
 
   const [selectedColor, setSelectedColor] = useState(0);
-  
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -237,49 +192,162 @@ const Hero = () => {
     const fetchAllCountries = async () => {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          "http://65.2.183.51:8000/api/country/getallCountryArticlesMonth",
           {
-            method: "GET",
+            method: "POST",
           }
         );
 
         if (response.ok) {
           const getData = await response.json();
-          setTempData(getData);
 
-          // Create negativeCountry array
-          const negativeCountries = getData
-            .filter((item) => item.type === "Negative")
-            .map((item) => ({
-              countryName:
-                item.countryName === "USA" ? "United States" : item.countryName,
-              negativeArticles: item.Articles,
-            }));
+          const transformedData = [];
 
-          setNegativeCountry(negativeCountries);
+          getData.forEach((dataObj) => {
+            dataObj.pubDates.forEach((dateStr) => {
+              const date = new Date(dateStr);
+              const month = date.getMonth() + 1; // Months are 0-based, so we add 1
+              const yearMonth = `${date.getFullYear()}-${month}`;
 
-          // Sort negativeCountry array by negativeArticles in descending order
-          negativeCountries.sort(
-            (a, b) => b.negativeArticles - a.negativeArticles
-          );
-
-          // Assign ranks to countries
-          negativeCountries.forEach((country, index) => {
-            country.rank = index + 1;
+              const existingEntry = transformedData.find(
+                (entry) =>
+                  entry.countryName === dataObj.country &&
+                  entry.type === dataObj.type &&
+                  entry.month === yearMonth
+              );
+              if (existingEntry) {
+                existingEntry.numArticles++;
+              } else {
+                transformedData.push({
+                  countryName: dataObj.country,
+                  type: dataObj.type,
+                  month: yearMonth,
+                  numArticles: 1,
+                });
+              }
+            });
           });
 
-          const tempUpdatedData = data.map((item) => {
-            const matchingCountry = negativeCountries.find(
-              (country) => country.countryName === item.name
+          // console.log(transformedData);
+
+          const combinedData = [];
+
+          transformedData.forEach((dataObj) => {
+            const { countryName, month, type, numArticles } = dataObj;
+
+            let existingEntry = combinedData.find(
+              (entry) =>
+                entry.countryName === countryName && entry.month === month
             );
-            if (matchingCountry) {
-              return { ...item, value: matchingCountry.rank };
+
+            if (!existingEntry) {
+              existingEntry = {
+                countryName,
+                month,
+                positive: 0,
+                negative: 0,
+                neutral: 0,
+              };
+              combinedData.push(existingEntry);
             }
+
+            if (type === "Positive") {
+              existingEntry.positive += numArticles;
+            } else if (type === "Negative") {
+              existingEntry.negative += numArticles;
+            } else if (type === "Neutral") {
+              existingEntry.neutral += numArticles;
+            }
+          });
+
+          // console.log(combinedData);
+
+          const generateNewData = (data) => {
+            const newData = [];
+
+            const countries = [
+              ...new Set(data.map((item) => item.countryName)),
+            ];
+            const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+            countries.forEach((country) => {
+              months.forEach((month) => {
+                const formattedMonth = String(month);
+                const existingData = data.find(
+                  (item) =>
+                    item.countryName === country &&
+                    item.month.includes(formattedMonth)
+                );
+
+                if (existingData) {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: existingData.positive,
+                    negative: existingData.negative,
+                    neutral: existingData.neutral,
+                  });
+                } else {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: 0,
+                    negative: 0,
+                    neutral: 0,
+                  });
+                }
+              });
+            });
+
+            return newData;
+          };
+
+          const newData = generateNewData(combinedData);
+
+          setMonthwiseData(newData);
+
+          //----------------------------------Api data updated till here------------------------------
+
+          //-----------------------Get data for the selectedMonth -----------------------------------------
+
+          // console.log(newData);
+          // console.log(selectedMonth);
+          const filteredData = newData
+            .filter((item) => parseInt(item.month) === selectedMonth + 1)
+            .map(({ month, ...rest }) => rest);
+
+          //--------------------Sort the countries on value of negative and provide a rank attribute to all----------------------------------------------------
+          const rankedData = filteredData
+            .slice() // Create a copy of the filteredData array
+            .sort((a, b) => b.negative - a.negative)
+            .map((item, index) => ({ ...item, value: index + 1 }));
+
+          // console.log(rankedData);
+          //----------------------Traverse through data to update values--------------------------
+
+          const newArray = data.map((item) => {
+            const matchingRank = rankedData.find(
+              (rankItem) =>
+                rankItem.countryName === item.name ||
+                (rankItem.countryName === "USA" &&
+                  item.name === "United States")
+            );
+
+            if (matchingRank) {
+              return {
+                ...item,
+                positive: matchingRank.positive,
+                negative: matchingRank.negative,
+                neutral: matchingRank.neutral,
+                value: matchingRank.value,
+              };
+            }
+
             return item;
           });
-          setData(tempUpdatedData);
-          // setIsDataReady(true);
-          console.log(data);
+
+          // console.log(newArray);
+          setData(newArray);
         } else {
           console.error("API call failed");
         }
@@ -291,101 +359,67 @@ const Hero = () => {
     fetchAllCountries();
   }, []);
 
+  //--------------------Updating the worldwide data as the slider changes the month-------------------------------------
+  useEffect(() => {
+    const filteredData = monthwiseData
+      .filter((item) => parseInt(item.month) === selectedMonth + 1)
+      .map(({ month, ...rest }) => rest);
+
+    const rankedData = filteredData
+      .slice() // Create a copy of the filteredData array
+      .sort((a, b) => b.negative - a.negative)
+      .map((item, index) => ({ ...item, value: index + 1 }));
+
+    const newArray = data.map((item) => {
+      const matchingRank = rankedData.find(
+        (rankItem) =>
+          rankItem.countryName === item.name ||
+          (rankItem.countryName === "USA" && item.name === "United States")
+      );
+
+      if (matchingRank) {
+        return {
+          ...item,
+          positive: matchingRank.positive,
+          negative: matchingRank.negative,
+          neutral: matchingRank.neutral,
+          value: matchingRank.value,
+        };
+      }
+
+      return item;
+    });
+
+    // console.log(newArray);
+
+    setData(newArray);
+  }, [selectedMonth]);
+
+  // console.log(monthwiseData);
+
   const clickAction = async (countryDetails) => {
     let countryName;
     try {
-      if (countryDetails.countryName == "United States") {
-        countryName = "USA";
-      } else {
-        countryName = countryDetails.countryName;
-      }
-
-      const fetchArticle = async () => {
-        try {
-          const response = await fetch(
-            "http://65.2.183.51:8000/api/country/getaCountryArticle",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ countryName }),
-            }
-          );
-
-          if (response.ok) {
-            const getData = await response.json();
-            return getData;
-          } else {
-            throw new Error("API call failed");
-          }
-        } catch (error) {
-          throw error;
-        }
-      };
-
-      const oneCountry = await fetchArticle();
-      // console.log(oneCountry)
-
-      oneCountry.forEach((country) => {
-        if (country.type === "All") {
-          setClickedData((prevData) => ({
-            ...prevData,
-            all: country.Articles,
-          }));
-        } else if (country.type === "Positive") {
-          setClickedData((prevData) => ({
-            ...prevData,
-            positive: country.Articles,
-          }));
-        } else if (country.type === "Negative") {
-          setClickedData((prevData) => ({
-            ...prevData,
-            negative: country.Articles,
-          }));
-        } else if (country.type === "Neutral") {
-          setClickedData((prevData) => ({
-            ...prevData,
-            neutral: country.Articles,
-          }));
-        }
-      });
-
-      // console.log(oneCountry[0].Articles);
       // console.log(countryDetails);
-
-      const sortByType = () => {
-        oneCountry.sort((a, b) => {
-          if (a.type < b.type) return -1;
-          if (a.type > b.type) return 1;
-          return 0;
-        });
-      };
-      sortByType();
-      if (oneCountry.length >= 4) {
-        window.localStorage.setItem("hoveredPositive", oneCountry[3].Articles);
-        window.localStorage.setItem("hoveredNegative", oneCountry[1].Articles);
-        window.localStorage.setItem("hoveredNeutral", oneCountry[2].Articles);
-        window.dispatchEvent(new Event("storage"));
-      } else {
-        window.localStorage.setItem("hoveredPositive", 10);
-        window.localStorage.setItem("hoveredNegative", 10);
-        window.localStorage.setItem("hoveredNeutral", 10);
-        window.dispatchEvent(new Event("storage"));
-      }
 
       const foundCountry = data.find(
         (item) => item.name === countryDetails.countryName
       );
+      console.log(foundCountry);
+
+
+        window.localStorage.setItem("hoveredPositive", foundCountry.positive);
+        window.localStorage.setItem("hoveredNegative", foundCountry.negative);
+        window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
+        window.dispatchEvent(new Event("storage"));
 
       if (foundCountry) {
         setCountryData({
           Code: countryDetails.countryCode,
-          continent: foundCountry.continent,
-          positive: oneCountry[3].Articles,
-          negative: oneCountry[1].Articles,
-          neutral: oneCountry[2].Articles,
-          Value: oneCountry[0].Articles,
+          positive: foundCountry.positive,
+          negative: foundCountry.negative,
+          neutral: foundCountry.neutral,
+          Value: foundCountry.value,
           Name: countryDetails.countryName,
         });
       } else {
@@ -421,6 +455,24 @@ const Hero = () => {
     // console.log(maskedValue, selectedYear, selectedMonth);
   };
 
+  const sliderMarks = months.reduce((acc, month, index) => {
+    acc[index] = {
+      style: { borderColor: "grey", height: "5%" }, // Set the style for the vertical line
+      label: <p style={{ color: "grey" }}>{month}</p>, // Set the label style
+    };
+    return acc;
+  }, {});
+
+  const markStyle = {
+    backgroundColor: "black", // Set the color of the marker lines
+    width: 1, // Set the width of the marker lines
+    height: 8, // Set the height of the marker lines
+    marginTop: -3, // Adjust the position of the marker lines
+  };
+  const marksStyles = {
+    color: "white", // Set the color of the marks (dots) to white
+  };
+
   const getStyle = ({
     countryValue,
     countryCode,
@@ -430,16 +482,36 @@ const Hero = () => {
     countrySize,
   }) => {
     let fillColor = "rgb(166, 162, 162)"; // Default color
-    
-    if ((countryValue >= 1 && countryValue <= 3) && (selectedColor==0 || selectedColor==1) ) {
+
+    if (
+      countryValue >= 1 &&
+      countryValue <= 3 &&
+      (selectedColor == 0 || selectedColor == 1)
+    ) {
       fillColor = "rgb(217, 22, 22)"; // Red
-    } else if ((countryValue >= 4 && countryValue <= 5) && (selectedColor==0 || selectedColor==2) ){
+    } else if (
+      countryValue >= 4 &&
+      countryValue <= 5 &&
+      (selectedColor == 0 || selectedColor == 2)
+    ) {
       fillColor = "rgb(255, 153, 51)"; // Orange
-    } else if ((countryValue >= 6 && countryValue <= 7)&& (selectedColor==0 || selectedColor==3) ) {
+    } else if (
+      countryValue >= 6 &&
+      countryValue <= 7 &&
+      (selectedColor == 0 || selectedColor == 3)
+    ) {
       fillColor = "rgb(235, 231, 9)"; // Yellow
-    } else if ((countryValue >= 8 && countryValue <= 10)&& (selectedColor==0 || selectedColor==4) ) {
+    } else if (
+      countryValue >= 8 &&
+      countryValue <= 10 &&
+      (selectedColor == 0 || selectedColor == 4)
+    ) {
       fillColor = "rgb(102, 255, 51)"; // Green
-    } else if ((countryValue >= 11 && countryValue <= 13)&& (selectedColor==0 || selectedColor==5) ) {
+    } else if (
+      countryValue >= 11 &&
+      countryValue <= 13 &&
+      (selectedColor == 0 || selectedColor == 5)
+    ) {
       fillColor = "rgb(51, 204, 51)"; // Dark Green
     }
 
@@ -463,42 +535,148 @@ const Hero = () => {
     "bg-green-300",
     "bg-green-600",
   ];
+
+  const handleDownload = async () => {
+    const chartRef = document.getElementById("worldmap"); // Get the chart element
+
+    try {
+      const canvas = await html2canvas(chartRef);
+      const imageUri = canvas.toDataURL("image/png");
+
+      const link = document.createElement("a");
+      link.href = imageUri;
+      link.download = "pie-chart.png";
+      link.click();
+    } catch (error) {
+      console.error("Error generating image:", error);
+    }
+  };
+
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
-  const changeToRed =()=>{
+  const changeToRed = () => {
     setSelectedColor(1);
-  }
+  };
 
-  const changeToOrange =()=>{
+  const changeToOrange = () => {
     setSelectedColor(2);
-  }
-  const changeToYellow =()=>{
+  };
+  const changeToYellow = () => {
     setSelectedColor(3);
-  }
-  const changeToLightGreen =()=>{
+  };
+  const changeToLightGreen = () => {
     setSelectedColor(4);
-  }
-  const changeToGreen =()=>{
+  };
+  const changeToGreen = () => {
     setSelectedColor(5);
-  }
+  };
+
+  const sendToDetails = (countryData) => {
+    window.localStorage.setItem("hoveredCountry", countryData.Name);
+    window.localStorage.setItem("hoveredPositive", countryData.positive);
+    window.localStorage.setItem("hoveredNegative", countryData.negative);
+    window.localStorage.setItem("hoveredNeutral", countryData.neutral);
+    window.dispatchEvent(new Event("storage"));
+
+    // console.log(countryData.Name);
+    window.location.href = "http://localhost:3000/country-detail";
+  };
+
+  const mapStyle = {
+    transform: window.innerWidth < 500 ? "scale(1.5)" : "scale(1)", // Apply zoom
+    width: window.innerWidth < 500 ? "150%" : "100%", // Adjust width
+    height: "auto", // Allow the height to adjust based on the aspect ratio
+  };
 
   return (
-    <div className="mb-10 md:mb-20 lg:mb-32 w-full">
-      <h1 className="text-2xl md:text-4xl text-center pt-8 md:pt-16 lg:pt-32">
-        Discover the perception of{" "}
-        <span className="text-purple-500">India </span>
-        in the world
-      </h1>
+    <div className="mb-10 md:mb-20 lg:mb-32 w-full" >
+      <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
+      {!isMobile && (
+        <h1 className="text-3xl  lg:ml-5 lg:mt-20 font-bold">
+          What is the perception of{" "}
+          <span className="text-blue-500">India </span>
+          in the world ?
+        </h1>
+      )}
+
+      {!isLaptop && (
+        <h1 className="mt-20 ml-5 mr-5 text-xl font-bold">
+          What is the perception of{" "}
+          <span className="text-blue-500">India </span>
+          in the world
+        </h1>
+      )}
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
-      <div className="parent-div overflow-hidden flex flex-col md:flex-row mt-4 md:mt-8 lg:mt-16 lg:mb-20">
-        <div className="bg-white shadow-2xl p-5 rounded-2xl relative child-div w-full mx-auto md:ml-10 lg:ml-20 md:w-3/5 lg:w-2/3">
+      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-10 lg:mb-20 ">
+        <div id="worldmap" className="absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3">
           {!isLaptop && (
-            <div className="absolute top-8 left-0 ml-2 bg-white p-0 rounded-lg ">
-              <img src={VerticalColors} alt="flagImg" className="h-40 w-3" />
+            <div className="absolute top-4 left-0 ml-2 bg-white p-0 rounded-lg ">
+              <div className="text-center flex flex-col ">
+                <button
+                  className="bg-red-600 hover:bg-red-800 text-white transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
+                  onClick={changeToRed}
+                >
+                  <div className="text-xs">0%</div>
+                </button>
+                <button
+                  className="bg-orange-400 hover:bg-orange-600 text-white my-2 px-1 transform -rotate-90   "
+                  onClick={changeToOrange}
+                >
+                  <div className="text-xs">25%</div>
+                </button>
+                <button
+                  className="bg-yellow-300 hover:bg-yellow-500 text-white my-2 px-1 transform -rotate-90  "
+                  onClick={changeToYellow}
+                >
+                  <div className="text-xs">50%</div>
+                </button>
+                <button
+                  className="bg-green-300 hover:bg-green-500 text-white my-2 px-1 transform -rotate-90"
+                  onClick={changeToLightGreen}
+                >
+                  <div className="text-xs">75%</div>
+                </button>
+                <button
+                  className="bg-green-600 hover:bg-green-800 text-white my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
+                  onClick={changeToGreen}
+                >
+                  <div className="text-xs">100%</div>
+                </button>
+              </div>
             </div>
           )}
 
+          <div className="world-map-container ">
+
+          <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg ">
+              <div className="text-center flex flex-col ">
+                  <button
+                    className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
+                    onClick={handleDownload}
+                  >
+                    <img
+                      src={share}
+                      alt="Share Button"
+                      className="w-18 h-10 rounded-lg"
+                    />
+                  </button>
+                </div>
+                </div>
+
+            <WorldMap
+              className="world-map"
+              color="gray"
+              // title="Top 10 Populous Countries"
+              value-suffix="people"
+              size="xl"
+              data={data}
+              onClickFunction={clickAction}
+              styleFunction={getStyle}
+              style={mapStyle} // Apply inline styles
+            />
+          </div>
+          {/* 
           <WorldMap
             className="world-map "
             color="gray"
@@ -508,48 +686,48 @@ const Hero = () => {
             data={data}
             onClickFunction={clickAction}
             styleFunction={getStyle}
-          />
+          /> */}
         </div>
 
         {!isMobile && (
-          <div className=" rounded-lg mx-auto md:mr-10 lg:ml-5 lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/2">
-            <div className=" m-auto ml-38 p-4  w-2/8 pl-2">
-              <div className="bg-white rounded-lg shadow-lg p-5 cursor-pointer bg-white flex space-x-5 items-center">
-                <div className="rounded-lg pl-10 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+            <div className=" m-auto p-4 pl-2">
+              <div className=" p-5 cursor-pointer flex space-x-6 items-center">
+                <div className=" overflow-hidden">
                   <img
                     src={flagImg}
                     alt="flagImg"
-                    className="w-20 h-12 rounded-lg"
+                    className="w-20 rounded-lg"
                   />
                 </div>
 
-                <div className="text-xl ">
-                  <div className="text-sm text-gray-400">Country</div>
-                  <div className="text-2xl">{countryData.Name}</div>
+                <div className="flex justify-center items-center ">
+                  <div className="text-3xl">{countryData.Name}</div>
                 </div>
 
-                <div className="h-8 bg-gray-300 w-px m-2"></div>
+                {/* <div className="h-8 bg-gray-300 w-px m-2"></div> */}
 
-                <div className="text-xl ">
+                {/* <div className="text-xl ">
                   <div className="text-sm text-gray-400">Continent</div>
                   <div className="text-2xl">{countryData.continent}</div>
-                </div>
+                </div> */}
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg">
+              <div className="w-full bg-gray-300 h-px m-2"></div>
+              <div className=" ">
                 <div className="cursor-pointer  flex  items-center  m-2 p-2">
                   <div className="text-xl">
                     <div className="text-1xl">Articles published in march</div>
                   </div>
-                  <div className="h-8 bg-gray-300 w-px m-2"></div>
-                  <div className="text-xl">
-                    <div className="text-2xl">{countryData.Value}</div>
+                  <div className="h-12 bg-gray-300 w-px m-2"></div>
+                  <div className="flex ">
+                    <div className="text-3xl">{countryData.Value}</div>
                   </div>
                 </div>
 
                 <div className="pb-4">
-                  <PieChartComponent />
-                  <div className="flex">
+                  <PieChartComponent hoveredPositive={countryData.positive} hoveredNegative={countryData.negative} hoveredNeutral={countryData.neutral} />
+                  <div className="flex ">
                     {countryData.positive && (
                       <p className="text-green-500 m-auto ">
                         Positive: {countryData.positive}
@@ -574,62 +752,71 @@ const Hero = () => {
       </div>
 
       {!isMobile && (
-        <div className="flex ml-10">
-        <div className="text-center">
-        <button
-          className="bg-red-600 hover:bg-red-800 text-white font-bold py-1 px-5 rounded-bl-2xl rounded-tl-2xl"
-          onClick={changeToRed}
-        >
-          0%
-        </button>
-        <button
-          className="bg-orange-400 hover:bg-orange-600 text-white font-bold py-1 px-5 "
-          onClick={changeToOrange}
-        >
-          25%
-        </button>
-        <button
-          className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-1 px-5 "
-          onClick={changeToYellow}
-        >
-          50%
-        </button>
-        <button
-          className="bg-green-300 hover:bg-green-500 text-white font-bold py-1 px-5 "
-          onClick={changeToLightGreen}
-        >
-          75%
-        </button>
-        <button
-          className="bg-green-600 hover:bg-green-800 text-white font-bold py-1 px-5 rounded-br-2xl rounded-tr-2xl"
-          onClick={changeToGreen}
-        >
-          100%
-        </button>
-      </div>
-
-          <div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white mx-5 p-0">
-            <div className=" mx-2 pb-7 pt-3 px-5  w-2/3">
-              <div className="">
+        <div className="flex w-full justify-between">
+          <div className="ml-5 w-2/3 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+            <div className=" pb-7 pt-3 px-5 w-5/6">
+              <div className="ml-2 mt-2">
                 <Slider
                   min={0}
                   max={11}
-                  marks={months.reduce((acc, month, index) => {
-                    acc[index] = month;
-                    return acc;
-                  }, {})}
+                  marks={sliderMarks}
                   step={1}
                   value={selectedMonth}
                   onChange={handleSliderChange}
+                  railStyle={{ backgroundColor: "black" }}
+                  trackStyle={{ backgroundColor: "black" }}
+                  handleStyle={{
+                    borderColor: "black",
+
+                    width: 20,
+                    height: 10,
+                    marginTop: -2,
+                    borderRadius: 4,
+                    backgroundColor: "black",
+                    border: "2px solid black",
+                  }}
                 />
               </div>
             </div>
 
             <div>
-              <button className="bg-black text-white rounded-full px-3 py-2 mx-3 mt-2">
+              <button className="bg-black text-white rounded-full px-3 py-2 mt-2 mr-8">
                 All Time
               </button>
             </div>
+          </div>
+
+          <div className="text-center mr-8">
+            <button
+              className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
+              onClick={changeToRed}
+            >
+              0%
+            </button>
+            <button
+              className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-3 "
+              onClick={changeToOrange}
+            >
+              25%
+            </button>
+            <button
+              className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-3 "
+              onClick={changeToYellow}
+            >
+              50%
+            </button>
+            <button
+              className="bg-green-300 hover:bg-green-500 text-white font-bold px-3 "
+              onClick={changeToLightGreen}
+            >
+              75%
+            </button>
+            <button
+              className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
+              onClick={changeToGreen}
+            >
+              100%
+            </button>
           </div>
         </div>
       )}
@@ -647,52 +834,58 @@ const Hero = () => {
       </div> */}
       {!isLaptop && (
         <div>
-        <div className="flex">
-          <div>
-            <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
-              <div className="rounded-lg overflow-hidden mr-3 ">
-                <img src={flagImg} alt="flagImg" className="h-10 rounded-lg" />
+          <div className="flex">
+            <div>
+              <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
+                <div className="rounded-lg overflow-hidden mr-3 ">
+                  <img
+                    src={flagImg}
+                    alt="flagImg"
+                    className="h-10 rounded-lg"
+                  />
+                </div>
+
+                <div className="text-2xl">{countryData.Name}</div>
               </div>
 
-              <div className="text-2xl">{countryData.Name}</div>
-            </div>
+              <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+                <div className="text-1xl">Articles published in march</div>
+              </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-              <div className="text-1xl">Articles published in march</div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-              <div className="">
-                <span className="m-1" style={{ color: "#17fc03" }}>
-                  Positive
-                </span>
-                <span className="m-1" style={{ color: "#ff2b47" }}>
-                  Negative
-                </span>
-                <span className="m-1" style={{ color: "#f5f247" }}>
-                  Neutral
-                </span>
+              <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+                <div className="">
+                  <span className="m-1" style={{ color: "#17fc03" }}>
+                    Positive
+                  </span>
+                  <span className="m-1" style={{ color: "#ff2b47" }}>
+                    Negative
+                  </span>
+                  <span className="m-1" style={{ color: "#f5f247" }}>
+                    Neutral
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow-2xl m-auto">
-            <SmallPieChart />
+            <div className="bg-white rounded-lg shadow-2xl m-auto">
+              <SmallPieChart hoveredPositive={countryData.positive} hoveredNegative={countryData.negative} hoveredNeutral={countryData.neutral} />
+            </div>
           </div>
-        </div>
-<div className="mx-5">
-        <button className="w-full m-auto  bg-black text-white py-2 px-4 rounded-lg">
-      See More
-    </button>
-    </div>
-
+          <div className="mx-5">
+            {countryData.Name && (
+              <button
+                onClick={() => sendToDetails(countryData)}
+                className="w-full m-auto  bg-black text-white py-2 px-4 rounded-lg"
+              >
+                More About {countryData.Name}
+              </button>
+            )}
+          </div>
         </div>
       )}
 
-
-      
- {/* ADD DIFF Micro charts here */}
-{/* 
+      {/* ADD DIFF Micro charts here */}
+      {/* 
 <div className="flex">
 <MicroPieChart
   hoveredPositive={3}
@@ -726,7 +919,6 @@ const Hero = () => {
   neutralValue={8}
 /> 
 */}
-
     </div>
   );
 };

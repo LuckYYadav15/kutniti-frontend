@@ -3,14 +3,29 @@ import { PieChart, Pie, Cell } from 'recharts';
 
 const COLORS = ['#17fc03', '#ff2b47', '#f5f247', '#FF8042'];
 
-const CustomPieChart = () => {
+const CustomPieChart = ({ hoveredPositive, hoveredNegative, hoveredNeutral}) => {
   const [data, setData] = useState([]);
   const [showChart, setShowChart] = useState(false);
 
-  const handleLocalStorageChange = () => {
-    const hoveredPositive = parseFloat(localStorage.getItem('hoveredPositive')) || 0;
-    const hoveredNegative = parseFloat(localStorage.getItem('hoveredNegative')) || 0;
-    const hoveredNeutral = parseFloat(localStorage.getItem('hoveredNeutral')) || 0;
+  // const handleLocalStorageChange = () => {
+  //   // const hoveredPositive = parseFloat(localStorage.getItem('hoveredPositive')) || 0;
+  //   // const hoveredNegative = parseFloat(localStorage.getItem('hoveredNegative')) || 0;
+  //   // const hoveredNeutral = parseFloat(localStorage.getItem('hoveredNeutral')) || 0;
+
+  //   if (hoveredPositive !== 0 || hoveredNegative !== 0 || hoveredNeutral !== 0) {
+  //     setShowChart(true);
+  //     setData([
+  //       { name: 'Positive', value: hoveredPositive },
+  //       { name: 'Negative', value: hoveredNegative },
+  //       { name: 'Neutral', value: hoveredNeutral },
+  //       { name: 'Group D', value: 0 }, // You can set this to a default value
+  //     ]);
+  //   } else {
+  //     setShowChart(false);
+  //   }
+  // };
+
+  useEffect(() => {
 
     if (hoveredPositive !== 0 || hoveredNegative !== 0 || hoveredNeutral !== 0) {
       setShowChart(true);
@@ -23,19 +38,17 @@ const CustomPieChart = () => {
     } else {
       setShowChart(false);
     }
-  };
 
-  useEffect(() => {
-    handleLocalStorageChange();
+    // handleLocalStorageChange();
 
-    // Attach local storage event listeners
-    window.addEventListener('storage', handleLocalStorageChange);
+    // // Attach local storage event listeners
+    // window.addEventListener('storage', handleLocalStorageChange);
 
-    return () => {
-      // Detach event listeners on component unmount
-      window.removeEventListener('storage', handleLocalStorageChange);
-    };
-  }, []);
+    // return () => {
+    //   // Detach event listeners on component unmount
+    //   window.removeEventListener('storage', handleLocalStorageChange);
+    // };
+  }, [hoveredNegative]);
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     if (data[index].value === 0) {

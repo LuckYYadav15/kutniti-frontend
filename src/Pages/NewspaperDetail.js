@@ -18,6 +18,8 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 import usaXindia from "../assets/usaxindia.png";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import Card from "../components/NewspaperCard"
+import cardImage from "../assets/sampleCardImage.png"
 
 function NewspaperDetails() {
   const [graphData, setGraphData] = useState([
@@ -28,13 +30,42 @@ function NewspaperDetails() {
   ]);
 
   const newspaperArticles = [
-    { name: "Times Gazette", articles: 150 },
-    { name: "Morning Chronicle", articles: 120 },
-    { name: "Evening Post", articles: 200 },
-    { name: "Sunrise News", articles: 90},
-    { name: "Metro Journal", articles: 180 },
-    { name: "Times Gazette", articles: 150},
-    { name: "Morning Chronicle", articles: 120 }
+    {
+      image: 'image-url-1.jpg',
+      title: 'Title 1',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-25',
+    },
+    {
+      image: 'image-url-2.jpg',
+      title: 'Title 2',
+      content: 'Praesent commodo quam id libero maximus luctus.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-26',
+    },
+    {
+      image: 'image-url-1.jpg',
+      title: 'Title 1',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-25',
+    },
+    {
+      image: 'image-url-2.jpg',
+      title: 'Title 2',
+      content: 'Praesent commodo quam id libero maximus luctus.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-26',
+    },
+    {
+      image: 'image-url-1.jpg',
+      title: 'Title 1',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-25',
+    },
+    {
+      image: 'image-url-2.jpg',
+      title: 'Title 2',
+      content: 'Praesent commodo quam id libero maximus luctus.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      date: '2023-08-26',
+    },
   ];
 
   const [newspaperData, setNewspaperData] = useState({
@@ -318,29 +349,32 @@ function NewspaperDetails() {
                     Most Read Newspapers of USA
                   </h2>
                 </div>
-                <div className=" items-center min-h-screen">
-                  {newspaperArticles.map((newspaper, index) => (
-                    <div className="">
-                      <div
-                        key={index}
-                        className="flex justify-between  p-4 mx-2 "
-                      >
-                        <h2 className="text-lg font-semibold">
-                          {newspaper.name}
-                        </h2>
-                        <p>Articles: {newspaper.articles}</p>
-                        <div>
-                          <SingleHorizontalBar
-                            positiveValue={10}
-                            negativeValue={10}
-                            neutralValue={10}
-                          />
-                        </div>
-                      </div>
-                      <hr className="border-t-2 border-black w-full" />
-                    </div>
-                  ))}
-                </div>
+                <div className="grid grid-cols-2 gap-4">
+      {newspaperArticles.map((item, index) => (
+        <div
+          key={index}
+          className={`w-auto m-2 p-4 border-2 ${
+            index % 3 === 0
+              ? 'border-red-500'
+              : index % 3 === 1
+              ? 'border-yellow-500'
+              : 'border-green-500'
+          }`}
+        >
+        <div className="flex">
+          {/* <img src={item.image} alt={`Image ${index}`} className="w-32 h-32 object-cover float-left mr-4" /> */}
+          <img src={cardImage} alt="Card Image" className="w-60 mx-5 rounded-lg"/>
+          
+          <div className="float-left">
+            <h2 className="text-lg font-bold mb-2">{item.title}</h2>
+            <p className="mb-2">{item.content.slice(0, 100)}...</p>
+            <p className="text-gray-600">{item.date}</p>
+          </div>
+
+          </div>
+        </div>
+        ))}
+    </div>
               </div>
             </div>
           </div>

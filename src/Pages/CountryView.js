@@ -29,7 +29,6 @@ function CountryView() {
     { name: "United States", code: "US", positive: 23, negative: 258, neutral: 6 },
     { name: "Singapore", code: "SP", positive: 89, negative: 28, neutral: 43 },
     { name: "Canada", code: "CA", positive: 58, negative: 68, neutral: 35 },
-    { name: "Brazil", code: "BR", positive: 58, negative: 28, neutral: 3 },
     { name: "Japan", code: "JP", positive: 58, negative: 28, neutral: 6 },
     { name: "Nigeria", code: "NG", positive: 8, negative: 28, neutral: 33 },
     { name: "Pakistan", code: "PK", positive: 1, negative: 98, neutral: 2 },
@@ -88,6 +87,14 @@ function CountryView() {
     });
   };
 
+  const sliderMarks = months.reduce((acc, month, index) => {
+    acc[index] = {
+      style: { borderColor: "grey", height: "5%" }, // Set the style for the vertical line
+      label: <p style={{ color: "grey" }}>{month}</p>, // Set the label style
+    };
+    return acc;
+  }, {});
+
   const handleClick = (country) => {
     
     console.log(country);
@@ -128,25 +135,34 @@ function CountryView() {
         <h2 className="text-2xl font-bold mb-5">
           Countries ranked by their perception of India
         </h2>
-        <div className="flex justify-between w-1/2 rounded-full shadow-2xl bg-white ml-5 mr-2 px-3">
-            <div className=" mx-2 pb-7 pt-3   w-3/4">
-              <div className="">
+        <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+            <div className=" pb-7 pt-3 px-5 w-5/6">
+              <div className="ml-2 mt-2">
                 <Slider
                   min={0}
                   max={11}
-                  marks={months.reduce((acc, month, index) => {
-                    acc[index] = month;
-                    return acc;
-                  }, {})}
+                  marks={sliderMarks}
                   step={1}
                   value={selectedMonth}
                   onChange={handleSliderChange}
+                  railStyle={{ backgroundColor: "black" }}
+                  trackStyle={{ backgroundColor: "black" }}
+                  handleStyle={{
+                    borderColor: "black",
+
+                    width: 20,
+                    height: 10,
+                    marginTop: -2,
+                    borderRadius: 4,
+                    backgroundColor: "black",
+                    border: "2px solid black",
+                  }}
                 />
               </div>
             </div>
 
             <div>
-              <button className="bg-black text-white rounded-full px-3 py-2 mx-3 mt-2">
+              <button className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
                 All Time
               </button>
             </div>
@@ -160,7 +176,7 @@ function CountryView() {
                   {country.name}
                 </h2>
                 <p>{country.code}</p>
-                <div>
+                <div className="">
                   <SingleHorizontalBar
                     positiveValue={country.positive}
                     negativeValue={country.negative}

@@ -76,7 +76,7 @@ const renderActiveShape = (props) => {
   );
 };
 
-export default function PieChartComponent() {
+export default function PieChartComponent({ hoveredPositive, hoveredNegative, hoveredNeutral}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [shouldRender, setShouldRender] = useState(false);
   const [data, setData]= useState([
@@ -92,13 +92,15 @@ export default function PieChartComponent() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Data fetched");
+      // console.log("Data fetched");
       try {
-        let a = await localStorage.getItem("hoveredPositive");
-        let b=await localStorage.getItem("hoveredNegative");
-        let c = await localStorage.getItem("hoveredNeutral");
+        // let a = await localStorage.getItem("hoveredPositive");
+        // let b=await localStorage.getItem("hoveredNegative");
+        // let c = await localStorage.getItem("hoveredNeutral");
 
-        
+        let a=hoveredPositive;
+        let b=hoveredNegative;
+        let c=hoveredNeutral;
 
         const updatedData = [
           { name: "Positive", value: parseInt(a) || 0, color: "#00f050" },
@@ -114,14 +116,14 @@ export default function PieChartComponent() {
     };
     fetchData();
 
-    window.addEventListener('storage', fetchData);
+    // window.addEventListener('storage', fetchData);
     
 
-    return () => {
-      // Clean up the event listener
-      window.removeEventListener('storage', fetchData);
-    };
-  }, []);
+    // return () => {
+    //   // Clean up the event listener
+    //   // window.removeEventListener('storage', fetchData);
+    // };
+  }, [hoveredPositive]);
 
   const onPieEnter = useCallback(
     (_, index) => {
@@ -139,7 +141,7 @@ export default function PieChartComponent() {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          cx={200}
+          cx={150}
           cy={150}
           innerRadius={50}
           outerRadius={100}

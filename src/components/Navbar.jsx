@@ -10,6 +10,8 @@ import vector from "../assets/Vector.png";
 import twitter from "../assets/twitter.png";
 import youtube from "../assets/youtube.png";
 import linkedin from "../assets/linkedin.png";
+import { useMediaQuery } from "react-responsive";
+
 
 
 const Navbar = () => {
@@ -27,6 +29,9 @@ const Navbar = () => {
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
     window.open(twitterShareUrl, "_blank");
   };
+
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
+  const isLaptop = useMediaQuery({ minWidth: 780 });
 
   return (
     <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px] mx-auto px-2 py-2 ">
@@ -84,29 +89,30 @@ const Navbar = () => {
           </div>
         </li>
       </ul>
-
+{isLaptop && (
       <div className="flex">
       <button
         onClick={handleTwitterShare}
         className="mx-2"
       >
-         <img src={twitter} alt="global image" className="m-auto" />
+         <img src={twitter} alt="global image" className="m-auto w-8" />
       </button>
 
       <button
         onClick={handleTwitterShare}
         className="mx-2"
       >
-         <img src={linkedin} alt="global image" className="m-auto" />
+         <img src={linkedin} alt="global image" className="m-auto w-8" />
       </button>
 
       <button
         onClick={handleTwitterShare}
         className="mx-2"
       >
-         <img src={youtube} alt="global image" className="m-auto" />
+         <img src={youtube} alt="global image" className="m-auto w-8" />
       </button>
       </div>
+      )}
       
 
       <div onClick={handleNav} className="block md:hidden">
@@ -121,10 +127,10 @@ const Navbar = () => {
       >
         {/* <h1 className='w-full text-3xl font-bold  m-4'>REACT.</h1> */}
         <li className="p-4 border-b border-gray-600">Home</li>
-        <li className="p-4 border-b border-gray-600">Company</li>
-        <li className="p-4 border-b border-gray-600">Resources</li>
+        <li className="p-4 border-b border-gray-600">Countries</li>
+        <li className="p-4 border-b border-gray-600">Newspapers</li>
+        <li className="p-4 border-b border-gray-600">Methodology</li>
         <li className="p-4 border-b border-gray-600">About</li>
-        <li className="p-4">Contact</li>
       </ul>
     </div>
   );
