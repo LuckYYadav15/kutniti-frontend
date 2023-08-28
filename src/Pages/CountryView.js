@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -11,29 +11,29 @@ import PieChartSimple from "../graphs/PieChartSimple";
 import locationImg from "../assets/location.webp";
 import backgroundImage from "../assets/backgroundMain.jpg";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import Slider from "rc-slider";
 
-
 function CountryView() {
-
   const currentYear = new Date().getFullYear();
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [monthwiseData, setMonthwiseData] = useState([]);
   const [countryFilter, setcountryFilter] = useState({});
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [lastHovered, setLastHovered] = useState(null);
   const [countryData, setCountryData] = useState([
-    { name: "France", code: "FR", positive: 8, negative: 28, neutral: 3 },
-    { name: "Australia", code: "AU", positive: 18, negative: 5, neutral: 9 },
-    { name: "China", code: "CN", positive: 34, negative: 117, neutral: 7 },
-    { name: "United States", code: "US", positive: 23, negative: 258, neutral: 6 },
-    { name: "Singapore", code: "SP", positive: 89, negative: 28, neutral: 43 },
-    { name: "Canada", code: "CA", positive: 58, negative: 68, neutral: 35 },
-    { name: "Japan", code: "JP", positive: 58, negative: 28, neutral: 6 },
-    { name: "Nigeria", code: "NG", positive: 8, negative: 28, neutral: 33 },
-    { name: "Pakistan", code: "PK", positive: 1, negative: 98, neutral: 2 },
-    { name: "Russia", code: "RU", positive: 108, negative: 78, neutral: 37 },
-    { name: "UAE", code: "AE", positive: 98, negative: 78, neutral: 32 },
+    { countryName: "France", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Australia", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "China", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "USA", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Singapore", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Canada", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Japan", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Nigeria", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Pakistan", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Russia", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "UAE", positive: 0, negative: 0, neutral: 0 },
   ]);
 
   const months = [
@@ -50,7 +50,7 @@ function CountryView() {
     "Nov",
     "Dec",
   ];
-  
+
   const handleMonthChange = (newMonth) => {
     setSelectedMonth(newMonth);
     // console.log(newMonth);
@@ -58,7 +58,7 @@ function CountryView() {
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
-    console.log("Selected Month:", months[value]);
+    // console.log("Selected Month:", months[value]);
   };
   const handleCountryHover = (country) => {
     setHoveredCountry(country);
@@ -96,9 +96,8 @@ function CountryView() {
   }, {});
 
   const handleClick = (country) => {
-    
     console.log(country);
-    
+
     window.localStorage.setItem("hoveredCountry", country.name);
     window.localStorage.setItem("hoveredPositive", country.positive);
     window.localStorage.setItem("hoveredNegative", country.negative);
@@ -106,6 +105,154 @@ function CountryView() {
     window.dispatchEvent(new Event("storage"));
     window.location.href = "http://localhost:3000/country-detail";
   };
+
+  useEffect(() => {
+    const fetchAllCountries = async () => {
+      try {
+        const response = await fetch(
+          "http://65.2.183.51:8000/api/country/getallCountryArticlesMonth",
+          {
+            method: "POST",
+          }
+        );
+
+        if (response.ok) {
+          const getData = await response.json();
+
+          const transformedData = [];
+
+          getData.forEach((dataObj) => {
+            dataObj.pubDates.forEach((dateStr) => {
+              const date = new Date(dateStr);
+              const month = date.getMonth() + 1; // Months are 0-based, so we add 1
+              const yearMonth = `${date.getFullYear()}-${month}`;
+
+              const existingEntry = transformedData.find(
+                (entry) =>
+                  entry.countryName === dataObj.country &&
+                  entry.type === dataObj.type &&
+                  entry.month === yearMonth
+              );
+              if (existingEntry) {
+                existingEntry.numArticles++;
+              } else {
+                transformedData.push({
+                  countryName: dataObj.country,
+                  type: dataObj.type,
+                  month: yearMonth,
+                  numArticles: 1,
+                });
+              }
+            });
+          });
+
+          // console.log(transformedData);
+
+          const combinedData = [];
+
+          transformedData.forEach((dataObj) => {
+            const { countryName, month, type, numArticles } = dataObj;
+
+            let existingEntry = combinedData.find(
+              (entry) =>
+                entry.countryName === countryName && entry.month === month
+            );
+
+            if (!existingEntry) {
+              existingEntry = {
+                countryName,
+                month,
+                positive: 0,
+                negative: 0,
+                neutral: 0,
+              };
+              combinedData.push(existingEntry);
+            }
+
+            if (type === "Positive") {
+              existingEntry.positive += numArticles;
+            } else if (type === "Negative") {
+              existingEntry.negative += numArticles;
+            } else if (type === "Neutral") {
+              existingEntry.neutral += numArticles;
+            }
+          });
+
+          // console.log(combinedData);
+
+          const generateNewData = (data) => {
+            const newData = [];
+
+            const countries = [
+              ...new Set(data.map((item) => item.countryName)),
+            ];
+            const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+            countries.forEach((country) => {
+              months.forEach((month) => {
+                const formattedMonth = String(month);
+                const existingData = data.find(
+                  (item) =>
+                    item.countryName === country &&
+                    item.month.includes(formattedMonth)
+                );
+
+                if (existingData) {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: existingData.positive,
+                    negative: existingData.negative,
+                    neutral: existingData.neutral,
+                  });
+                } else {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: 0,
+                    negative: 0,
+                    neutral: 0,
+                  });
+                }
+              });
+            });
+
+            return newData;
+          };
+
+          const newData = generateNewData(combinedData);
+
+          setMonthwiseData(newData);
+
+          //----------------------------------Api data updated till here------------------------------
+
+          //-----------------------Get data for the selectedMonth -----------------------------------------
+
+          // console.log(newData);
+          // console.log(selectedMonth);
+          const filteredData = newData
+            .filter((item) => parseInt(item.month) === selectedMonth + 1)
+            .map(({ month, ...rest }) => rest);
+
+          // console.log(filteredData);
+
+          //--------------------------Send this to countryData--------------------------------------
+          setCountryData(filteredData);
+        } else {
+          console.error("API call failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllCountries();
+  }, [selectedMonth]);
+
+
+
+
+  console.log(countryData);
 
   const containerStyle = {
     margin: "0 0 0 0",
@@ -119,81 +266,89 @@ function CountryView() {
     // Add other styles as needed
   };
 
-
-
-
   return (
-<div id="pie-chart" style={containerStyle}>
-  <Navbar />
-  <div className="m-5 invisible">
-    Hidden Text Area
-  </div>
-  <div className="flex">
-    <div className="m-7 p-5 rounded-2xl border border-gray-600 w-full mt-20">
-      <div className="m-5 p-5 w-full">
-      <div className="flex mb-10">
-        <h2 className="text-2xl font-bold mb-5">
-          Countries ranked by their perception of India
-        </h2>
-        <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
-            <div className=" pb-7 pt-3 px-5 w-5/6">
-              <div className="ml-2 mt-2">
-                <Slider
-                  min={0}
-                  max={11}
-                  marks={sliderMarks}
-                  step={1}
-                  value={selectedMonth}
-                  onChange={handleSliderChange}
-                  railStyle={{ backgroundColor: "black" }}
-                  trackStyle={{ backgroundColor: "black" }}
-                  handleStyle={{
-                    borderColor: "black",
+    <div id="" style={containerStyle}>
+      <Navbar />
+      <div className="m-5 invisible">Hidden Text Area</div>
+      <div className="flex">
+        <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
+          <div className="m-5 p-5 w-full">
+            <div className="flex mb-10">
+              <h2 className="text-2xl font-bold mb-5">
+                Countries ranked by their perception of India
+              </h2>
+              <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+                <div className=" pb-7 pt-3 px-5 w-5/6">
+                  <div className="ml-2 mt-2">
+                    <Slider
+                      min={0}
+                      max={11}
+                      marks={sliderMarks}
+                      step={1}
+                      value={selectedMonth}
+                      onChange={handleSliderChange}
+                      railStyle={{ backgroundColor: "black" }}
+                      trackStyle={{ backgroundColor: "black" }}
+                      handleStyle={{
+                        borderColor: "black",
 
-                    width: 20,
-                    height: 10,
-                    marginTop: -2,
-                    borderRadius: 4,
-                    backgroundColor: "black",
-                    border: "2px solid black",
-                  }}
-                />
+                        width: 20,
+                        height: 10,
+                        marginTop: -2,
+                        borderRadius: 4,
+                        backgroundColor: "black",
+                        border: "2px solid black",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <button className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
+                    All Time
+                  </button>
+                </div>
               </div>
             </div>
+            <div className="bg-white shadow-2xl rounded-xl p-10">
+              {countryData.map((country, index) => (
+                <div className="mt-4 mb-4" key={index} onClick={() => handleClick(country)}>
+                  <div className="flex justify-between">
+                    <h2 className="text-lg font-semibold w-20">
+                      {country.countryName}
+                    </h2>
+                    <div className=" ">Data</div>
 
-            <div>
-              <button className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
-                All Time
-              </button>
+                    <div className=" ">
+                      {country.negative === 0 &&
+                      country.positive === 0 &&
+                      country.neutral === 0 ? (
+                        <div className="flex">
+                        <div className="invisible">t Enough Data</div>
+                        <div className="invisible">Not Enough Data</div>
+                        <div>Not Enough Data</div>
+                        <div className="invisible">Not Enough Data</div>
+                        <div className="invisible">Not Enough Data</div>
+                        </div>
+                      ) : (
+                        <BigSingleHorizontalBar
+                          positiveValue={country.positive}
+                          negativeValue={country.negative}
+                          neutralValue={country.neutral}
+                        />
+                      )}
+                    </div>
+                    <div className="p-0 ml-20 w-auto">Map Area</div>
+                  </div>
+                  <hr className="border-t-1 border-black w-full" />
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="min-h-screen">
-          {countryData.map((country, index) => (
-            <div key={index} onClick={() => handleClick(country)}>
-              <div className="flex justify-between p-4 mx-2">
-                <h2 className="text-lg font-semibold">
-                  {country.name}
-                </h2>
-                <p>{country.code}</p>
-                <div className="">
-                  <SingleHorizontalBar
-                    positiveValue={country.positive}
-                    negativeValue={country.negative}
-                    neutralValue={country.neutral}
-                  />
-                </div>
-              </div>
-              <hr className="border-t-2 border-black w-full" />
-            </div>
-          ))}
-        </div>
       </div>
+      <Footer />
     </div>
-  </div>
-  <Footer />
-</div>
-
   );
 }
 
