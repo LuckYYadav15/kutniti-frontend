@@ -30,6 +30,9 @@ function CountryDetails() {
     { name: "test", value: 0 },
   ]);
 
+  const [monthwiseData, setMonthwiseData] = useState([]);
+  const [dataForBar, setDataForBar] = useState([]);
+
   const newspaperData = [
     { name: "Times Gazette", articles: 150 },
     { name: "Morning Chronicle", articles: 120 },
@@ -52,8 +55,10 @@ function CountryDetails() {
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
+
+  let tempName;
   useEffect(() => {
-    const tempName = localStorage.getItem("hoveredCountry");
+    tempName = localStorage.getItem("hoveredCountry");
     const tempPositive = localStorage.getItem("hoveredPositive");
     const tempNegative = localStorage.getItem("hoveredNegative");
     const tempNeutral = localStorage.getItem("hoveredNeutral");
@@ -65,15 +70,177 @@ function CountryDetails() {
       neutral: tempNeutral,
     });
 
-    // Note: Make sure data, setData, and oneCountry are properly defined in your component
-  }, []);
+    const fetchAllCountries = async () => {
+      try {
+        const requestData = {
+          countryName: tempName,
+        };
 
-  // useEffect(() => {
-  //   const hoveredPositive = localStorage.getItem("hoveredPositive");
-  //   const hoveredNegative = localStorage.getItem("hoveredNegative");
-  //   const hoveredNeutral = localStorage.getItem("hoveredNeutral");
+        const response = await fetch(
+          "http://65.2.183.51:8000/api/country/getoneCountryArticles",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+          }
+        );
 
-  // }, []);
+        if (response.ok) {
+          const getData = await response.json();
+
+          const transformedData = [];
+
+          getData.forEach((dataObj) => {
+            dataObj.pubDates.forEach((dateStr) => {
+              const date = new Date(dateStr);
+              const month = date.getMonth() + 1; // Months are 0-based, so we add 1
+              const yearMonth = `${date.getFullYear()}-${month}`;
+
+              const existingEntry = transformedData.find(
+                (entry) =>
+                  entry.countryName === dataObj.country &&
+                  entry.type === dataObj.type &&
+                  entry.month === yearMonth
+              );
+              if (existingEntry) {
+                existingEntry.numArticles++;
+              } else {
+                transformedData.push({
+                  countryName: dataObj.country,
+                  type: dataObj.type,
+                  month: yearMonth,
+                  numArticles: 1,
+                });
+              }
+            });
+          });
+
+          // console.log(transformedData);
+
+          const combinedData = [];
+
+          transformedData.forEach((dataObj) => {
+            const { countryName, month, type, numArticles } = dataObj;
+
+            let existingEntry = combinedData.find(
+              (entry) =>
+                entry.countryName === countryName && entry.month === month
+            );
+
+            if (!existingEntry) {
+              existingEntry = {
+                countryName,
+                month,
+                positive: 0,
+                negative: 0,
+                neutral: 0,
+              };
+              combinedData.push(existingEntry);
+            }
+
+            if (type === "Positive") {
+              existingEntry.positive += numArticles;
+            } else if (type === "Negative") {
+              existingEntry.negative += numArticles;
+            } else if (type === "Neutral") {
+              existingEntry.neutral += numArticles;
+            }
+          });
+
+          // console.log(combinedData);
+
+          const generateNewData = (data) => {
+            const newData = [];
+
+            const countries = [
+              ...new Set(data.map((item) => item.countryName)),
+            ];
+            const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+            countries.forEach((country) => {
+              months.forEach((month) => {
+                const formattedMonth = String(month);
+                const existingData = data.find(
+                  (item) =>
+                    item.countryName === country &&
+                    item.month.includes(formattedMonth)
+                );
+
+                if (existingData) {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: existingData.positive,
+                    negative: existingData.negative,
+                    neutral: existingData.neutral,
+                  });
+                } else {
+                  newData.push({
+                    countryName: country,
+                    month: formattedMonth,
+                    positive: 0,
+                    negative: 0,
+                    neutral: 0,
+                  });
+                }
+              });
+            });
+
+            return newData;
+          };
+
+          const newData = generateNewData(combinedData);
+
+          setMonthwiseData(newData);
+
+          const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "April",
+            "May",
+            "June",
+            "July",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+
+          const transformedArray = newData.map((item) => {
+            const { month, positive, negative, neutral } = item;
+            const name = months[Number(month) - 1]; // Adjusting for 0-based index
+
+            return {
+              name,
+              pos: positive,
+              neg: negative,
+              neu: neutral,
+              max: 0,
+            };
+          });
+
+          // console.log(transformedArray);
+
+          setDataForBar(transformedArray);
+
+          //----------------------------------Api data updated till here------------------------------
+
+          // console.log(newArray);
+          // setData(newArray);
+        } else {
+          console.error("API call failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllCountries();
+  }, [tempName]);
 
   //-----------------------------------CHANGE SHARE URL TO WEBSITE HOMEPAGE-----------------------------
 
@@ -111,6 +278,93 @@ function CountryDetails() {
     backgroundColor: "#f2f2f2",
     // Add other styles as needed
   };
+
+  // const chartData = [
+  //   {
+  //     name: 'JAN',
+  //     neg: 40,
+  //     pos: 24,
+  //     neu: 14,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'FEB',
+  //     neg: 20,
+  //     pos: 44,
+  //     neu: 24,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'MAR',
+  //     neg: 30,
+  //     pos: 24,
+  //     neu: 4,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'APR',
+  //     neg: 50,
+  //     pos: 14,
+  //     neu: 24,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'MAY',
+  //     neg: 30,
+  //     pos: 34,
+  //     neu: 24,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'JUNE',
+  //     neg: 60,
+  //     pos: 24,
+  //     neu: 14,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'JULY',
+  //     neg: 10,
+  //     pos: 54,
+  //     neu: 14,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'AUG',
+  //     neg: 60,
+  //     pos: 24,
+  //     neu: 14,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'SEPT',
+  //     neg: 0,
+  //     pos: 0,
+  //     neu: 0,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'OCT',
+  //     neg: 0,
+  //     pos: 0,
+  //     neu: 0,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'NOV',
+  //     neg: 0,
+  //     pos: 0,
+  //     neu: 0,
+  //     grey: 0,
+  //   },
+  //   {
+  //     name: 'DEC',
+  //     neg: 0,
+  //     pos: 0,
+  //     neu: 0,
+  //     grey: 0,
+  //   },
+  // ];
 
   const colors = [
     "bg-red-600",
@@ -278,8 +532,10 @@ function CountryDetails() {
                     </p>
                     {isMobile && (
                       <div className="flex">
-                        <SmallPieChart 
-                          hoveredPositive={10} hoveredNegative={20} hoveredNeutral={5}
+                        <SmallPieChart
+                          hoveredPositive={10}
+                          hoveredNegative={20}
+                          hoveredNeutral={5}
                         />
                         <div>
                           <p className="text-green-500 m-3">
@@ -296,7 +552,11 @@ function CountryDetails() {
                     )}
                     {isLaptop && (
                       <div>
-                        <PieChartComponent hoveredPositive={10} hoveredNegative={20} hoveredNeutral={5} />
+                        <PieChartComponent
+                          hoveredPositive={10}
+                          hoveredNegative={20}
+                          hoveredNeutral={5}
+                        />
                         <div className="flex">
                           <p className="text-green-500 ml-10 m-3">
                             Positive: {countryData.positive}
@@ -329,7 +589,7 @@ function CountryDetails() {
 
               <div className="w-[340px] mt-5 lg:w-[500px]">
                 <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000 overflow-x-auto">
-                  <BarChartComponent />
+                  <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
             </div>
@@ -381,12 +641,8 @@ function CountryDetails() {
                     {newspaperData.map((newspaper, index) => (
                       <div className="">
                         <div key={index} className="grid grid-cols-5  gap-4">
-                        <p>
-                          Logo
-                        </p>
-                          <h2 className="text-lg ">
-                            {newspaper.name}
-                          </h2>
+                          <p>Logo</p>
+                          <h2 className="text-lg ">{newspaper.name}</h2>
                           <div className="flex ">
                             <p className="text-lg mt-2">57</p>
                             <MicroPieChart

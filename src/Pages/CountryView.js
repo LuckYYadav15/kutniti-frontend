@@ -98,7 +98,7 @@ function CountryView() {
   const handleClick = (country) => {
     console.log(country);
 
-    window.localStorage.setItem("hoveredCountry", country.name);
+    window.localStorage.setItem("hoveredCountry", country.countryName);
     window.localStorage.setItem("hoveredPositive", country.positive);
     window.localStorage.setItem("hoveredNegative", country.negative);
     window.localStorage.setItem("hoveredNeutral", country.neutral);

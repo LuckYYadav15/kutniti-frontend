@@ -24,8 +24,6 @@ import "rc-tooltip/assets/bootstrap.css"; // Import the default CSS for the Slid
 import share from "../assets/shareButton.png";
 import html2canvas from "html2canvas";
 
-
-
 const Hero = () => {
   const months = [
     "Jan",
@@ -57,11 +55,7 @@ const Hero = () => {
 
   // SAMPLE DATA FOR COUNTRY
 
-  const [countryData, setCountryData] = useState({
-    Code: "",
-    Value: "",
-    Name: "",
-  });
+  const [countryData, setCountryData] = useState({  });
 
   const [clickedData, setClickedData] = useState({
     all: 0,
@@ -71,10 +65,6 @@ const Hero = () => {
   });
 
   const [modal, setModal] = useState(false);
-
-  const [tempData, setTempData] = useState([]);
-
-  const [negativeCountry, setNegativeCountry] = useState([]);
 
   //-----------GET THE NO. NEGATIVE ARTICLES BY EACH COUNTRY CALCULATE THEIR RANKS BASED ON THAT AND UPDATE THE DATA ARRAY--------------------------------
 
@@ -393,11 +383,60 @@ const Hero = () => {
     // console.log(newArray);
 
     setData(newArray);
+
+    // const selectedCountryObject = newArray.find((item) => item.name === countryData.countryName);
+
+    // if (selectedCountryObject) {
+    //   selectedCountryPositive = selectedCountryObject.positive;
+    //   selectedCountryNegative = selectedCountryObject.negative;
+    //   selectedCountryNeutral = selectedCountryObject.neutral;
+    //   selectedCountryName = selectedCountryObject.name;
+    // }
+
+    // setCountryData({
+
+    //     });
   }, [selectedMonth]);
 
-  // console.log(monthwiseData);
+  // useEffect(() => {
+  //   let selectedCountryPositive = 0;
+  //   let selectedCountryNegative = 0;
+  //   let selectedCountryNeutral = 0;
+  //   let selectedCountryName;
+
+  //   const fetchTempData = async () => {
+  //     const selectedCountryObject = await data.find(
+  //       (item) => item.name === countryData.countryName
+  //     );
+
+  //     if (selectedCountryObject) {
+  //       console.log(selectedCountryObject);
+  //       setCountryData({
+  //         positive: selectedCountryObject.positive,
+  //         negative: selectedCountryObject.negative,
+  //         neutral: selectedCountryObject.neutral,
+  //         Name: selectedCountryObject.name,
+  //       });
+  //     }
+  //   };
+
+  //   fetchTempData();
+  // }, [selectedMonth]);
+
+  useEffect(() => {
+    // Call the clickAction function whenever selectedMonth changes
+    const customObject = {
+      countryName: countryData.Name,
+    };
+
+    clickAction(customObject);
+  }, [data]);
+
+
 
   const clickAction = async (countryDetails) => {
+    console.log(countryDetails);
+    console.log(data);
     let countryName;
     try {
       // console.log(countryDetails);
@@ -405,31 +444,25 @@ const Hero = () => {
       const foundCountry = data.find(
         (item) => item.name === countryDetails.countryName
       );
-      console.log(foundCountry);
+      // console.log(foundCountry);
 
-
-        window.localStorage.setItem("hoveredPositive", foundCountry.positive);
-        window.localStorage.setItem("hoveredNegative", foundCountry.negative);
-        window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
-        window.dispatchEvent(new Event("storage"));
+      window.localStorage.setItem("hoveredPositive", foundCountry.positive);
+      window.localStorage.setItem("hoveredNegative", foundCountry.negative);
+      window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
+      window.dispatchEvent(new Event("storage"));
 
       if (foundCountry) {
         setCountryData({
-          Code: countryDetails.countryCode,
           positive: foundCountry.positive,
           negative: foundCountry.negative,
           neutral: foundCountry.neutral,
-          Value: foundCountry.value,
           Name: countryDetails.countryName,
         });
       } else {
         setCountryData({
-          Code: countryDetails.countryCode,
-          continent: countryDetails.continent,
           positive: clickedData.positive || 0,
           negative: clickedData.negative || 0,
           neutral: clickedData.neutral || 0,
-          Value: clickedData.all || 0,
           Name: countryDetails.countryName,
         });
       }
@@ -572,6 +605,8 @@ const Hero = () => {
   };
 
   const sendToDetails = (countryData) => {
+    if (countryData.Name === "United States") countryData.Name = "USA";
+
     window.localStorage.setItem("hoveredCountry", countryData.Name);
     window.localStorage.setItem("hoveredPositive", countryData.positive);
     window.localStorage.setItem("hoveredNegative", countryData.negative);
@@ -589,7 +624,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="mb-10 md:mb-20 lg:mb-32 w-full" >
+    <div className="mb-10 md:mb-20 lg:mb-32 w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
         <h1 className="text-3xl  lg:ml-5 lg:mt-20 font-bold">
@@ -609,7 +644,10 @@ const Hero = () => {
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-10 lg:mb-20 ">
-        <div id="worldmap" className="absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3">
+        <div
+          id="worldmap"
+          className="absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
+        >
           {!isLaptop && (
             <div className="absolute top-4 left-0 ml-2 bg-white p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
@@ -648,21 +686,20 @@ const Hero = () => {
           )}
 
           <div className="world-map-container ">
-
-          <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg ">
+            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
-                  <button
-                    className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
-                    onClick={handleDownload}
-                  >
-                    <img
-                      src={share}
-                      alt="Share Button"
-                      className="w-18 h-10 rounded-lg"
-                    />
-                  </button>
-                </div>
-                </div>
+                <button
+                  className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
+                  onClick={handleDownload}
+                >
+                  <img
+                    src={share}
+                    alt="Share Button"
+                    className="w-18 h-10 rounded-lg"
+                  />
+                </button>
+              </div>
+            </div>
 
             <WorldMap
               className="world-map"
@@ -715,34 +752,61 @@ const Hero = () => {
 
               <div className="w-full bg-gray-300 h-px m-2"></div>
               <div className=" ">
-                <div className="cursor-pointer  flex  items-center  m-2 p-2">
+                <div className="cursor-pointer  flex  items-center m-0 p-1">
                   <div className="text-xl">
-                    <div className="text-1xl">Articles published in march</div>
+                    {months[selectedMonth] ? (
+                      <div className="">
+                        Articles published in {months[selectedMonth]}
+                      </div>
+                    ) : null}
                   </div>
                   <div className="h-12 bg-gray-300 w-px m-2"></div>
                   <div className="flex ">
-                    <div className="text-3xl">{countryData.Value}</div>
+                    {(countryData.positive ||
+                      countryData.negative ||
+                      countryData.neutral) && (
+                      <div className="text-xl">
+                        {countryData.positive +
+                          countryData.negative +
+                          countryData.neutral}{" "}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div className="pb-4">
-                  <PieChartComponent hoveredPositive={countryData.positive} hoveredNegative={countryData.negative} hoveredNeutral={countryData.neutral} />
+                  {/* {!countryData.positive &&
+                    !countryData.negative &&
+                    !countryData.neutral && (
+                      <div className="my-10 mx-5 text-2xl text-gray-600">
+                        Click on the Country to update the Chart
+                      </div>
+                    )} */}
+
+                  <PieChartComponent
+                    hoveredPositive={countryData.positive ?? 0}
+                    hoveredNegative={countryData.negative ?? 0}
+                    hoveredNeutral={countryData.neutral ?? 0}
+                  />
+
                   <div className="flex ">
-                    {countryData.positive && (
+                    {countryData.positive ? (
                       <p className="text-green-500 m-auto ">
                         Positive: {countryData.positive}
                       </p>
-                    )}
-                    {countryData.negative && (
+                    ) : null}
+
+                    {countryData.negative ? (
                       <p className="text-red-500 m-auto ">
                         Negative: {countryData.negative}
                       </p>
-                    )}
-                    {countryData.neutral && (
+                    ) : null}
+
+                    {countryData.neutral ? (
                       <p className="text-blue-500 m-auto ">
                         Neutral: {countryData.neutral}
                       </p>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -849,7 +913,9 @@ const Hero = () => {
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-                <div className="text-1xl">Articles published in march</div>
+                <div className="text-1xl">
+                  Articles published in {months[selectedMonth]}
+                </div>
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
@@ -868,7 +934,11 @@ const Hero = () => {
             </div>
 
             <div className="bg-white rounded-lg shadow-2xl m-auto">
-              <SmallPieChart hoveredPositive={countryData.positive} hoveredNegative={countryData.negative} hoveredNeutral={countryData.neutral} />
+              <SmallPieChart
+                hoveredPositive={countryData.positive}
+                hoveredNegative={countryData.negative}
+                hoveredNeutral={countryData.neutral}
+              />
             </div>
           </div>
           <div className="mx-5">
