@@ -37,15 +37,15 @@ const CustomPieChart = ({ hoveredPositive, hoveredNegative }) => {
   return (
     <div>
       {showChart && (
-        <PieChart width={50} height={50}>
+        <PieChart width={25} height={50}>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
             labelLine={false}
             // label={renderCustomizedLabel}
-            innerRadius={8}
-            outerRadius={15}
+            innerRadius={5}
+            outerRadius={9}
             fill="#8884d8"
             dataKey="value"
           >

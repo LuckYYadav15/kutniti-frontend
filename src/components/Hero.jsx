@@ -55,7 +55,7 @@ const Hero = () => {
 
   // SAMPLE DATA FOR COUNTRY
 
-  const [countryData, setCountryData] = useState({  });
+  const [countryData, setCountryData] = useState({});
 
   const [clickedData, setClickedData] = useState({
     all: 0,
@@ -296,8 +296,6 @@ const Hero = () => {
 
           setMonthwiseData(newData);
 
-          //----------------------------------Api data updated till here------------------------------
-
           //-----------------------Get data for the selectedMonth -----------------------------------------
 
           // console.log(newData);
@@ -355,6 +353,7 @@ const Hero = () => {
       .filter((item) => parseInt(item.month) === selectedMonth + 1)
       .map(({ month, ...rest }) => rest);
 
+    console.log(filteredData);
     const rankedData = filteredData
       .slice() // Create a copy of the filteredData array
       .sort((a, b) => b.negative - a.negative)
@@ -432,11 +431,66 @@ const Hero = () => {
     clickAction(customObject);
   }, [data]);
 
+  const allTimeData = () => {
+    // Create an object to store the accumulated data for each country
+    const aggregatedData = {};
 
+    // Iterate through the monthwiseData array and accumulate data for each country
+    monthwiseData.forEach((data) => {
+      const { countryName, positive, negative, neutral } = data;
+
+      if (!aggregatedData[countryName]) {
+        aggregatedData[countryName] = {
+          countryName,
+          positive,
+          negative,
+          neutral,
+        };
+      } else {
+        aggregatedData[countryName].positive += positive;
+        aggregatedData[countryName].negative += negative;
+        aggregatedData[countryName].neutral += neutral;
+      }
+    });
+
+    // Convert the aggregatedData object back to an array of objects
+    const resultArray = Object.values(aggregatedData);
+
+    //--------------------Sort the countries on value of negative and provide a rank attribute to all----------------------------------------------------
+    const rankedData = resultArray
+      .slice() // Create a copy of the filteredData array
+      .sort((a, b) => b.negative - a.negative)
+      .map((item, index) => ({ ...item, value: index + 1 }));
+
+    // console.log(rankedData);
+    //----------------------Traverse through data to update values--------------------------
+
+    const newArray = data.map((item) => {
+      const matchingRank = rankedData.find(
+        (rankItem) =>
+          rankItem.countryName === item.name ||
+          (rankItem.countryName === "USA" && item.name === "United States")
+      );
+
+      if (matchingRank) {
+        return {
+          ...item,
+          positive: matchingRank.positive,
+          negative: matchingRank.negative,
+          neutral: matchingRank.neutral,
+          value: matchingRank.value,
+        };
+      }
+
+      return item;
+    });
+
+    setData(newArray);
+  };
 
   const clickAction = async (countryDetails) => {
-    console.log(countryDetails);
-    console.log(data);
+    // console.log(countryDetails);
+    // console.log(data);
     let countryName;
     try {
       // console.log(countryDetails);
@@ -491,7 +545,7 @@ const Hero = () => {
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
       style: { borderColor: "grey", height: "5%" }, // Set the style for the vertical line
-      label: <p style={{ color: "grey" }}>{month}</p>, // Set the label style
+      label: <p style={{ color: "grey", fontSize: "10px" }}>{month}</p>, // Set the label style
     };
     return acc;
   }, {});
@@ -783,11 +837,15 @@ const Hero = () => {
                       </div>
                     )} */}
 
-                  <PieChartComponent
-                    hoveredPositive={countryData.positive ?? 0}
-                    hoveredNegative={countryData.negative ?? 0}
-                    hoveredNeutral={countryData.neutral ?? 0}
-                  />
+                  {countryData.positive +
+                  countryData.negative +
+                  countryData.neutral ? (
+                    <PieChartComponent
+                      hoveredPositive={countryData.positive}
+                      hoveredNegative={countryData.negative}
+                      hoveredNeutral={countryData.neutral}
+                    />
+                  ) : null}
 
                   <div className="flex ">
                     {countryData.positive ? (
@@ -844,7 +902,10 @@ const Hero = () => {
             </div>
 
             <div>
-              <button className="bg-black text-white rounded-full px-3 py-2 mt-2 mr-8">
+              <button
+                onClick={allTimeData}
+                className="bg-black text-white rounded-full px-3 py-2 mt-2 mr-8"
+              >
                 All Time
               </button>
             </div>
@@ -951,44 +1012,58 @@ const Hero = () => {
               </button>
             )}
           </div>
+
+          {/* <div className="w-[340px] mt-5 lg:w-[500px]">
+                <div className="bg-white m-auto shadow-xl rounded-3xl w-100 overflow-x-auto">
+                <div className=" pb-7 pt-3 px-5 w-5/6">
+              <div className="ml-2 mt-2"> */}
+
+          <div className="ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+            <div className="  px-2 pt-2 w-full overflow-x-scroll">
+              <div className=" w-500">
+                <div
+                  className=" w-full max-w-full overflow-x-scroll"
+                  style={{ maxWidth: "370px" }}
+                >
+                  <Slider
+                    min={0}
+                    max={11}
+                    marks={sliderMarks}
+                    step={1}
+                    value={selectedMonth}
+                    onChange={handleSliderChange}
+                    railStyle={{ backgroundColor: "black" }}
+                    trackStyle={{ backgroundColor: "black" }}
+                    handleStyle={{
+                      borderColor: "black",
+                      width: 20,
+                      height: 10,
+                      marginTop: -2,
+                      borderRadius: 4,
+                      backgroundColor: "black",
+                      border: "2px solid black",
+                    }}
+                  />
+                  <div className="invisible">{selectedMonth}</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                onClick={allTimeData}
+                className="bg-black text-white rounded-3xl p-1 mt-2 mr-3 w-20"
+              >
+                All Time
+              </button>
+            </div>
+          </div>
+          {/* </div>
+            </div>
+                </div>
+              </div> */}
         </div>
       )}
-
-      {/* ADD DIFF Micro charts here */}
-      {/* 
-<div className="flex">
-<MicroPieChart
-  hoveredPositive={3}
-  hoveredNegative={40}
-/>
-
-<MicroPieChart
-  hoveredPositive={30}
-  hoveredNegative={40}
-/>
-
-<MicroPieChart
-  hoveredPositive={10}
-  hoveredNegative={40}
-/>
-<MicroPieChart
-  hoveredPositive={40}
-  hoveredNegative={10}
-/>
-<MicroPieChart
-  hoveredPositive={50}
-  hoveredNegative={10}
-/>
-</div>
-<HorizontalBar/>
-<BarChartComponent/>
-
-<SingleHorizontalBar
-  positiveValue={5}
-  negativeValue={10}
-  neutralValue={8}
-/> 
-*/}
     </div>
   );
 };

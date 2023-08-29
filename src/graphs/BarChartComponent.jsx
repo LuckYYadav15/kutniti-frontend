@@ -26,8 +26,8 @@ chartData.forEach(entry => {
     return (
 
         <BarChart
-          width={700}
-          height={450}
+          width={800}
+          height={420}
           data={chartData}
           margin={{
             top: 20,
@@ -41,10 +41,10 @@ chartData.forEach(entry => {
           {/* <YAxis /> */}
           <Tooltip />
           {/* <Legend /> */}
-          <Bar dataKey="neg" stackId="a" fill="#ff2b47" />
-          <Bar dataKey="pos" stackId="a" fill="#00f050" />
-          <Bar dataKey="neu" stackId="a" fill="#fff000" />
-          <Bar dataKey="max" stackId="a" fill="#a6a6a6" />
+          <Bar dataKey="neg" stackId="a" fill="#ff2b47" barSize={50}/>
+          <Bar dataKey="pos" stackId="a" fill="#00f050" barSize={50}/>
+          <Bar dataKey="neu" stackId="a" fill="#fff000" barSize={50}/>
+          <Bar dataKey="max" stackId="a" fill="#a6a6a6" barSize={50}/>
         </BarChart>
     
     );

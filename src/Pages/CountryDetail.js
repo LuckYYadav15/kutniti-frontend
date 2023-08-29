@@ -18,6 +18,8 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 import usaXindia from "../assets/usaxindia.png";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
+import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
+
 import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
@@ -418,7 +420,7 @@ function CountryDetails() {
 
             <div className="bg-opacity-40 bg-white items-center rounded-xl shadow-lg p-2 h-30">
               <div className="text-2xl">
-                <p className="mx-2 mt-2 mb-4">Why USA matters to India</p>
+                <p className="mx-2 mt-2 mb-4">Why {countryData.name} matters to India</p>
                 <div className="flex justify-between">
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
                     <div className="pt-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30 ">
@@ -525,10 +527,10 @@ function CountryDetails() {
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* 1 */}
               <div>
-                <div className="bg-white items-center rounded-3xl  justify-between flex m-3">
+                <div className="bg-white items-center rounded-3xl max-w-[500px] max-h-[400px] justify-between flex m-3 r-0">
                   <div className="pb-2 ">
                     <p className="flex justify-center text-2xl mt-5">
-                      Sentiment of USA towards India
+                      Sentiment of {countryData.name} towards India
                     </p>
                     {isMobile && (
                       <div className="flex">
@@ -553,9 +555,9 @@ function CountryDetails() {
                     {isLaptop && (
                       <div>
                         <PieChartComponent
-                          hoveredPositive={10}
-                          hoveredNegative={20}
-                          hoveredNeutral={5}
+                          hoveredPositive={countryData.positive}
+                          hoveredNegative={countryData.negative}
+                          hoveredNeutral={countryData.neutral}
                         />
                         <div className="flex">
                           <p className="text-green-500 ml-10 m-3">
@@ -574,53 +576,76 @@ function CountryDetails() {
                 </div>
 
                 <div>
-                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg">
-                    <p className="text-gray-700 ">
-                      This is some sample text inside the box.
+                {isMobile && (
+                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <p className="text-gray-700 mx-4 ">
+                      Articles Published by {countryData.name}
                     </p>
 
-                    <div className="w-px h-6 bg-gray-800 mx-4"></div>
-                    <p className="text-gray-700 text-base">150</p>
+                    <div className="w-px h-6 bg-gray-800 "></div>
+                    <p className="text-gray-700 text-base mx-4">{parseInt(countryData.positive) + parseInt(countryData.negative) + parseInt(countryData.neutral)}</p>
                   </div>
+                )}
+                {isLaptop && (
+                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <p className="text-gray-700 mx-8 ">
+                      Articles Published by {countryData.name}
+                    </p>
+
+                    <div className="w-px h-6 bg-gray-800 mx-8"></div>
+                    <p className="text-gray-700 text-base mx-8">{parseInt(countryData.positive) + parseInt(countryData.negative) + parseInt(countryData.neutral)}</p>
+                  </div>
+                )}
                 </div>
               </div>
 
               {/* 2 */}
 
-              <div className="w-[340px] mt-5 lg:w-[500px]">
+              <div className="w-[340px] mt-5 lg:w-[550px]">
                 <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
             </div>
 
+
+
+
+
             <div className="flex">
               {isLaptop && (
                 <div className="m-10 p-5 w-full">
                   <div className=" my-1">
                     <h2 className="text-2xl font-bold mb-5  ">
-                      Most Read Newspapers of USA
+                      Most Read Newspapers of {countryData.name}
                     </h2>
                   </div>
 
                   <div className=" items-center min-h-screen">
                     {newspaperData.map((newspaper, index) => (
-                      <div className="">
+                      <div className="mt-4 mb-4">
                         <div
                           key={index}
-                          className="flex justify-between  p-4 mx-2 "
+                          className="flex justify-between"
                         >
-                          <h2 className="text-lg font-semibold">
+                        <div className="w-19">
+                          <h2 className="text-lg font-semibold ">
                             {newspaper.name}
                           </h2>
-                          <p>Articles: {newspaper.articles}</p>
+                          </div>
+                          <p>{newspaper.articles}</p>
 
                           <div className="">
-                            <SingleHorizontalBar
+                          <BigSingleHorizontalBar
+                          positiveValue={10}
+                          negativeValue={10}
+                          neutralValue={10}
+                        />
+                            {/* <SingleHorizontalBar
                               positiveValue={10}
                               negativeValue={10}
                               neutralValue={10}
-                            />
+                            /> */}
                           </div>
                         </div>
                         <hr className="border-t-2 border-black w-full" />
@@ -634,7 +659,7 @@ function CountryDetails() {
                 <div className="m-1 mt-5 p-1 w-full">
                   <div className=" my-1">
                     <h2 className="text-2xl font-bold mb-5">
-                      Most Read Newspapers of USA
+                      Most Read Newspapers of {countryData.name}
                     </h2>
                   </div>
                   <div className=" items-center min-h-screen">
@@ -642,7 +667,7 @@ function CountryDetails() {
                       <div className="">
                         <div key={index} className="grid grid-cols-5  gap-4">
                           <p>Logo</p>
-                          <h2 className="text-lg ">{newspaper.name}</h2>
+                          <h2 className=" ">{newspaper.name}</h2>
                           <div className="flex ">
                             <p className="text-lg mt-2">57</p>
                             <MicroPieChart

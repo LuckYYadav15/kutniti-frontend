@@ -96,7 +96,7 @@ function CountryView() {
   }, {});
 
   const handleClick = (country) => {
-    console.log(country);
+    // console.log(country);
 
     window.localStorage.setItem("hoveredCountry", country.countryName);
     window.localStorage.setItem("hoveredPositive", country.positive);
@@ -104,6 +104,8 @@ function CountryView() {
     window.localStorage.setItem("hoveredNeutral", country.neutral);
     window.dispatchEvent(new Event("storage"));
     window.location.href = "http://localhost:3000/country-detail";
+
+    
   };
 
   useEffect(() => {
@@ -237,6 +239,7 @@ function CountryView() {
           // console.log(filteredData);
 
           //--------------------------Send this to countryData--------------------------------------
+          // console.log(filteredData);
           setCountryData(filteredData);
         } else {
           console.error("API call failed");
@@ -251,8 +254,39 @@ function CountryView() {
 
 
 
+  const allTimeData = () => {
+    // Create an object to store the accumulated data for each country
+    const aggregatedData = {};
 
-  console.log(countryData);
+    // Iterate through the monthwiseData array and accumulate data for each country
+    monthwiseData.forEach((data) => {
+      const { countryName, positive, negative, neutral } = data;
+
+      if (!aggregatedData[countryName]) {
+        aggregatedData[countryName] = {
+          countryName,
+          positive,
+          negative,
+          neutral,
+        };
+      } else {
+        aggregatedData[countryName].positive += positive;
+        aggregatedData[countryName].negative += negative;
+        aggregatedData[countryName].neutral += neutral;
+      }
+    });
+
+    // Convert the aggregatedData object back to an array of objects
+    const resultArray = Object.values(aggregatedData);
+
+   
+    setCountryData(resultArray);
+  };
+
+
+
+
+  // console.log(countryData);
 
   const containerStyle = {
     margin: "0 0 0 0",
@@ -304,7 +338,7 @@ function CountryView() {
                 </div>
 
                 <div>
-                  <button className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
+                  <button onClick={allTimeData} className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
                     All Time
                   </button>
                 </div>
