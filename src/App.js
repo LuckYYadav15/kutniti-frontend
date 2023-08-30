@@ -13,6 +13,8 @@ import CountryDetail from "./Pages/CountryDetail";
 import NewspaperView from "./Pages/NewspaperView";
 import NewspaperDetail from "./Pages/NewspaperDetail";
 import About from "./Pages/About";
+import Methodology from "./Pages/Methodology";
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
         <Route path="/newspaper-view" element={<NewspaperView />} />
         <Route path="/newspaper-detail" element={<NewspaperDetail />} /> 
         <Route path="/about" element={<About />} /> 
+        <Route path="/methodology" element={<Methodology />} /> 
         
         <Route path="/" element={<Home />} />
         <Route path="*" element={<Page404 />} />

@@ -50,6 +50,8 @@ function CountryView() {
     "Nov",
     "Dec",
   ];
+  const [allFlags, setAllFlags] = useState([]);
+  const [allCountryData, setAllCountryData]= useState([]);
 
   const handleMonthChange = (newMonth) => {
     setSelectedMonth(newMonth);
@@ -109,6 +111,50 @@ function CountryView() {
   };
 
   useEffect(() => {
+
+
+    const fetchAllFlags = async () => {
+      try {
+        const response = await fetch(
+          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.ok) {
+          const getData = await response.json();
+
+          const uniqueCountries = [];
+          const countryNames = {};
+
+          getData.forEach((item) => {
+            const { countryName, flagLogo } = item;
+            if (!countryNames[countryName]) {
+              countryNames[countryName] = true;
+              uniqueCountries.push({ countryName, flagLogo });
+            }
+          });
+
+          // console.log(uniqueCountries);
+          
+          setAllFlags(uniqueCountries);
+
+         
+          
+        } else {
+          console.error("API call failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllFlags();
+
+
+
+
     const fetchAllCountries = async () => {
       try {
         const response = await fetch(
@@ -240,7 +286,19 @@ function CountryView() {
 
           //--------------------------Send this to countryData--------------------------------------
           // console.log(filteredData);
+          // setCountryData(filteredData);
+
+
           setCountryData(filteredData);
+          // Updating countryData with flagLogos from allFlags and filteredData
+
+          // console.log(allFlags);
+          
+
+        //  console.log(mergedArray);
+
+
+
         } else {
           console.error("API call failed");
         }
@@ -251,6 +309,37 @@ function CountryView() {
 
     fetchAllCountries();
   }, [selectedMonth]);
+
+  // console.log(allFlags);
+
+// console.log(allFlags);
+  
+
+
+useEffect (() => {
+  const mergedArray = countryData.map(dataItem => {
+    const matchingCountry = allFlags.find(countryItem => countryItem.countryName === dataItem.countryName);
+  
+    if (matchingCountry) {
+      return {
+        countryName: dataItem.countryName,
+        flagLogo: matchingCountry.flagLogo,
+        positive: dataItem.positive,
+        negative: dataItem.negative,
+        neutral: dataItem.neutral
+      };
+    }
+  
+    return null; // If no match found
+  }).filter(item => item !== null);
+
+
+  console.log(mergedArray);
+
+  setAllCountryData(mergedArray);
+
+}, [countryData]);
+
 
 
 
@@ -345,9 +434,59 @@ function CountryView() {
               </div>
             </div>
             <div className="bg-white shadow-2xl rounded-xl p-10">
-              {countryData.map((country, index) => (
+            
+
+                  <div className="flex mb-4">
+                    <div className="text-xl font-bold ">
+                      Country
+                    </div>
+
+                    <h2 className="text-xl font-semibold ml-20">
+                    Articles Published
+                    </h2>
+                    
+
+                    <div className="text-xl font-semibold ml-20">
+                    Perception of India
+                    </div>
+                    <div className="text-xl invisible font-semibold ml-5">
+                    Perception
+                    </div>
+
+                    <div className="w-5 h-5 mt-1 bg-green-500 ml-12 rounded-sm"></div>
+                    <div className="ml-3">
+                    Positive
+                    </div>
+
+
+                   <div className="w-5 h-5 mt-1 bg-red-500 ml-8 rounded-sm"></div>
+                    <div className="ml-3">
+                    Negative
+                    </div>
+
+                    <div className="w-5 h-5 mt-1 bg-yellow-300 ml-8 rounded-sm"></div>
+                    <div className="ml-3">
+                    Neutral
+                    </div>
+                    
+                  </div>
+                  <hr className="border-t-1 border-black w-full" />
+                
+              {allCountryData.map((country, index) => (
                 <div className="mt-4 mb-4" key={index} onClick={() => handleClick(country)}>
                   <div className="flex justify-between">
+
+                  <div className="mb-3 border border-black rounded-lg overflow-hidden">
+                  {country.flagLogo && (
+                    <img
+                      src={country.flagLogo}
+                      alt="Country Flag"
+                      className="w-20 h-10 "
+                    />
+                  )}
+                </div>
+
+
                     <h2 className="text-lg font-semibold w-20">
                       {country.countryName}
                     </h2>

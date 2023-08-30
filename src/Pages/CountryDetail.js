@@ -12,6 +12,8 @@ import html2canvas from "html2canvas";
 import mapImg from "../assets/map.png";
 import CountryLocation from "../assets/client-location.png";
 import flagImg from "../assets/flag.jpeg";
+import EconomicPow from "../assets/EconomicPower.png";
+
 import leftArrow from "../assets/leftArrow.png";
 import share from "../assets/shareButton.png";
 import backgroundImage from "../assets/backgroundMain.jpg";
@@ -19,10 +21,16 @@ import usaXindia from "../assets/usaxindia.png";
 import BarChartComponent from "../graphs/BarChartComponent";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
-
 import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
+
+
+import bricsImg from "../assets/countryStats/brics.png";
+import fiveEyesImg from "../assets/countryStats/fiveEyes.png";
+import nuclearImg from "../assets/countryStats/nuclear.png";
+import qsdImg from "../assets/countryStats/qsd.png";
+import unscImg from "../assets/countryStats/unsc.png";
 
 function CountryDetails() {
   const [graphData, setGraphData] = useState([
@@ -52,6 +60,14 @@ function CountryDetails() {
     negative: 0,
     neutral: 0,
   });
+  const [flagObjectSelected, setFlagObjectSelected] = useState("");
+  const [countryStats, setCountryStats] = useState([]);
+
+  const [brics, setBrics] = useState(false);
+  const [fiveEyes, setFiveEyes] = useState(false);
+  const [unsc, setUnsc] = useState(false);
+  const [qsd, setQsd] = useState(false);
+  const [nuclear, setNuclear] = useState(false);
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -59,11 +75,71 @@ function CountryDetails() {
   //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
 
   let tempName;
+
   useEffect(() => {
     tempName = localStorage.getItem("hoveredCountry");
     const tempPositive = localStorage.getItem("hoveredPositive");
     const tempNegative = localStorage.getItem("hoveredNegative");
     const tempNeutral = localStorage.getItem("hoveredNeutral");
+
+    const getStats = async () => {
+      try {
+        const res = await fetch(
+          "https://sheet.best/api/sheets/4a6a3f85-83ed-4537-886d-02d28e3b5696"
+        );
+        const data = await res.json();
+        setCountryStats(Object.keys(data).map((key) => data[key]));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getStats();
+
+    const fetchAllFlags = async () => {
+      try {
+        const response = await fetch(
+          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.ok) {
+          const getData = await response.json();
+
+          const uniqueCountries = [];
+          const countryNames = {};
+
+          getData.forEach((item) => {
+            const { countryName, flagLogo } = item;
+            if (!countryNames[countryName]) {
+              countryNames[countryName] = true;
+              uniqueCountries.push({ countryName, flagLogo });
+            }
+          });
+
+          // console.log(uniqueCountries);
+          if (tempName === "United States") {
+            tempName = "USA";
+          }
+
+          const matchedCountry = uniqueCountries.find(
+            (country) => country.countryName === tempName
+          );
+          setFlagObjectSelected(matchedCountry);
+
+          if (tempName === "USA") {
+            tempName = "United States";
+          }
+        } else {
+          console.error("API call failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllFlags();
 
     setCountryData({
       name: tempName,
@@ -244,6 +320,32 @@ function CountryDetails() {
     fetchAllCountries();
   }, [tempName]);
 
+  useEffect(() => {
+    //--------Map through countryStats looking for item.brics, item.about etc  and if tempName matches update its state-----------------------------------
+
+    const tempContName = localStorage.getItem("hoveredCountry");
+
+    countryStats.forEach((country) => {
+      if (country.unsc === tempContName) {
+        setUnsc(true);
+      }
+      if (country.brics === tempContName) {
+        setBrics(true);
+      }
+      if (country.nuclear === tempContName) {
+        setNuclear(true);
+      }
+      if (country.fiveEyes === tempContName) {
+        setFiveEyes(true);
+      }
+      if (country.qsd === tempContName) {
+        setQsd(true);
+      }
+    });
+  }, [countryStats]);
+
+  // console.log(unsc, qsd, brics, fiveEyes, nuclear);
+
   //-----------------------------------CHANGE SHARE URL TO WEBSITE HOMEPAGE-----------------------------
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
@@ -391,11 +493,13 @@ function CountryDetails() {
               <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl h-12 p-2 mb-5">
                 <div className="flex">
                   <div className="rounded-lg overflow-hidden ">
-                    <img
-                      src={flagImg}
-                      alt="Flag Image"
-                      className="w-18 h-10 rounded-lg"
-                    />
+                    {flagObjectSelected && (
+                      <img
+                        src={flagObjectSelected.flagLogo}
+                        alt="Country Flag"
+                        className=" h-10 rounded-lg"
+                      />
+                    )}
                   </div>
 
                   <div className="text-xl ml-2 ">
@@ -420,98 +524,82 @@ function CountryDetails() {
 
             <div className="bg-opacity-40 bg-white items-center rounded-xl shadow-lg p-2 h-30">
               <div className="text-2xl">
-                <p className="mx-2 mt-2 mb-4">Why {countryData.name} matters to India</p>
+                <p className="mx-2 mt-2 mb-4">
+                  Why {countryData.name} matters to India
+                </p>
                 <div className="flex justify-between">
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-                    <div className="pt-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30 ">
-                      <div className="flex justify-center">
-                        <img
-                          src={usaXindia}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
-                      </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                      <div className="flex justify-center">
-                        <img
-                          src={usaXindia}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
-                      </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                      <div className="flex justify-center">
+                    
+                      <div className="">
                         <img
-                          src={usaXindia}
+                          src={EconomicPow}
                           alt="Relation Image"
                           className=" rounded-lg"
                         />
                       </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
+                      
+                      <div className="">
+                        <img
+                          src={EconomicPow}
+                          alt="Relation Image"
+                          className=" rounded-lg"
+                        />
                       </div>
-                    </div>
 
-                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                      <div className="flex justify-center">
-                        <img
-                          src={usaXindia}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
-                      </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
-                      </div>
-                    </div>
+                    {brics && (
+                        <div className="">
+                          <img
+                            src={bricsImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                       
+                    )}
 
-                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                      <div className="flex justify-center">
-                        <img
-                          src={usaXindia}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
-                      </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
-                      </div>
-                    </div>
+                    {qsd && (
+                      <div className="">
+                          <img
+                            src={qsdImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                    )}
 
-                    <div className="py-5 mx-auto bg-white shadow-lg rounded-lg w-40 h-30">
-                      <div className="flex justify-center">
-                        <img
-                          src={usaXindia}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
-                      </div>
-                      <div className="my-2 text-center">
-                        <p className="text-gray-600 text-base">
-                          This is some sample text below the image.
-                        </p>
-                      </div>
-                    </div>
+                    {unsc && (
+                      <div className="">
+                          <img
+                            src={unscImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                    )}
+
+                    {nuclear && (
+                      <div className="">
+                          <img
+                            src={nuclearImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                    )}
+
+                    {fiveEyes && (
+                      <div className="">
+                          <img
+                            src={fiveEyesImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                    )}
+
+
                   </div>
                 </div>
               </div>
@@ -576,26 +664,34 @@ function CountryDetails() {
                 </div>
 
                 <div>
-                {isMobile && (
-                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
-                    <p className="text-gray-700 mx-4 ">
-                      Articles Published by {countryData.name}
-                    </p>
+                  {isMobile && (
+                    <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                      <p className="text-gray-700 mx-4 ">
+                        Articles Published by {countryData.name}
+                      </p>
 
-                    <div className="w-px h-6 bg-gray-800 "></div>
-                    <p className="text-gray-700 text-base mx-4">{parseInt(countryData.positive) + parseInt(countryData.negative) + parseInt(countryData.neutral)}</p>
-                  </div>
-                )}
-                {isLaptop && (
-                  <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
-                    <p className="text-gray-700 mx-8 ">
-                      Articles Published by {countryData.name}
-                    </p>
+                      <div className="w-px h-6 bg-gray-800 "></div>
+                      <p className="text-gray-700 text-base mx-4">
+                        {parseInt(countryData.positive) +
+                          parseInt(countryData.negative) +
+                          parseInt(countryData.neutral)}
+                      </p>
+                    </div>
+                  )}
+                  {isLaptop && (
+                    <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                      <p className="text-gray-700 mx-8 ">
+                        Articles Published by {countryData.name}
+                      </p>
 
-                    <div className="w-px h-6 bg-gray-800 mx-8"></div>
-                    <p className="text-gray-700 text-base mx-8">{parseInt(countryData.positive) + parseInt(countryData.negative) + parseInt(countryData.neutral)}</p>
-                  </div>
-                )}
+                      <div className="w-px h-6 bg-gray-800 mx-8"></div>
+                      <p className="text-gray-700 text-base mx-8">
+                        {parseInt(countryData.positive) +
+                          parseInt(countryData.negative) +
+                          parseInt(countryData.neutral)}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -607,10 +703,6 @@ function CountryDetails() {
                 </div>
               </div>
             </div>
-
-
-
-
 
             <div className="flex">
               {isLaptop && (
@@ -624,23 +716,20 @@ function CountryDetails() {
                   <div className=" items-center min-h-screen">
                     {newspaperData.map((newspaper, index) => (
                       <div className="mt-4 mb-4">
-                        <div
-                          key={index}
-                          className="flex justify-between"
-                        >
-                        <div className="w-19">
-                          <h2 className="text-lg font-semibold ">
-                            {newspaper.name}
-                          </h2>
+                        <div key={index} className="flex justify-between">
+                          <div className="w-19">
+                            <h2 className="text-lg font-semibold ">
+                              {newspaper.name}
+                            </h2>
                           </div>
                           <p>{newspaper.articles}</p>
 
                           <div className="">
-                          <BigSingleHorizontalBar
-                          positiveValue={10}
-                          negativeValue={10}
-                          neutralValue={10}
-                        />
+                            <BigSingleHorizontalBar
+                              positiveValue={10}
+                              negativeValue={10}
+                              neutralValue={10}
+                            />
                             {/* <SingleHorizontalBar
                               positiveValue={10}
                               negativeValue={10}

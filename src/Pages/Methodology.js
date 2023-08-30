@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import backgroundImage from "../assets/backgroundMain.jpg";
 
-const AboutUs = () => {
+const Methodology = () => {
 
 
 
@@ -60,11 +60,10 @@ console.log(data);
   <Navbar />
     <div className="flex justify-center items-center h-screen bg-gray-100">
     <div>
-    <h2 className="m-10">About Page</h2>
-    
+    <h2 className="m-10">Methodology Page</h2>
      {data?.map((item, i) => (
         <div className="" key={i}>
-        <div>{item.about}</div>
+        <div>{item.methodology}</div>
         </div>
       ))}
     </div>
@@ -76,4 +75,4 @@ console.log(data);
   );
 };
 
-export default AboutUs;
+export default Methodology;

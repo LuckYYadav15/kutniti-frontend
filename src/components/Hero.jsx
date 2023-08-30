@@ -23,6 +23,11 @@ import "rc-slider/assets/index.css"; // Import the default CSS for the Slider co
 import "rc-tooltip/assets/bootstrap.css"; // Import the default CSS for the Slider tooltip
 import share from "../assets/shareButton.png";
 import html2canvas from "html2canvas";
+import arrowLeft from "../assets/Arrow 2.png";
+import arrowRight from "../assets/Arrow 1.png";
+import negative from "../assets/NEGATIVE.png";
+import perception from "../assets/Perception.png";
+import positive from "../assets/POSITIVE.png";
 
 const Hero = () => {
   const months = [
@@ -174,11 +179,49 @@ const Hero = () => {
   ]);
 
   const [selectedColor, setSelectedColor] = useState(0);
+  const [allFlags, setAllFlags] = useState([]);
+  const [flagObjectSelected, setFlagObjectSelected] = useState("");
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   useEffect(() => {
+    const fetchAllFlags = async () => {
+      try {
+        const response = await fetch(
+          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          {
+            method: "GET",
+          }
+        );
+
+        if (response.ok) {
+          const getData = await response.json();
+
+          const uniqueCountries = [];
+          const countryNames = {};
+
+          getData.forEach((item) => {
+            const { countryName, flagLogo } = item;
+            if (!countryNames[countryName]) {
+              countryNames[countryName] = true;
+              uniqueCountries.push({ countryName, flagLogo });
+            }
+          });
+
+          // console.log(uniqueCountries);
+
+          setAllFlags(uniqueCountries);
+        } else {
+          console.error("API call failed");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllFlags();
+
     const fetchAllCountries = async () => {
       try {
         const response = await fetch(
@@ -491,10 +534,23 @@ const Hero = () => {
   const clickAction = async (countryDetails) => {
     // console.log(countryDetails);
     // console.log(data);
+    if (countryDetails.countryName === "United States") {
+      countryDetails.countryName = "USA";
+    }
     let countryName;
     try {
       // console.log(countryDetails);
+      //---------------------------------For FLAG-------------------------------
+      const matchedCountry = allFlags.find(
+        (country) => country.countryName === countryDetails.countryName
+      );
+      setFlagObjectSelected(matchedCountry);
 
+      if (countryDetails.countryName === "USA") {
+        countryDetails.countryName = "United States";
+      }
+
+      //----------------------------------For Other Data--------------------------------
       const foundCountry = data.find(
         (item) => item.name === countryDetails.countryName
       );
@@ -677,6 +733,8 @@ const Hero = () => {
     height: "auto", // Allow the height to adjust based on the aspect ratio
   };
 
+  // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
+
   return (
     <div className="mb-10 md:mb-20 lg:mb-32 w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
@@ -785,11 +843,13 @@ const Hero = () => {
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
-                  <img
-                    src={flagImg}
-                    alt="flagImg"
-                    className="w-20 rounded-lg"
-                  />
+                  {flagObjectSelected && (
+                    <img
+                      src={flagObjectSelected.flagLogo}
+                      alt="Country Flag"
+                      className="w-20 rounded-lg"
+                    />
+                  )}
                 </div>
 
                 <div className="flex justify-center items-center ">
@@ -900,7 +960,6 @@ const Hero = () => {
                 />
               </div>
             </div>
-
             <div>
               <button
                 onClick={allTimeData}
@@ -912,36 +971,66 @@ const Hero = () => {
           </div>
 
           <div className="text-center mr-8">
-            <button
-              className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
-              onClick={changeToRed}
-            >
-              0%
-            </button>
-            <button
-              className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-3 "
-              onClick={changeToOrange}
-            >
-              25%
-            </button>
-            <button
-              className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-3 "
-              onClick={changeToYellow}
-            >
-              50%
-            </button>
-            <button
-              className="bg-green-300 hover:bg-green-500 text-white font-bold px-3 "
-              onClick={changeToLightGreen}
-            >
-              75%
-            </button>
-            <button
-              className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
-              onClick={changeToGreen}
-            >
-              100%
-            </button>
+            <div>
+              <button
+                className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
+                onClick={changeToRed}
+              >
+                0%
+              </button>
+              <button
+                className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-3 "
+                onClick={changeToOrange}
+              >
+                25%
+              </button>
+              <button
+                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-3 "
+                onClick={changeToYellow}
+              >
+                50%
+              </button>
+              <button
+                className="bg-green-300 hover:bg-green-500 text-white font-bold px-3 "
+                onClick={changeToLightGreen}
+              >
+                75%
+              </button>
+              <button
+                className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
+                onClick={changeToGreen}
+              >
+                100%
+              </button>
+            </div>
+
+            <div className="flex justify-between">
+              <img
+                src={arrowLeft}
+                alt=""
+                className=""
+              />
+              <img
+                src={negative}
+                alt=""
+                className=""
+              />
+              <img
+                src={perception}
+                alt=""
+                className=""
+              />
+              <img
+                src={positive}
+                alt=""
+                className=""
+              />
+              <img
+                src={arrowRight}
+                alt=""
+                className=""
+              />
+            </div>
           </div>
         </div>
       )}
@@ -963,11 +1052,13 @@ const Hero = () => {
             <div>
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
                 <div className="rounded-lg overflow-hidden mr-3 ">
-                  <img
-                    src={flagImg}
-                    alt="flagImg"
-                    className="h-10 rounded-lg"
-                  />
+                  {flagObjectSelected && (
+                    <img
+                      src={flagObjectSelected.flagLogo}
+                      alt="Country Flag"
+                      className="h-10 rounded-lg"
+                    />
+                  )}
                 </div>
 
                 <div className="text-2xl">{countryData.Name}</div>

@@ -34,7 +34,7 @@ const Navbar = () => {
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   return (
-    <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px] mx-auto px-2 py-2 ">
+    <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px]  px-2 py-2 ">
       <Link to="/" className="home-link flex">
         <img src={logo} alt="logo image" className="" />
         {/* <h1 className='w-full text-3xl text-black hover:text-purple-600' >Kutniti Watch</h1>
@@ -76,7 +76,7 @@ const Navbar = () => {
             <img src={bulb} alt="global image" className="m-auto" />
           </div>
           <div className="mb-1">
-            <a href="/methadology">Methadology</a>
+            <a href="/methodology">Methodology</a>
           </div>
         </li>
 
@@ -118,21 +118,31 @@ const Navbar = () => {
       <div onClick={handleNav} className="block md:hidden">
         {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
       </div>
+      
       <ul
         className={
           nav
-            ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900  ease-in-out duration-500"
-            : "ease-in-out duration-500 fixed left-[-100%]"
+            ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900  ease-in-out duration-500 "
+            : "ease-in-out duration-500 fixed left-[-100%] "
         }
       >
+      <div className="">
         {/* <h1 className='w-full text-3xl font-bold  m-4'>REACT.</h1> */}
-        <li className="p-4 border-b border-gray-600">Home</li>
-        <li className="p-4 border-b border-gray-600">Countries</li>
-        <li className="p-4 border-b border-gray-600">Newspapers</li>
-        <li className="p-4 border-b border-gray-600">Methodology</li>
-        <li className="p-4 border-b border-gray-600">About</li>
+        <li className="mt-20 p-4 border-b border-gray-600">
+        <a href="/">Home</a></li>
+        <li className="p-4 border-b border-gray-600">
+        <a href="/country-view">Countries</a></li>
+        <li className="p-4 border-b border-gray-600">
+        <a href="/newspaper-view">Newspapers</a></li>
+        <li className="p-4 border-b border-gray-600">
+        <a href="/methodology">Methodology</a></li>
+        <li className="p-4 border-b border-gray-600">
+        <a href="/about">About</a></li>
+        </div>
       </ul>
-    </div>
+      
+      </div>
+  
   );
 };
 

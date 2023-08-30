@@ -39,7 +39,7 @@ chartData.forEach(entry => {
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis dataKey="name" />
           {/* <YAxis /> */}
-          <Tooltip />
+          {/* <Tooltip /> */}
           {/* <Legend /> */}
           <Bar dataKey="neg" stackId="a" fill="#ff2b47" barSize={50}/>
           <Bar dataKey="pos" stackId="a" fill="#00f050" barSize={50}/>
