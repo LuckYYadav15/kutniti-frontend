@@ -13,6 +13,8 @@ import mapImg from "../assets/map.png";
 import CountryLocation from "../assets/client-location.png";
 import flagImg from "../assets/flag.jpeg";
 import EconomicPow from "../assets/EconomicPower.png";
+import CountryDsipoCard from "../components/CountryDsipoCard"
+import CountryEcoCard from "../components/CountryEcoCard"
 
 import leftArrow from "../assets/leftArrow.png";
 import share from "../assets/shareButton.png";
@@ -68,6 +70,9 @@ function CountryDetails() {
   const [unsc, setUnsc] = useState(false);
   const [qsd, setQsd] = useState(false);
   const [nuclear, setNuclear] = useState(false);
+
+  const [ecoRank, setEcoRank] = useState();
+  const [diaspRank, setDiaspRank] = useState();
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -342,7 +347,29 @@ function CountryDetails() {
         setQsd(true);
       }
     });
+
+
+
+
+    // Map through countryStats looking for tempContName attribute in each object and extract 1st object's value as ...
+
+
+  let i=0;
+  countryStats.forEach((item) => {
+    if(i==0){
+      setEcoRank(item[tempContName])
+    }
+    if(i==1){
+      setDiaspRank(item[tempContName])
+    }
+  i++;
+  });
+
+
   }, [countryStats]);
+
+
+  console.log(diaspRank, ecoRank);
 
   // console.log(unsc, qsd, brics, fiveEyes, nuclear);
 
@@ -533,19 +560,11 @@ function CountryDetails() {
 
                     
                       <div className="">
-                        <img
-                          src={EconomicPow}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
+                      <CountryDsipoCard firstValue={diaspRank} secondValue="Indian Dispora in the World"/>
                       </div>
                       
                       <div className="">
-                        <img
-                          src={EconomicPow}
-                          alt="Relation Image"
-                          className=" rounded-lg"
-                        />
+                      <CountryEcoCard firstValue={ecoRank} secondValue="Economic Power in the World"/>
                       </div>
 
                     {brics && (

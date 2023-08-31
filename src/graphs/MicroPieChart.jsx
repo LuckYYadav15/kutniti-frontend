@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 
-const COLORS = ['#17fc03', '#ff2b47', '#f5f247', '#FF8042'];
 
-const CustomPieChart = ({ hoveredPositive, hoveredNegative }) => {
+
+const CustomPieChart = ({ hoveredPositive, hoveredNegative, fillType }) => {
   const [data, setData] = useState([]);
   const [showChart, setShowChart] = useState(false);
+
+  let COLORS=[];
+  if(fillType==="positive"){
+   COLORS = ['#00f050', '#d3f0d1', 'gray', 'gray'];
+  }
+  if(fillType==="negative"){
+     COLORS = ['#ff2b47', '#f5c9c9', 'gray', 'gray'];
+  }
+  if(fillType==="neutral"){
+     COLORS = ['#fff000', '#f3f5c1', 'gray', 'gray'];
+  }
+  
 
   useEffect(() => {
     if (hoveredPositive !== 0 || hoveredNegative !== 0) {
@@ -44,9 +56,9 @@ const CustomPieChart = ({ hoveredPositive, hoveredNegative }) => {
             cy="50%"
             labelLine={false}
             // label={renderCustomizedLabel}
-            innerRadius={5}
-            outerRadius={9}
-            fill="#8884d8"
+            innerRadius={6}
+            outerRadius={11}
+            fill="gray"
             dataKey="value"
           >
             {data.map((entry, index) => (

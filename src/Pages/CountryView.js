@@ -12,6 +12,8 @@ import locationImg from "../assets/location.webp";
 import backgroundImage from "../assets/backgroundMain.jpg";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
+import MicroPieChart from "../graphs/MicroPieChart";
+import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
 
 function CountryView() {
@@ -40,18 +42,21 @@ function CountryView() {
     "Jan",
     "Feb",
     "Mar",
-    "April",
+    "Apr",
     "May",
-    "June",
-    "July",
+    "Jun",
+    "Jul",
     "Aug",
-    "Sept",
+    "Sep",
     "Oct",
     "Nov",
     "Dec",
   ];
   const [allFlags, setAllFlags] = useState([]);
-  const [allCountryData, setAllCountryData]= useState([]);
+  const [allCountryData, setAllCountryData] = useState([]);
+
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
+  const isLaptop = useMediaQuery({ minWidth: 780 });
 
   const handleMonthChange = (newMonth) => {
     setSelectedMonth(newMonth);
@@ -106,13 +111,9 @@ function CountryView() {
     window.localStorage.setItem("hoveredNeutral", country.neutral);
     window.dispatchEvent(new Event("storage"));
     window.location.href = "http://localhost:3000/country-detail";
-
-    
   };
 
   useEffect(() => {
-
-
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
@@ -137,11 +138,8 @@ function CountryView() {
           });
 
           // console.log(uniqueCountries);
-          
-          setAllFlags(uniqueCountries);
 
-         
-          
+          setAllFlags(uniqueCountries);
         } else {
           console.error("API call failed");
         }
@@ -151,9 +149,6 @@ function CountryView() {
     };
 
     fetchAllFlags();
-
-
-
 
     const fetchAllCountries = async () => {
       try {
@@ -288,17 +283,12 @@ function CountryView() {
           // console.log(filteredData);
           // setCountryData(filteredData);
 
-
           setCountryData(filteredData);
           // Updating countryData with flagLogos from allFlags and filteredData
 
           // console.log(allFlags);
-          
 
-        //  console.log(mergedArray);
-
-
-
+          //  console.log(mergedArray);
         } else {
           console.error("API call failed");
         }
@@ -312,36 +302,33 @@ function CountryView() {
 
   // console.log(allFlags);
 
-// console.log(allFlags);
-  
+  // console.log(allFlags);
 
+  useEffect(() => {
+    const mergedArray = countryData
+      .map((dataItem) => {
+        const matchingCountry = allFlags.find(
+          (countryItem) => countryItem.countryName === dataItem.countryName
+        );
 
-useEffect (() => {
-  const mergedArray = countryData.map(dataItem => {
-    const matchingCountry = allFlags.find(countryItem => countryItem.countryName === dataItem.countryName);
-  
-    if (matchingCountry) {
-      return {
-        countryName: dataItem.countryName,
-        flagLogo: matchingCountry.flagLogo,
-        positive: dataItem.positive,
-        negative: dataItem.negative,
-        neutral: dataItem.neutral
-      };
-    }
-  
-    return null; // If no match found
-  }).filter(item => item !== null);
+        if (matchingCountry) {
+          return {
+            countryName: dataItem.countryName,
+            flagLogo: matchingCountry.flagLogo,
+            positive: dataItem.positive,
+            negative: dataItem.negative,
+            neutral: dataItem.neutral,
+          };
+        }
 
+        return null; // If no match found
+      })
+      .filter((item) => item !== null);
 
-  console.log(mergedArray);
+    console.log(mergedArray);
 
-  setAllCountryData(mergedArray);
-
-}, [countryData]);
-
-
-
+    setAllCountryData(mergedArray);
+  }, [countryData]);
 
   const allTimeData = () => {
     // Create an object to store the accumulated data for each country
@@ -368,12 +355,8 @@ useEffect (() => {
     // Convert the aggregatedData object back to an array of objects
     const resultArray = Object.values(aggregatedData);
 
-   
     setCountryData(resultArray);
   };
-
-
-
 
   // console.log(countryData);
 
@@ -392,134 +375,245 @@ useEffect (() => {
   return (
     <div id="" style={containerStyle}>
       <Navbar />
-      <div className="m-5 invisible">Hidden Text Area</div>
-      <div className="flex">
-        <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
-          <div className="m-5 p-5 w-full">
-            <div className="flex mb-10">
-              <h2 className="text-2xl font-bold mb-5">
-                Countries ranked by their perception of India
-              </h2>
-              <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
-                <div className=" pb-7 pt-3 px-5 w-5/6">
-                  <div className="ml-2 mt-2">
-                    <Slider
-                      min={0}
-                      max={11}
-                      marks={sliderMarks}
-                      step={1}
-                      value={selectedMonth}
-                      onChange={handleSliderChange}
-                      railStyle={{ backgroundColor: "black" }}
-                      trackStyle={{ backgroundColor: "black" }}
-                      handleStyle={{
-                        borderColor: "black",
+      {isLaptop && (
+        <div>
+          <div className="m-5 invisible">Hidden Text Area</div>
+          <div className="flex">
+            <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
+              <div className="m-5 p-5 w-full">
+                <div className="flex mb-10">
+                  <h2 className="text-2xl font-bold mb-5">
+                    Countries ranked by their perception of India
+                  </h2>
+                  <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+                    <div className=" pb-7 pt-3 px-5 w-5/6">
+                      <div className="ml-2 mt-2">
+                        <Slider
+                          min={0}
+                          max={11}
+                          marks={sliderMarks}
+                          step={1}
+                          value={selectedMonth}
+                          onChange={handleSliderChange}
+                          railStyle={{ backgroundColor: "black" }}
+                          trackStyle={{ backgroundColor: "black" }}
+                          handleStyle={{
+                            borderColor: "black",
 
-                        width: 20,
-                        height: 10,
-                        marginTop: -2,
-                        borderRadius: 4,
-                        backgroundColor: "black",
-                        border: "2px solid black",
-                      }}
-                    />
+                            width: 20,
+                            height: 10,
+                            marginTop: -2,
+                            borderRadius: 4,
+                            backgroundColor: "black",
+                            border: "2px solid black",
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        onClick={allTimeData}
+                        className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30"
+                      >
+                        All Time
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                <div>
-                  <button onClick={allTimeData} className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30">
-                    All Time
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white shadow-2xl rounded-xl p-10">
-            
-
+                <div className="bg-white shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4">
-                    <div className="text-xl font-bold ">
-                      Country
-                    </div>
+                    <div className="text-xl font-bold ">Country</div>
 
                     <h2 className="text-xl font-semibold ml-20">
-                    Articles Published
+                      Articles Published
                     </h2>
-                    
 
                     <div className="text-xl font-semibold ml-20">
-                    Perception of India
+                      Perception of India
                     </div>
                     <div className="text-xl invisible font-semibold ml-5">
-                    Perception
+                      Perception
                     </div>
 
                     <div className="w-5 h-5 mt-1 bg-green-500 ml-12 rounded-sm"></div>
-                    <div className="ml-3">
-                    Positive
-                    </div>
+                    <div className="ml-3">Positive</div>
 
-
-                   <div className="w-5 h-5 mt-1 bg-red-500 ml-8 rounded-sm"></div>
-                    <div className="ml-3">
-                    Negative
-                    </div>
+                    <div className="w-5 h-5 mt-1 bg-red-500 ml-8 rounded-sm"></div>
+                    <div className="ml-3">Negative</div>
 
                     <div className="w-5 h-5 mt-1 bg-yellow-300 ml-8 rounded-sm"></div>
-                    <div className="ml-3">
-                    Neutral
-                    </div>
-                    
+                    <div className="ml-3">Neutral</div>
                   </div>
                   <hr className="border-t-1 border-black w-full" />
-                
-              {allCountryData.map((country, index) => (
-                <div className="mt-4 mb-4" key={index} onClick={() => handleClick(country)}>
-                  <div className="flex justify-between">
 
-                  <div className="mb-3 border border-black rounded-lg overflow-hidden">
-                  {country.flagLogo && (
-                    <img
-                      src={country.flagLogo}
-                      alt="Country Flag"
-                      className="w-20 h-10 "
-                    />
-                  )}
-                </div>
-
-
-                    <h2 className="text-lg font-semibold w-20">
-                      {country.countryName}
-                    </h2>
-                    <div className=" ">Data</div>
-
-                    <div className=" ">
-                      {country.negative === 0 &&
-                      country.positive === 0 &&
-                      country.neutral === 0 ? (
-                        <div className="flex">
-                        <div className="invisible">t Enough Data</div>
-                        <div className="invisible">Not Enough Data</div>
-                        <div>Not Enough Data</div>
-                        <div className="invisible">Not Enough Data</div>
-                        <div className="invisible">Not Enough Data</div>
+                  {allCountryData.map((country, index) => (
+                    <div
+                      className="mt-4 mb-4"
+                      key={index}
+                      onClick={() => handleClick(country)}
+                    >
+                      <div className="flex justify-between">
+                        <div className="mb-3 border border-black rounded-lg overflow-hidden">
+                          {country.flagLogo && (
+                            <img
+                              src={country.flagLogo}
+                              alt="Country Flag"
+                              className="w-20 h-10 "
+                            />
+                          )}
                         </div>
-                      ) : (
-                        <BigSingleHorizontalBar
-                          positiveValue={country.positive}
-                          negativeValue={country.negative}
-                          neutralValue={country.neutral}
-                        />
-                      )}
+
+                        <h2 className="text-lg font-semibold w-20">
+                          {country.countryName}
+                        </h2>
+                        <div className=" ">Data</div>
+
+                        <div className=" ">
+                          {country.negative === 0 &&
+                          country.positive === 0 &&
+                          country.neutral === 0 ? (
+                            <div className="flex">
+                              <div className="invisible">t Enough Data</div>
+                              <div className="invisible">Not Enough Data</div>
+                              <div>Not Enough Data</div>
+                              <div className="invisible">Not Enough Data</div>
+                              <div className="invisible">Not Enough Data</div>
+                            </div>
+                          ) : (
+                            <BigSingleHorizontalBar
+                              positiveValue={country.positive}
+                              negativeValue={country.negative}
+                              neutralValue={country.neutral}
+                            />
+                          )}
+                        </div>
+                        <div className="p-0 ml-20 w-auto">Map Area</div>
+                      </div>
+                      <hr className="border-t-1 border-black w-full" />
                     </div>
-                    <div className="p-0 ml-20 w-auto">Map Area</div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isMobile && (
+        <div>
+          <div className="my-8 invisible">Hidden Text Area</div>
+          <div className="m-1 mt-5 p-1 w-full">
+            <div className=" my-1">
+              <h2 className="text-xl text-gray-600 font-bold mb-5">
+                Countries ranked by their perception of India
+              </h2>
+            </div>
+
+
+
+            <div className="ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+            <div className="  px-2 pt-2 w-full overflow-x-scroll">
+              <div className=" w-500">
+                <div
+                  className=" w-full max-w-full overflow-x-scroll"
+                  style={{ maxWidth: "370px" }}
+                >
+                  <Slider
+                    min={0}
+                    max={11}
+                    marks={sliderMarks}
+                    step={1}
+                    value={selectedMonth}
+                    onChange={handleSliderChange}
+                    railStyle={{ backgroundColor: "black" }}
+                    trackStyle={{ backgroundColor: "black" }}
+                    handleStyle={{
+                      borderColor: "black",
+                      width: 20,
+                      height: 10,
+                      marginTop: -2,
+                      borderRadius: 4,
+                      backgroundColor: "black",
+                      border: "2px solid black",
+                    }}
+                  />
+                  <div className="invisible">{selectedMonth}</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                onClick={allTimeData}
+                className="bg-black text-white rounded-3xl p-1 mt-2 mr-3 w-20"
+              >
+                All Time
+              </button>
+            </div>
+          </div>
+
+
+
+            <div className=" items-center min-h-screen">
+              <div className="flex justify-between">
+                <div>Country</div>
+                <div>Positive</div>
+                <div>Negative</div>
+                <div className="mr-2">Neutral</div>
+              </div>
+              <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
+              {allCountryData.map((country, index) => (
+                <div className="" onClick={() => handleClick(country)}>
+                  <div key={index} className="grid grid-cols-5  gap-4">
+                    {country.flagLogo && (
+                      <img
+                        src={country.flagLogo}
+                        alt="Country Flag"
+                        className="w-20 h-10 mt-1"
+                      />
+                    )}
+                    <h2 className=" mt-3">{country.countryName}</h2>
+                    <div className="flex ">
+                      <p className="text-sm mt-3">{country.positive}</p>
+                      <MicroPieChart
+                        hoveredPositive={country.positive}
+                        hoveredNegative={
+                          country.positive + country.negative + country.neutral
+                        }
+                        fillType="positive"
+                      />
+                    </div>
+
+                    <div className="flex ">
+                      <p className="text-sm mt-3">{country.negative}</p>
+                      <MicroPieChart
+                        hoveredPositive={country.negative}
+                        hoveredNegative={
+                          country.positive + country.negative + country.neutral
+                        }
+                        fillType="negative"
+                      />
+                    </div>
+
+                    <div className="flex ">
+                      <p className="text-sm mt-3">{country.neutral}</p>
+                      <MicroPieChart
+                        hoveredPositive={country.neutral}
+                        hoveredNegative={
+                          country.positive + country.negative + country.neutral
+                        }
+                        fillType="neutral"
+                      />
+                    </div>
                   </div>
-                  <hr className="border-t-1 border-black w-full" />
+                  <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      )}
+
       <Footer />
     </div>
   );
