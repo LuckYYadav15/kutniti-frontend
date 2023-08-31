@@ -189,7 +189,7 @@ const Hero = () => {
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          "http://65.2.183.51:8000/api/country/getallCountryArticleNumber",
           {
             method: "GET",
           }
@@ -227,7 +227,7 @@ const Hero = () => {
         const response = await fetch(
           "http://65.2.183.51:8000/api/country/getallCountryArticlesMonth",
           {
-            method: "POST",
+            method: "GET",
           }
         );
 

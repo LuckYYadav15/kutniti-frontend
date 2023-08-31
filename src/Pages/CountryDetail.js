@@ -98,7 +98,7 @@ function CountryDetails() {
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getallCountryArticles",
+          "http://65.2.183.51:8000/api/country/getallCountryArticleNumber",
           {
             method: "GET",
           }
@@ -155,7 +155,7 @@ function CountryDetails() {
         };
 
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getoneCountryArticles",
+          "http://65.2.183.51:8000/api/country/getoneCountryArticlesMonth",
           {
             method: "POST",
             headers: {
