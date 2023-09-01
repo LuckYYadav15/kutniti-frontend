@@ -18,19 +18,19 @@ function Home() {
     backgroundSize: 'cover', // Adjust background sizing
     backgroundRepeat: 'no-repeat', // Prevent repeating of background image
     backgroundColor: '#f2f2f2',
-    width: '100%',
-    className: 'w-full',
+    width: '100vw',
+    height: "100%",
     // Add other styles as needed
   };
 
   return (
-    <div style={containerStyle} className='w-full'>
+    <div style={containerStyle} className='w-full font-custom'>
  
       <Navbar />
       {/* <WorldMap onCountryClick={handleCountryClick} landColor="green"/> */}
       <Hero />
       {/* <Newsletter /> */}
-      <Footer />
+    
 
    
      

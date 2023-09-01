@@ -736,10 +736,10 @@ const Hero = () => {
   // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
 
   return (
-    <div className="mb-10 md:mb-20 lg:mb-32 w-full">
+    <div className="mb-10 w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
-        <h1 className="text-3xl  lg:ml-5 lg:mt-20 font-bold">
+        <h1 className="font-custom font-bold text-3xl  lg:ml-5 lg:mt-20 ">
           What is the perception of{" "}
           <span className="text-blue-500">India </span>
           in the world ?
@@ -747,7 +747,7 @@ const Hero = () => {
       )}
 
       {!isLaptop && (
-        <h1 className="mt-20 ml-5 mr-5 text-xl font-bold">
+        <h1 className="font-custom mt-20 ml-5 mr-5 text-xl font-bold">
           What is the perception of{" "}
           <span className="text-blue-500">India </span>
           in the world
@@ -852,7 +852,7 @@ const Hero = () => {
                   )}
                 </div>
 
-                <div className="flex justify-center items-center ">
+                <div className="font-custom flex justify-center items-center ">
                   <div className="text-3xl">{countryData.Name}</div>
                 </div>
 
@@ -869,12 +869,12 @@ const Hero = () => {
                 <div className="cursor-pointer  flex  items-center m-0 p-1">
                   <div className="text-xl">
                     {months[selectedMonth] ? (
-                      <div className="">
+                      <div className="font-custom">
                         Articles published in {months[selectedMonth]}
                       </div>
                     ) : null}
                   </div>
-                  <div className="h-12 bg-gray-300 w-px m-2"></div>
+                  <div className="font-custom h-12 bg-gray-300 w-px m-2"></div>
                   <div className="flex ">
                     {(countryData.positive ||
                       countryData.negative ||
@@ -909,19 +909,19 @@ const Hero = () => {
 
                   <div className="flex ">
                     {countryData.positive ? (
-                      <p className="text-green-500 m-auto ">
+                      <p className="font-custom text-green-500 m-auto ">
                         Positive: {countryData.positive}
                       </p>
                     ) : null}
 
                     {countryData.negative ? (
-                      <p className="text-red-500 m-auto ">
+                      <p className="font-custom text-red-500 m-auto ">
                         Negative: {countryData.negative}
                       </p>
                     ) : null}
 
                     {countryData.neutral ? (
-                      <p className="text-blue-500 m-auto ">
+                      <p className="font-custom text-blue-500 m-auto ">
                         Neutral: {countryData.neutral}
                       </p>
                     ) : null}
@@ -934,7 +934,7 @@ const Hero = () => {
       </div>
 
       {!isMobile && (
-        <div className="flex w-full justify-between">
+        <div className="font-custom flex w-full justify-between">
           <div className="ml-5 w-2/3 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
             <div className=" pb-7 pt-3 px-5 w-5/6">
               <div className="ml-2 mt-2">
@@ -963,7 +963,7 @@ const Hero = () => {
             <div>
               <button
                 onClick={allTimeData}
-                className="bg-black text-white rounded-full px-3 py-2 mt-2 mr-8"
+                className="font-custom bg-black text-white rounded-full px-3 py-2 mt-2 mr-8"
               >
                 All Time
               </button>
@@ -1061,17 +1061,17 @@ const Hero = () => {
                   )}
                 </div>
 
-                <div className="text-2xl">{countryData.Name}</div>
+                <div className="text-2xl font-custom font-bold">{countryData.Name}</div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+              <div className="font-custom bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
                 <div className="text-1xl">
                   Articles published in {months[selectedMonth]}
                 </div>
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-                <div className="">
+                <div className="font-custom">
                   <span className="m-1" style={{ color: "#17fc03" }}>
                     Positive
                   </span>
@@ -1093,7 +1093,7 @@ const Hero = () => {
               />
             </div>
           </div>
-          <div className="mx-5">
+          <div className="font-custom mx-5">
             {countryData.Name && (
               <button
                 onClick={() => sendToDetails(countryData)}
@@ -1109,7 +1109,7 @@ const Hero = () => {
                 <div className=" pb-7 pt-3 px-5 w-5/6">
               <div className="ml-2 mt-2"> */}
 
-          <div className="ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+          <div className="font-custom ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
             <div className="  px-2 pt-2 w-full overflow-x-scroll">
               <div className=" w-500">
                 <div

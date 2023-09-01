@@ -18,7 +18,7 @@ function Page404() {
     </div>
 
     
-    <Footer/>
+
     </div>
   );
 }

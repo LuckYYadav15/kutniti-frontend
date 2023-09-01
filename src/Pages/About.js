@@ -70,7 +70,7 @@ console.log(data);
     </div>
     </div>
     
-    <Footer />
+ 
     </div>
 
   );

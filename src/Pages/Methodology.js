@@ -56,7 +56,7 @@ console.log(data);
 
   
   return (
-    <div id="" style={containerStyle}>
+    <div id="" style={containerStyle} className="w-full font-custom">
   <Navbar />
     <div className="flex justify-center items-center h-screen bg-gray-100">
     <div>

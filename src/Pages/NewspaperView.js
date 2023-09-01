@@ -116,7 +116,7 @@ function NewspaperView() {
 
 
   return (
-<div id="pie-chart" style={containerStyle}>
+<div id="pie-chart" style={containerStyle} className="w-full font-custom">
   <Navbar />
   <div className="m-5 invisible">
     Hidden Text Area

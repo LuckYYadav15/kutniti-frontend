@@ -72,27 +72,8 @@ function CountryView() {
     setLastHovered(country);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/apis/country_search/",
-        countryFilter
-      );
-      setCountryData(response.data);
-      // console.log(countryData);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch data from server");
-    }
-  };
 
-  const handleChange = (event) => {
-    setcountryFilter({
-      ...countryFilter,
-      [event.target.name]: event.target.value,
-    });
-  };
+
 
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
@@ -102,15 +83,47 @@ function CountryView() {
     return acc;
   }, {});
 
-  const handleClick = (country) => {
-    // console.log(country);
 
+
+
+
+ 
+
+
+  const handleClick = (country) => {
+    const aggregatedData = {};
+
+    // Iterate through the monthwiseData array and accumulate data for each country
+    monthwiseData.forEach((data) => {
+      const { countryName, positive, negative, neutral } = data;
+
+      if (!aggregatedData[countryName]) {
+        aggregatedData[countryName] = {
+          countryName,
+          positive,
+          negative,
+          neutral,
+        };
+      } else {
+        aggregatedData[countryName].positive += positive;
+        aggregatedData[countryName].negative += negative;
+        aggregatedData[countryName].neutral += neutral;
+      }
+    });
+
+    // Convert the aggregatedData object back to an array of objects
+    const resultArray = Object.values(aggregatedData);
+
+    const foundCountry = resultArray.find(item => item.countryName === country.countryName);
+    
     window.localStorage.setItem("hoveredCountry", country.countryName);
-    window.localStorage.setItem("hoveredPositive", country.positive);
-    window.localStorage.setItem("hoveredNegative", country.negative);
-    window.localStorage.setItem("hoveredNeutral", country.neutral);
+    window.localStorage.setItem("hoveredPositive", foundCountry.positive);
+    window.localStorage.setItem("hoveredNegative", foundCountry.negative);
+    window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
     window.dispatchEvent(new Event("storage"));
     window.location.href = "http://localhost:3000/country-detail";
+
+    
   };
 
   useEffect(() => {
@@ -373,7 +386,7 @@ function CountryView() {
   };
 
   return (
-    <div id="" style={containerStyle}>
+    <div id="" style={containerStyle} className="font-custom">
       <Navbar />
       {isLaptop && (
         <div>
@@ -382,7 +395,7 @@ function CountryView() {
             <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
               <div className="m-5 p-5 w-full">
                 <div className="flex mb-10">
-                  <h2 className="text-2xl font-bold mb-5">
+                  <h2 className="text-2xl font-bold mb-5 ">
                     Countries ranked by their perception of India
                   </h2>
                   <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
@@ -425,24 +438,24 @@ function CountryView() {
                   <div className="flex mb-4">
                     <div className="text-xl font-bold ">Country</div>
 
-                    <h2 className="text-xl font-semibold ml-20">
+                    <h2 className="text-xl font-semibold ml-10">
                       Articles Published
                     </h2>
 
-                    <div className="text-xl font-semibold ml-20">
+                    <div className="text-xl font-semibold ml-10">
                       Perception of India
                     </div>
-                    <div className="text-xl invisible font-semibold ml-5">
+                    {/* <div className="text-xl invisible font-semibold ml-4">
                       Perception
-                    </div>
+                    </div> */}
 
-                    <div className="w-5 h-5 mt-1 bg-green-500 ml-12 rounded-sm"></div>
+                    <div className="w-5 h-5 mt-1 bg-green-500 ml-10 rounded-sm"></div>
                     <div className="ml-3">Positive</div>
 
-                    <div className="w-5 h-5 mt-1 bg-red-500 ml-8 rounded-sm"></div>
+                    <div className="w-5 h-5 mt-1 bg-red-500 ml-7 rounded-sm"></div>
                     <div className="ml-3">Negative</div>
 
-                    <div className="w-5 h-5 mt-1 bg-yellow-300 ml-8 rounded-sm"></div>
+                    <div className="w-5 h-5 mt-1 bg-yellow-300 ml-7 rounded-sm"></div>
                     <div className="ml-3">Neutral</div>
                   </div>
                   <hr className="border-t-1 border-black w-full" />
@@ -467,7 +480,7 @@ function CountryView() {
                         <h2 className="text-lg font-semibold w-20">
                           {country.countryName}
                         </h2>
-                        <div className=" ">Data</div>
+                        <div className=" ">{country.positive + country.negative + country.neutral}</div>
 
                         <div className=" ">
                           {country.negative === 0 &&
@@ -614,7 +627,7 @@ function CountryView() {
         </div>
       )}
 
-      <Footer />
+  
     </div>
   );
 }

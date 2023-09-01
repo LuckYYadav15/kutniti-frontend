@@ -33,6 +33,11 @@ import fiveEyesImg from "../assets/countryStats/fiveEyes.png";
 import nuclearImg from "../assets/countryStats/nuclear.png";
 import qsdImg from "../assets/countryStats/qsd.png";
 import unscImg from "../assets/countryStats/unsc.png";
+import borDispImg from "../assets/countryStats/borDisp.png";
+import CountryImportCard from "../components/CountryImportCard";
+import CountryExportCard from "../components/CountryExportCard";
+import CountryDefenseCard from "../components/CountryDefenseCard";
+import CountryTourismCard from "../components/CountryTourismCard";
 
 function CountryDetails() {
   const [graphData, setGraphData] = useState([
@@ -70,9 +75,14 @@ function CountryDetails() {
   const [unsc, setUnsc] = useState(false);
   const [qsd, setQsd] = useState(false);
   const [nuclear, setNuclear] = useState(false);
+  const [borDisp, setBorDisp] = useState(false);
 
   const [ecoRank, setEcoRank] = useState();
   const [diaspRank, setDiaspRank] = useState();
+  const [importRank, setImportRank] = useState();
+  const [exportRank, setExportRank] = useState();
+  const [defenseRank, srtDefenseRank] = useState();
+  const [tourismRank, setTourismRank] = useState();
 
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -346,6 +356,10 @@ function CountryDetails() {
       if (country.qsd === tempContName) {
         setQsd(true);
       }
+      if (country.borDisp === tempContName) {
+        setBorDisp(true);
+      }
+      
     });
 
 
@@ -362,6 +376,18 @@ function CountryDetails() {
     if(i==1){
       setDiaspRank(item[tempContName])
     }
+    if(i==2){
+      setImportRank(item[tempContName])
+    }
+    if(i==3){
+      setExportRank(item[tempContName])
+    }
+    if(i==4){
+      srtDefenseRank(item[tempContName])
+    }
+    if(i==5){
+      setTourismRank(item[tempContName])
+    }
   i++;
   });
 
@@ -369,7 +395,7 @@ function CountryDetails() {
   }, [countryStats]);
 
 
-  console.log(diaspRank, ecoRank);
+  // console.log(diaspRank, ecoRank);
 
   // console.log(unsc, qsd, brics, fiveEyes, nuclear);
 
@@ -507,7 +533,7 @@ function CountryDetails() {
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
   return (
-    <div style={containerStyle} className="w-full">
+    <div style={containerStyle} className="w-full font-custom">
       <Navbar />
       <div className="flex ">
         <div className="">
@@ -558,14 +584,44 @@ function CountryDetails() {
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
 
 
-                    
+                  {(diaspRank != 0) && (
                       <div className="">
                       <CountryDsipoCard firstValue={diaspRank} secondValue="Indian Dispora in the World"/>
                       </div>
+                  )}
                       
+                      {(ecoRank != 0) && (
                       <div className="">
                       <CountryEcoCard firstValue={ecoRank} secondValue="Economic Power in the World"/>
                       </div>
+                      )}
+
+                      {(importRank != 0) && (
+                      <div className="">
+                      <CountryImportCard firstValue={importRank} secondValue="Import partner of India"/>
+                      </div>
+                      )}
+
+                      {(exportRank != 0) && (
+                      <div className="">
+                      <CountryExportCard firstValue={exportRank} secondValue="Export partner of India"/>
+                      </div>
+                      )}
+
+                      {(defenseRank != 0) && (
+                      <div className="">
+                      <CountryDefenseCard firstValue={defenseRank} secondValue="Defence provider to India"/>
+                      </div>
+                      )}
+
+                      {(tourismRank != 0) && (
+                      <div className="">
+                      <CountryTourismCard firstValue={tourismRank} secondValue="Nation visiting India for tourism"/>
+                      </div>
+                      )}
+
+
+
 
                     {brics && (
                         <div className="">
@@ -602,6 +658,16 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={nuclearImg}
+                            alt="Relation Image"
+                            className=" rounded-lg"
+                          />
+                        </div>
+                    )}
+
+                    {borDisp && (
+                      <div className="">
+                          <img
+                            src={borDispImg}
                             alt="Relation Image"
                             className=" rounded-lg"
                           />
@@ -732,11 +798,11 @@ function CountryDetails() {
                     </h2>
                   </div>
 
-                  <div className=" items-center min-h-screen">
+                  <div className=" items-center">
                     {newspaperData.map((newspaper, index) => (
                       <div className="mt-4 mb-4">
                         <div key={index} className="flex justify-between">
-                          <div className="w-19">
+                          <div className="w-25">
                             <h2 className="text-lg font-semibold ">
                               {newspaper.name}
                             </h2>
@@ -810,7 +876,7 @@ function CountryDetails() {
           </div>
         </div>
       </div>
-      <Footer />
+
     </div>
   );
 }

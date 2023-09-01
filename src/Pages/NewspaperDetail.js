@@ -335,7 +335,7 @@ import cardImage from "../assets/sampleCardImage.png"
     const texts = ["0%", "25%", "50%", "75%", "100%"];
   
     return (
-      <div style={containerStyle} className="w-full">
+      <div style={containerStyle} className="w-full font-custom">
         <Navbar />
         <div className="flex ">
           <div className="">
