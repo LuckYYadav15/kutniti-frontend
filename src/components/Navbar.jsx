@@ -30,6 +30,11 @@ const Navbar = () => {
     window.open(twitterShareUrl, "_blank");
   };
 
+  const handleLinkedInShare = () => {
+    const linkedInShareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareText}`;
+    window.open(linkedInShareUrl, "_blank");
+  };
+
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
@@ -99,7 +104,7 @@ const Navbar = () => {
       </button>
 
       <button
-        onClick={handleTwitterShare}
+        onClick={handleLinkedInShare}
         className="mx-2"
       >
          <img src={linkedin} alt="global image" className="m-auto w-8" />

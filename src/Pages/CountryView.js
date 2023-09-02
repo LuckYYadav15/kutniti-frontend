@@ -501,7 +501,7 @@ function CountryView() {
                             />
                           )}
                         </div>
-                        <div className="p-0 ml-20 w-auto">Map Area</div>
+                        {/* <div className="p-0 ml-20 w-auto ">Map Area</div> */}
                       </div>
                       <hr className="border-t-1 border-black w-full" />
                     </div>
