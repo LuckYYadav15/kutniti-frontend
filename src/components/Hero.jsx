@@ -189,7 +189,7 @@ const Hero = () => {
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getallCountryArticleNumber",
+          "https://kutniti-server.onrender.com/api/country/getallCountryArticleNumber",
           {
             method: "GET",
           }
@@ -225,7 +225,7 @@ const Hero = () => {
     const fetchAllCountries = async () => {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/country/getallCountryArticlesMonth",
+          "https://kutniti-server.onrender.com/api/country/getallCountryArticlesMonth",
           {
             method: "GET",
           }

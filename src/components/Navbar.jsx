@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import logo from "../assets/Kutniti-logo.png";
+import logo from "../assets/kutniti-Logo.png";
 import bulb from "../assets/Bulb.png";
 import global from "../assets/global.png";
 import home from "../assets/home-2.png";
