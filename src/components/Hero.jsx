@@ -724,7 +724,7 @@ const Hero = () => {
     window.dispatchEvent(new Event("storage"));
 
     // console.log(countryData.Name);
-    window.location.href = "http://localhost:3000/country-detail";
+    window.location.href = "/country-detail";
   };
 
   const mapStyle = {

@@ -121,7 +121,7 @@ function CountryView() {
     window.localStorage.setItem("hoveredNegative", foundCountry.negative);
     window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
     window.dispatchEvent(new Event("storage"));
-    window.location.href = "http://localhost:3000/country-detail";
+    window.location.href = "/country-detail";
 
     
   };
