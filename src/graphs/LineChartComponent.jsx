@@ -7,8 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ReferenceLine,
-  ResponsiveContainer,
 } from 'recharts';
 
 const data = [

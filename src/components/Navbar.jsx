@@ -23,8 +23,7 @@ const Navbar = () => {
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
   const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
-  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-
+ 
   const handleTwitterShare = () => {
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
     window.open(twitterShareUrl, "_blank");
@@ -35,13 +34,13 @@ const Navbar = () => {
     window.open(linkedInShareUrl, "_blank");
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
+  // const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   return (
     <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px]  px-2 py-2 ">
       <Link to="/" className="home-link flex">
-        <img src={logo} alt="logo image" className="" />
+        <img src={logo} alt="logo" className="" />
         {/* <h1 className='w-full text-3xl text-black hover:text-purple-600' >Kutniti Watch</h1>
       <p style={{ color: "rgb(121, 0, 255)"}} className='text-sm p-3'>Beta</p> */}
       </Link>
@@ -50,7 +49,7 @@ const Navbar = () => {
 
       <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center py-1">
           <div className="mr-1">
-            <img src={home} alt="global image" style={{ filter: 'grayscale(100%)' }} className="m-auto filter grayscale filter-grayscale-75" />
+            <img src={home} alt="global" style={{ filter: 'grayscale(100%)' }} className="m-auto filter grayscale filter-grayscale-75" />
           </div>
           <div className="mb-1">
             <a href="/">Home</a>
@@ -60,7 +59,7 @@ const Navbar = () => {
 
         <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
           <div className="mr-1">
-            <img src={global} alt="global image" className="m-auto" />
+            <img src={global} alt="global" className="m-auto" />
           </div>
           <div className="mb-1">
             <a href="/country-view">Countries</a>
@@ -69,7 +68,7 @@ const Navbar = () => {
 
         <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
           <div className="mr-1">
-            <img src={newspaper} alt="global image" className="m-auto" />
+            <img src={newspaper} alt="global" className="m-auto" />
           </div>
           <div className="mb-1">
             <a href="/newspaper-view">Newspapers</a>
@@ -78,7 +77,7 @@ const Navbar = () => {
 
         <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
           <div className="mr-1">
-            <img src={bulb} alt="global image" className="m-auto" />
+            <img src={bulb} alt="global " className="m-auto" />
           </div>
           <div className="mb-1">
             <a href="/methodology">Methodology</a>
@@ -87,7 +86,7 @@ const Navbar = () => {
 
         <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
           <div className="mr-1">
-            <img src={vector} alt="global image" className="m-auto" />
+            <img src={vector} alt="global " className="m-auto" />
           </div>
           <div className="mb-1">
             <a href="/about">About</a>
@@ -100,21 +99,21 @@ const Navbar = () => {
         onClick={handleTwitterShare}
         className="mx-2"
       >
-         <img src={twitter} alt="global image" className="m-auto w-8" />
+         <img src={twitter} alt="global " className="m-auto w-8" />
       </button>
 
       <button
         onClick={handleLinkedInShare}
         className="mx-2"
       >
-         <img src={linkedin} alt="global image" className="m-auto w-8" />
+         <img src={linkedin} alt="global " className="m-auto w-8" />
       </button>
 
       <button
         onClick={handleTwitterShare}
         className="mx-2"
       >
-         <img src={youtube} alt="global image" className="m-auto w-8" />
+         <img src={youtube} alt="global " className="m-auto w-8" />
       </button>
       </div>
       )}

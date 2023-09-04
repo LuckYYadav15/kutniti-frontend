@@ -1,27 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import "../Styles/Staff.css";
-import { Link } from "react-router-dom";
 import PieChartComponent from "../graphs/PieChartComponent";
-import LineChartComponent from "../graphs/LineChartComponent";
 import html2canvas from "html2canvas";
 // import backgroundImage from "../assets/background.png";
-import mapImg from "../assets/map.png";
-import CountryLocation from "../assets/client-location.png";
-import flagImg from "../assets/flag.jpeg";
-import EconomicPow from "../assets/EconomicPower.png";
+
 import CountryDsipoCard from "../components/CountryDsipoCard"
 import CountryEcoCard from "../components/CountryEcoCard"
 
-import leftArrow from "../assets/leftArrow.png";
 import share from "../assets/shareButton.png";
 import backgroundImage from "../assets/backgroundMain.jpg";
-import usaXindia from "../assets/usaxindia.png";
+
 import BarChartComponent from "../graphs/BarChartComponent";
-import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
@@ -40,14 +30,9 @@ import CountryDefenseCard from "../components/CountryDefenseCard";
 import CountryTourismCard from "../components/CountryTourismCard";
 
 function CountryDetails() {
-  const [graphData, setGraphData] = useState([
-    { name: "Positive", value: 0 },
-    { name: "Negative", value: 0 },
-    { name: "Neutral", value: 0 },
-    { name: "test", value: 0 },
-  ]);
 
-  const [monthwiseData, setMonthwiseData] = useState([]);
+
+  // const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
 
   const newspaperData = [
@@ -286,7 +271,7 @@ function CountryDetails() {
 
           const newData = generateNewData(combinedData);
 
-          setMonthwiseData(newData);
+          // setMonthwiseData(newData);
 
           const months = [
             "Jan",
@@ -403,12 +388,7 @@ function CountryDetails() {
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
   const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
-  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
 
-  const handleTwitterShare = () => {
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-    window.open(twitterShareUrl, "_blank");
-  };
 
   const handleDownload = async () => {
     const chartRef = document.getElementById("pie-chart"); // Get the chart element
@@ -584,19 +564,19 @@ function CountryDetails() {
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
 
 
-                  {(diaspRank != 0) && (
+                  {(diaspRank !== 0) && (
                       <div className="">
                       <CountryDsipoCard firstValue={diaspRank} secondValue="Indian Dispora in the World"/>
                       </div>
                   )}
                       
-                      {(ecoRank != 0) && (
+                      {(ecoRank !== 0) && (
                       <div className="">
                       <CountryEcoCard firstValue={ecoRank} secondValue="Economic Power in the World"/>
                       </div>
                       )}
 
-                      {(importRank != 0) && (
+                      {(importRank !== 0) && (
                       <div className="">
                       <CountryImportCard firstValue={importRank} secondValue="Import partner of India"/>
                       </div>
@@ -608,13 +588,13 @@ function CountryDetails() {
                       </div>
                       )}
 
-                      {(defenseRank != 0) && (
+                      {(defenseRank !== 0) && (
                       <div className="">
                       <CountryDefenseCard firstValue={defenseRank} secondValue="Defence provider to India"/>
                       </div>
                       )}
 
-                      {(tourismRank != 0) && (
+                      {(tourismRank !== 0) && (
                       <div className="">
                       <CountryTourismCard firstValue={tourismRank} secondValue="Nation visiting India for tourism"/>
                       </div>
@@ -627,7 +607,7 @@ function CountryDetails() {
                         <div className="">
                           <img
                             src={bricsImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -638,7 +618,7 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={qsdImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -648,7 +628,7 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={unscImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -658,7 +638,7 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={nuclearImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -668,7 +648,7 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={borDispImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -678,7 +658,7 @@ function CountryDetails() {
                       <div className="">
                           <img
                             src={fiveEyesImg}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
