@@ -74,7 +74,7 @@ const CustomPieChart = ({ hoveredPositive, hoveredNegative, hoveredNeutral}) => 
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={renderCustomizedLabel}
+            // label={renderCustomizedLabel}
             innerRadius={30}
             outerRadius={60}
             fill="#8884d8"

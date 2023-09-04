@@ -4,10 +4,12 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 
 const AboutUs = () => {
 
-
-
-
   const [data, setData] = useState();
+  const [firstItem, setFirstItem] = useState();
+  const [secondItem, setSecondItem] = useState();
+  const [thirdItem, setThirdItem] = useState();
+  const [fourthItem, setFourthItem] = useState();
+
 
   const getData = async () => {
     try {
@@ -27,15 +29,37 @@ const AboutUs = () => {
 
 
 
+  useEffect(() => {
+
+    let i=0;
+    if(data){
+      data.forEach((item) => {
+        if(i==0){
+          setFirstItem(item.about)
+        }
+        if(i==1){
+          setSecondItem(item.about)
+        }
+        if(i==2){
+          setThirdItem(item.about)
+        }
+        if(i==3){
+          setFourthItem(item.about)
+        }
+  
+      i++;
+      });
+    }
+    
+
+  }, [data]);
+
+  
+
+
+
 
 console.log(data);
-
-
-
-
-
-
-
 
   const containerStyle = {
     margin: "0 0 0 0",
@@ -61,11 +85,11 @@ console.log(data);
     <div>
     <h2 className="m-10">About Page</h2>
     
-     {data?.map((item, i) => (
-        <div className="" key={i}>
-        <div>{item.about}</div>
-        </div>
-      ))}
+        <div>{firstItem}</div>
+        <div>{secondItem}</div>
+        <div>{thirdItem}</div>
+        <div>{fourthItem}</div>
+   
     </div>
     </div>
     

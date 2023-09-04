@@ -594,7 +594,7 @@ function CountryDetails() {
                       </div>
                       )}
 
-                      {(tourismRank !== 0) && (
+                      {(tourismRank != 0) && (
                       <div className="">
                       <CountryTourismCard firstValue={tourismRank} secondValue="Nation visiting India for tourism"/>
                       </div>
