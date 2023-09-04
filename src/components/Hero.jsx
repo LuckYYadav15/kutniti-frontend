@@ -1,24 +1,11 @@
 import React from "react";
-import Typed from "react-typed";
 import { useState, useEffect } from "react";
 import WorldMap from "react-svg-worldmap";
-import ReactDOM from "react-dom";
-import MonthPicker from "react-simple-month-picker";
-import MonthPickerInput from "react-month-picker-input";
 import PieChartComponent from "../graphs/PieChartComponent";
-import flagImg from "../assets/flag.jpeg";
-import axios from "axios";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useMediaQuery } from "react-responsive";
-import VerticalColors from "../assets/vertical-percent.png";
-import HorizontalColors from "../assets/horizontalColors.png";
 import SmallPieChart from "../graphs/SmallPieChart";
-import MicroPieChart from "../graphs/MicroPieChart";
-import HorizontalBar from "../graphs/HorizontalBar";
-import BarChartComponent from "../graphs/BarChartComponent";
-import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
-import { Tooltip } from "antd";
 import "rc-slider/assets/index.css"; // Import the default CSS for the Slider component
 import "rc-tooltip/assets/bootstrap.css"; // Import the default CSS for the Slider tooltip
 import share from "../assets/shareButton.png";
@@ -45,11 +32,9 @@ const Hero = () => {
     "Dec",
   ];
 
-  const currentYear = new Date().getFullYear();
+
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [oneCountry, setOneCountry] = useState([]);
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
@@ -556,14 +541,17 @@ const Hero = () => {
       );
       // console.log(foundCountry);
 
-      window.localStorage.setItem("hoveredPositive", foundCountry.positive);
-      window.localStorage.setItem("hoveredNegative", foundCountry.negative);
-      window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
-      window.dispatchEvent(new Event("storage"));
+     
 
       if (foundCountry) {
+
+        window.localStorage.setItem("hoveredPositive", foundCountry.positive );
+      window.localStorage.setItem("hoveredNegative", foundCountry.negative );
+      window.localStorage.setItem("hoveredNeutral", foundCountry.neutral );
+      window.dispatchEvent(new Event("storage"));
+      
         setCountryData({
-          positive: foundCountry.positive,
+          positive: foundCountry.positive || 0,
           negative: foundCountry.negative,
           neutral: foundCountry.neutral,
           Name: countryDetails.countryName,
@@ -584,9 +572,7 @@ const Hero = () => {
     }
   };
 
-  const toggleModal = () => {
-    setModal(!modal);
-  };
+
 
   if (modal) {
     document.body.classList.add("active-modal");
@@ -594,9 +580,7 @@ const Hero = () => {
     document.body.classList.remove("active-modal");
   }
 
-  const handleChange = (maskedValue, selectedYear, selectedMonth) => {
-    // console.log(maskedValue, selectedYear, selectedMonth);
-  };
+
 
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
@@ -606,15 +590,7 @@ const Hero = () => {
     return acc;
   }, {});
 
-  const markStyle = {
-    backgroundColor: "black", // Set the color of the marker lines
-    width: 1, // Set the width of the marker lines
-    height: 8, // Set the height of the marker lines
-    marginTop: -3, // Adjust the position of the marker lines
-  };
-  const marksStyles = {
-    color: "white", // Set the color of the marks (dots) to white
-  };
+
 
   const getStyle = ({
     countryValue,
@@ -629,31 +605,31 @@ const Hero = () => {
     if (
       countryValue >= 1 &&
       countryValue <= 3 &&
-      (selectedColor == 0 || selectedColor == 1)
+      (selectedColor === 0 || selectedColor === 1)
     ) {
       fillColor = "rgb(217, 22, 22)"; // Red
     } else if (
       countryValue >= 4 &&
       countryValue <= 5 &&
-      (selectedColor == 0 || selectedColor == 2)
+      (selectedColor === 0 || selectedColor === 2)
     ) {
       fillColor = "rgb(255, 153, 51)"; // Orange
     } else if (
       countryValue >= 6 &&
       countryValue <= 7 &&
-      (selectedColor == 0 || selectedColor == 3)
+      (selectedColor === 0 || selectedColor === 3)
     ) {
       fillColor = "rgb(235, 231, 9)"; // Yellow
     } else if (
       countryValue >= 8 &&
       countryValue <= 10 &&
-      (selectedColor == 0 || selectedColor == 4)
+      (selectedColor === 0 || selectedColor === 4)
     ) {
       fillColor = "rgb(102, 255, 51)"; // Green
     } else if (
       countryValue >= 11 &&
       countryValue <= 13 &&
-      (selectedColor == 0 || selectedColor == 5)
+      (selectedColor === 0 || selectedColor === 5)
     ) {
       fillColor = "rgb(51, 204, 51)"; // Dark Green
     }
@@ -671,13 +647,6 @@ const Hero = () => {
     };
   };
 
-  const colors = [
-    "bg-red-600",
-    "bg-orange-400",
-    "bg-yellow-300",
-    "bg-green-300",
-    "bg-green-600",
-  ];
 
   const handleDownload = async () => {
     const chartRef = document.getElementById("worldmap"); // Get the chart element
@@ -695,7 +664,7 @@ const Hero = () => {
     }
   };
 
-  const texts = ["0%", "25%", "50%", "75%", "100%"];
+
 
   const changeToRed = () => {
     setSelectedColor(1);

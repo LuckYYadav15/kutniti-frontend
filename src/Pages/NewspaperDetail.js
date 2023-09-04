@@ -2,52 +2,26 @@
 import "../Styles/Staff.css";
 
 import cardImage from "../assets/sampleCardImage.png"
-  import React, { useEffect, useState, useRef } from "react";
-  import { toast } from "react-toastify";
-  import axios from "axios";
+  import React, { useEffect, useState } from "react";
   import Navbar from "../components/Navbar";
   import Footer from "../components/Footer";
   import "../Styles/Staff.css";
-  import { Link } from "react-router-dom";
   import PieChartComponent from "../graphs/PieChartComponent";
-  import LineChartComponent from "../graphs/LineChartComponent";
   import html2canvas from "html2canvas";
   // import backgroundImage from "../assets/background.png";
-  import mapImg from "../assets/map.png";
-  import CountryLocation from "../assets/client-location.png";
   import flagImg from "../assets/flag.jpeg";
-  import leftArrow from "../assets/leftArrow.png";
   import share from "../assets/shareButton.png";
   import backgroundImage from "../assets/backgroundMain.jpg";
   import usaXindia from "../assets/usaxindia.png";
   import BarChartComponent from "../graphs/BarChartComponent";
-  import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
   import { useMediaQuery } from "react-responsive";
   import SmallPieChart from "../graphs/SmallPieChart";
-  import MicroPieChart from "../graphs/MicroPieChart";
   
   function NewspaperDetails() {
-    const [graphData, setGraphData] = useState([
-      { name: "Positive", value: 0 },
-      { name: "Negative", value: 0 },
-      { name: "Neutral", value: 0 },
-      { name: "test", value: 0 },
-    ]);
 
-    
-  
-    const [monthwiseData, setMonthwiseData] = useState([]);
+
     const [dataForBar, setDataForBar] = useState([]);
   
-    const newspaperData = [
-      { name: "Times Gazette", articles: 150 },
-      { name: "Morning Chronicle", articles: 120 },
-      { name: "Evening Post", articles: 200 },
-      { name: "Sunrise News", articles: 90 },
-      { name: "Metro Journal", articles: 180 },
-      { name: "Times Gazette", articles: 150 },
-      { name: "Morning Chronicle", articles: 120 },
-    ];
 
     const newspaperArticles = [
       {
@@ -238,7 +212,7 @@ import cardImage from "../assets/sampleCardImage.png"
   
             const newData = generateNewData(combinedData);
   
-            setMonthwiseData(newData);
+            // setMonthwiseData(newData);
   
             const months = [
               "Jan",
@@ -289,15 +263,7 @@ import cardImage from "../assets/sampleCardImage.png"
   
     //-----------------------------------CHANGE SHARE URL TO WEBSITE HOMEPAGE-----------------------------
   
-    const shareText = "Check out this awesome pie chart!"; // Change as needed
-    const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-  
-    const handleTwitterShare = () => {
-      const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-      window.open(twitterShareUrl, "_blank");
-    };
-  
+
     const handleDownload = async () => {
       const chartRef = document.getElementById("pie-chart"); // Get the chart element
   
@@ -325,14 +291,7 @@ import cardImage from "../assets/sampleCardImage.png"
     };
   
   
-    const colors = [
-      "bg-red-600",
-      "bg-orange-400",
-      "bg-yellow-300",
-      "bg-green-300",
-      "bg-green-600",
-    ];
-    const texts = ["0%", "25%", "50%", "75%", "100%"];
+   
   
     return (
       <div style={containerStyle} className="w-full font-custom">
@@ -350,7 +309,7 @@ import cardImage from "../assets/sampleCardImage.png"
                     <div className="rounded-lg overflow-hidden ">
                       <img
                         src={flagImg}
-                        alt="Flag Image"
+                        alt="Flag "
                         className="w-18 h-10 rounded-lg"
                       />
                     </div>
@@ -384,7 +343,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -399,7 +358,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -414,7 +373,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -429,7 +388,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -444,7 +403,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -459,7 +418,7 @@ import cardImage from "../assets/sampleCardImage.png"
                         <div className="flex justify-center">
                           <img
                             src={usaXindia}
-                            alt="Relation Image"
+                            alt="Relation "
                             className=" rounded-lg"
                           />
                         </div>
@@ -577,7 +536,7 @@ import cardImage from "../assets/sampleCardImage.png"
         >
         <div className="flex">
           {/* <img src={item.image} alt={`Image ${index}`} className="w-32 h-32 object-cover float-left mr-4" /> */}
-          <img src={cardImage} alt="Card Image" className="w-60 mx-5 rounded-lg"/>
+          <img src={cardImage} alt="Card " className="w-60 mx-5 rounded-lg"/>
           
           <div className="float-left">
             <h2 className="text-lg font-bold mb-2">{item.title}</h2>

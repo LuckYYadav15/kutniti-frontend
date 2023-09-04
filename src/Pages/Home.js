@@ -1,16 +1,11 @@
 import React from 'react';
-import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import Navbar from '../components/Navbar';
-import Newsletter from '../components/Newsletter';
-import { WorldMap } from 'world-svg';
 import Background from "../assets/backgroundMain.jpg";
 
 function Home() {
 
-  const handleCountryClick = (countryId) => {  
-    console.log(countryId); 
-  }
+
   const containerStyle = {
     margin: "0 0 0 0",
     padding: "0 0 0 0",
