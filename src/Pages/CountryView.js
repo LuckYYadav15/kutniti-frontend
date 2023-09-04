@@ -1,29 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { PieChart, Pie, Sector } from "recharts";
-import flagImg from "../assets/flag.jpeg";
-import mapImg from "../assets/map.png";
-import PieChartComponent from "../graphs/PieChartComponent";
-import PieChartSimple from "../graphs/PieChartSimple";
-import locationImg from "../assets/location.webp";
 import backgroundImage from "../assets/backgroundMain.jpg";
-import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import MicroPieChart from "../graphs/MicroPieChart";
 import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
 
 function CountryView() {
-  const currentYear = new Date().getFullYear();
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [monthwiseData, setMonthwiseData] = useState([]);
-  const [countryFilter, setcountryFilter] = useState({});
-  const [hoveredCountry, setHoveredCountry] = useState(null);
-  const [lastHovered, setLastHovered] = useState(null);
   const [countryData, setCountryData] = useState([
     { countryName: "France", positive: 0, negative: 0, neutral: 0 },
     { countryName: "Australia", positive: 0, negative: 0, neutral: 0 },
@@ -58,18 +44,11 @@ function CountryView() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
-  const handleMonthChange = (newMonth) => {
-    setSelectedMonth(newMonth);
-    // console.log(newMonth);
-  };
+
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
     // console.log("Selected Month:", months[value]);
-  };
-  const handleCountryHover = (country) => {
-    setHoveredCountry(country);
-    setLastHovered(country);
   };
 
 
@@ -341,7 +320,7 @@ function CountryView() {
     console.log(mergedArray);
 
     setAllCountryData(mergedArray);
-  }, [countryData]);
+  }, [countryData, allFlags]);
 
   const allTimeData = () => {
     // Create an object to store the accumulated data for each country

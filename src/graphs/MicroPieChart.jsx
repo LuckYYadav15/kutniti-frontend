@@ -31,20 +31,20 @@ const CustomPieChart = ({ hoveredPositive, hoveredNegative, fillType }) => {
     }
   }, [hoveredPositive, hoveredNegative]);
 
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-    if (data[index].value === 0) {
-      return null; // Do not render labels for zero values
-    }
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle);
-    const y = cy + radius * Math.sin(-midAngle);
+  // const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  //   if (data[index].value === 0) {
+  //     return null; // Do not render labels for zero values
+  //   }
+  //   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  //   const x = cx + radius * Math.cos(-midAngle);
+  //   const y = cy + radius * Math.sin(-midAngle);
 
-    return (
-      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="middle" fontSize={12}>
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
+  //   return (
+  //     <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="middle" fontSize={12}>
+  //       {`${(percent * 100).toFixed(0)}%`}
+  //     </text>
+  //   );
+  // };
 
   return (
     <div>

@@ -1,27 +1,13 @@
-import React, { useState, useRef } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { PieChart, Pie, Sector } from "recharts";
-import flagImg from "../assets/flag.jpeg";
-import mapImg from "../assets/map.png";
-import PieChartComponent from "../graphs/PieChartComponent";
-import PieChartSimple from "../graphs/PieChartSimple";
-import locationImg from "../assets/location.webp";
 import backgroundImage from "../assets/backgroundMain.jpg";
 import SingleHorizontalBar from "../graphs/SingleHorizontalBar";
 import Slider from "rc-slider";
 
 
 function NewspaperView() {
-
-  const currentYear = new Date().getFullYear();
-
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [newspaperFilter, setnewspaperFilter] = useState({});
-  const [hoveredNewspaper, setHoveredNewspaper] = useState(null);
-  const [lastHovered, setLastHovered] = useState(null);
   const [newspaperData, setNewspaperData] = useState([
     { name: "France", code: "FR", positive: 8, negative: 28, neutral: 3 },
     { name: "Australia", code: "AU", positive: 18, negative: 5, neutral: 9 },
@@ -51,42 +37,15 @@ function NewspaperView() {
     "Nov",
     "Dec",
   ];
-  
-  const handleMonthChange = (newMonth) => {
-    setSelectedMonth(newMonth);
-    // console.log(newMonth);
-  };
+
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
     console.log("Selected Month:", months[value]);
   };
-  const handleNewspaperHover = (newspaper) => {
-    setHoveredNewspaper(newspaper);
-    setLastHovered(newspaper);
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/apis/newspaper_search/",
-        newspaperFilter
-      );
-      setNewspaperData(response.data);
-      // console.log(newspaperData);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to fetch data from server");
-    }
-  };
 
-  const handleChange = (event) => {
-    setnewspaperFilter({
-      ...newspaperFilter,
-      [event.target.name]: event.target.value,
-    });
-  };
+
 
   const handleClick = (newspaper) => {
     
