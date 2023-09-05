@@ -10,8 +10,8 @@ import "rc-slider/assets/index.css"; // Import the default CSS for the Slider co
 import "rc-tooltip/assets/bootstrap.css"; // Import the default CSS for the Slider tooltip
 import share from "../assets/shareButton.png";
 import html2canvas from "html2canvas";
-import arrowLeft from "../assets/Arrow 2.png";
-import arrowRight from "../assets/Arrow 1.png";
+import arrowLeft from "../assets/Arrow 2.svg";
+import arrowRight from "../assets/Arrow 1.svg";
 import negative from "../assets/NEGATIVE.png";
 import perception from "../assets/Perception.png";
 import positive from "../assets/POSITIVE.png";
@@ -363,7 +363,77 @@ const Hero = () => {
           });
 
           // console.log(newArray);
-          setData(newArray);
+          // setData(newArray);
+
+          // ----------------UPDATING ACC TO ALL TIME BUTTON ----------------
+          
+
+
+          const aggregatedData = {};
+
+          // Iterate through the monthwiseData array and accumulate data for each country
+          newData.forEach((data) => {
+            const { countryName, positive, negative, neutral } = data;
+      
+            if (!aggregatedData[countryName]) {
+              aggregatedData[countryName] = {
+                countryName,
+                positive,
+                negative,
+                neutral,
+              };
+            } else {
+              aggregatedData[countryName].positive += positive;
+              aggregatedData[countryName].negative += negative;
+              aggregatedData[countryName].neutral += neutral;
+            }
+          });
+      
+          // Convert the aggregatedData object back to an array of objects
+          const resultArray = Object.values(aggregatedData);
+      
+          //--------------------Sort the countries on value of negative and provide a rank attribute to all----------------------------------------------------
+          const rankeddData = resultArray
+            .slice() // Create a copy of the filteredData array
+            .sort((a, b) => b.negative - a.negative)
+            .map((item, index) => ({ ...item, value: index + 1 }));
+      
+          // console.log(rankedData);
+          //----------------------Traverse through data to update values--------------------------
+      
+          const newwArray = data.map((item) => {
+            const matchingRank = rankeddData.find(
+              (rankItem) =>
+                rankItem.countryName === item.name ||
+                (rankItem.countryName === "USA" && item.name === "United States")
+            );
+      
+            if (matchingRank) {
+              return {
+                ...item,
+                positive: matchingRank.positive,
+                negative: matchingRank.negative,
+                neutral: matchingRank.neutral,
+                value: matchingRank.value,
+              };
+            }
+      
+            return item;
+          });
+      
+          setData(newwArray);
+
+
+
+
+
+
+
+
+
+
+
+
         } else {
           console.error("API call failed");
         }
@@ -373,6 +443,11 @@ const Hero = () => {
     };
 
     fetchAllCountries();
+
+    clickAction({countryName: 'United States'});
+    
+    
+    
   }, []);
 
   //--------------------Updating the worldwide data as the slider changes the month-------------------------------------
@@ -450,14 +525,16 @@ const Hero = () => {
   //   fetchTempData();
   // }, [selectedMonth]);
 
-  useEffect(() => {
-    // Call the clickAction function whenever selectedMonth changes
-    const customObject = {
-      countryName: countryData.Name,
-    };
 
+  // Call the clickAction function whenever selectedMonth changes
+  useEffect(() => {
+    const customObject = {
+      countryName: countryData.Name || "United States",
+    };
+  
     clickAction(customObject);
   }, [data]);
+  
 
   const allTimeData = () => {
     // Create an object to store the accumulated data for each country
@@ -517,8 +594,8 @@ const Hero = () => {
   };
 
   const clickAction = async (countryDetails) => {
-    // console.log(countryDetails);
-    // console.log(data);
+    console.log(countryDetails);
+ 
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
     }
@@ -705,7 +782,7 @@ const Hero = () => {
   // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
 
   return (
-    <div className="mb-10 w-full">
+    <div className="mb-10 ml-1 w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
         <h1 className="font-custom font-bold text-3xl  lg:ml-5 lg:mt-20 ">
@@ -724,13 +801,10 @@ const Hero = () => {
       )}
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
-      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-10 lg:mb-20 ">
-        <div
-          id="worldmap"
-          className="absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
-        >
+      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-10 lg:mb-10 pb-10 pt-5">
+        <div id="worldmap" className="border border-gray-300 bg-opacity-30 absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3">
           {!isLaptop && (
-            <div className="absolute top-4 left-0 ml-2 bg-white p-0 rounded-lg ">
+            <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
                 <button
                   className="bg-red-600 hover:bg-red-800 text-white transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
@@ -808,7 +882,7 @@ const Hero = () => {
         </div>
 
         {!isMobile && (
-          <div className="bg-white rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+          <div className="border border-gray-300 bg-white bg-opacity-30 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4 ">
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -835,36 +909,29 @@ const Hero = () => {
 
               <div className="w-full bg-gray-300 h-px m-2"></div>
               <div className=" ">
-                <div className="cursor-pointer  flex  items-center m-0 p-1">
-                  <div className="text-xl">
+                <div className="flex items-center justify-around text-12">
+                  <div className="">
                     {months[selectedMonth] ? (
-                      <div className="font-custom">
+                      <div className="font-custom ">
                         Articles published in {months[selectedMonth]}
                       </div>
                     ) : null}
                   </div>
-                  <div className="font-custom h-12 bg-gray-300 w-px m-2"></div>
+                  <div className="font-custom h-12 bg-gray-300 w-px m-2 "></div>
                   <div className="flex ">
                     {(countryData.positive ||
                       countryData.negative ||
                       countryData.neutral) && (
-                      <div className="text-xl">
+                      <div className="">
                         {countryData.positive +
                           countryData.negative +
-                          countryData.neutral}{" "}
+                          countryData.neutral}
                       </div>
                     )}
                   </div>
                 </div>
 
                 <div className="pb-4">
-                  {/* {!countryData.positive &&
-                    !countryData.negative &&
-                    !countryData.neutral && (
-                      <div className="my-10 mx-5 text-2xl text-gray-600">
-                        Click on the Country to update the Chart
-                      </div>
-                    )} */}
 
                   {countryData.positive +
                   countryData.negative +
@@ -878,19 +945,19 @@ const Hero = () => {
 
                   <div className="flex ">
                     {countryData.positive ? (
-                      <p className="font-custom text-green-500 m-auto ">
+                      <p className="font-custom text-green-500 text-sm m-auto ">
                         Positive: {countryData.positive}
                       </p>
                     ) : null}
 
                     {countryData.negative ? (
-                      <p className="font-custom text-red-500 m-auto ">
+                      <p className="font-custom text-red-500 text-sm m-auto ">
                         Negative: {countryData.negative}
                       </p>
                     ) : null}
 
                     {countryData.neutral ? (
-                      <p className="font-custom text-blue-500 m-auto ">
+                      <p className="font-custom text-blue-500 text-sm m-auto ">
                         Neutral: {countryData.neutral}
                       </p>
                     ) : null}
@@ -939,7 +1006,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="text-center mr-8">
+          <div className="text-center mr-7 w-1/4">
             <div>
               <button
                 className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
@@ -979,21 +1046,9 @@ const Hero = () => {
                 alt=""
                 className=""
               />
-              <img
-                src={negative}
-                alt=""
-                className=""
-              />
-              <img
-                src={perception}
-                alt=""
-                className=""
-              />
-              <img
-                src={positive}
-                alt=""
-                className=""
-              />
+              <p className="text-xs">Negative</p>
+              <p className="text-xs">Perception</p>
+              <p className="text-xs">Positive</p>
               <img
                 src={arrowRight}
                 alt=""
@@ -1016,10 +1071,10 @@ const Hero = () => {
         />
       </div> */}
       {!isLaptop && (
-        <div>
+        <div className="">
           <div className="flex">
-            <div>
-              <div className="bg-white rounded-lg shadow-lg p-3 flex h-auto my-2">
+            <div className="ml-2 w-1/2">
+              <div className="bg-white rounded-lg shadow-lg p-2 flex h-auto my-2 ">
                 <div className="rounded-lg overflow-hidden mr-3 ">
                   {flagObjectSelected && (
                     <img
@@ -1034,13 +1089,13 @@ const Hero = () => {
               </div>
 
               <div className="font-custom bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-                <div className="text-1xl">
+                <div className="text-xs">
                   Articles published in {months[selectedMonth]}
                 </div>
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-                <div className="font-custom">
+                <div className="font-custom text-xs">
                   <span className="m-1" style={{ color: "#17fc03" }}>
                     Positive
                   </span>

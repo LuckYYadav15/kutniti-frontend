@@ -377,7 +377,7 @@ function CountryView() {
                   <h2 className="text-2xl font-bold mb-5 ">
                     Countries ranked by their perception of India
                   </h2>
-                  <div className="ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+                  <div className=" ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
                     <div className=" pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
@@ -413,7 +413,7 @@ function CountryView() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white shadow-2xl rounded-xl p-10">
+                <div className="bg-white bg-opacity-30 shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4">
                     <div className="text-xl font-bold ">Country</div>
 
@@ -441,7 +441,7 @@ function CountryView() {
 
                   {allCountryData.map((country, index) => (
                     <div
-                      className="mt-4 mb-4"
+                      className="mt-4 mb-4 hover:cursor-pointer"
                       key={index}
                       onClick={() => handleClick(country)}
                     >
@@ -467,10 +467,10 @@ function CountryView() {
                           country.neutral === 0 ? (
                             <div className="flex">
                               <div className="invisible">t Enough Data</div>
-                              <div className="invisible">Not Enough Data</div>
+                              {/* <div className="invisible">Not Enough Data</div> */}
                               <div>Not Enough Data</div>
                               <div className="invisible">Not Enough Data</div>
-                              <div className="invisible">Not Enough Data</div>
+                              <div className="invisible">Not Enough Data Datad</div>
                             </div>
                           ) : (
                             <BigSingleHorizontalBar
