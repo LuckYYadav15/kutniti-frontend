@@ -3,23 +3,77 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import logo from "../assets/kutniti-logo.svg";
 import logo2 from "../assets/Beta.svg";
-import bulb from "../assets/Bulb.svg";
-import global from "../assets/global.svg";
-import home from "../assets/home-2.svg";
-import newspaper from "../assets/newspaper.svg";
 import vector from "../assets/Vector.svg";
 import twitter from "../assets/twitter.svg";
 import youtube from "../assets/youtube.svg";
 import linkedin from "../assets/linkedin.svg";
+import Home from "./navbarIcons/Home"
+import Global from "./navbarIcons/Global"
+import Newspaper from "./navbarIcons/Newspaper"
+import Bulb from "./navbarIcons/Bulb"
+import About from "./navbarIcons/About"
+
+
+
+
+
 import { useMediaQuery } from "react-responsive";
 
 
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
+  const [strokeHome, setStrokeHome] = useState("black");
+  const [strokeGlobal, setStrokeGlobal] = useState("black");
+  const [strokeNewspaper, setStrokeNewspaper] = useState("black");
+  const [strokeBulb, setStrokeBulb] = useState("black");
+  const [strokeAbout, setStrokeAbout] = useState("black");
+
+
+
 
   const handleNav = () => {
     setNav(!nav);
+  };
+
+  const handle1MouseEnter = () => {
+    setStrokeHome("white");
+  };
+
+  const handle1MouseLeave = () => {
+    setStrokeHome("black");
+  };
+
+  const handle2MouseEnter = () => {
+    setStrokeGlobal("white");
+  };
+
+  const handle2MouseLeave = () => {
+    setStrokeGlobal("black");
+  };
+
+  const handle3MouseEnter = () => {
+    setStrokeNewspaper("white");
+  };
+
+  const handle3MouseLeave = () => {
+    setStrokeNewspaper("black");
+  };
+
+  const handle4MouseEnter = () => {
+    setStrokeBulb("white");
+  };
+
+  const handle4MouseLeave = () => {
+    setStrokeBulb("black");
+  };
+
+  const handle5MouseEnter = () => {
+    setStrokeAbout("white");
+  };
+
+  const handle5MouseLeave = () => {
+    setStrokeAbout("black");
   };
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
@@ -49,46 +103,65 @@ const Navbar = () => {
 
       <ul className="hidden md:flex ">
 
-      <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center py-1">
+      <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center py-1 "
+      onMouseEnter={handle1MouseEnter}
+      onMouseLeave={handle1MouseLeave}
+      >
+      
           <div className="mr-1">
-            <img src={home} alt="global"  className="m-auto fill-black" />
+          <Home stroke={strokeHome}/>
           </div>
+          
           <div className="">
             <a href="/">Home</a>
           </div>
         </li>
       
 
-        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
+        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center "
+        onMouseEnter={handle2MouseEnter}
+      onMouseLeave={handle2MouseLeave}
+      >
           <div className="mr-1">
-            <img src={global} alt="global" className="m-auto " />
+          <Global stroke={strokeGlobal}/>
+            
           </div>
           <div className="">
             <a href="/country-view">Countries</a>
           </div>
         </li>
 
-        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
+        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center "
+         onMouseEnter={handle3MouseEnter}
+      onMouseLeave={handle3MouseLeave}
+      >
           <div className="mr-1">
-            <img src={newspaper} alt="global" className="m-auto" />
+            <Newspaper stroke={strokeNewspaper}/>
           </div>
           <div className="">
             <a href="/newspaper-view">Newspapers</a>
           </div>
         </li>
 
-        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
+        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center "
+        onMouseEnter={handle4MouseEnter}
+      onMouseLeave={handle4MouseLeave}>
           <div className="mr-1">
-            <img src={bulb} alt="global " className="m-auto" />
+          <Bulb stroke={strokeBulb}/>
+            
           </div>
           <div className="">
             <a href="/methodology">Methodology</a>
           </div>
         </li>
 
-        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
+        <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center "
+        onMouseEnter={handle5MouseEnter}
+      onMouseLeave={handle5MouseLeave}
+      >
+      
           <div className="mr-1">
-            <img src={vector} alt="global " className="m-auto" />
+            <About stroke={strokeAbout}/>
           </div>
           <div className="">
             <a href="/about">About</a>
