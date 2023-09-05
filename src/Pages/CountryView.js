@@ -5,11 +5,23 @@ import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import MicroPieChart from "../graphs/MicroPieChart";
 import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
+import {
+  BarLoader,
+  CircleLoader,
+  ClimbingBoxLoader,
+  ClipLoader,
+  HashLoader,
+  MoonLoader,
+  PuffLoader,
+  PulseLoader,
+  ScaleLoader,
+} from "react-spinners";
 
 function CountryView() {
-
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [monthwiseData, setMonthwiseData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [countryData, setCountryData] = useState([
     { countryName: "France", positive: 0, negative: 0, neutral: 0 },
     { countryName: "Australia", positive: 0, negative: 0, neutral: 0 },
@@ -44,15 +56,10 @@ function CountryView() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
-
-
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
     // console.log("Selected Month:", months[value]);
   };
-
-
-
 
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
@@ -61,13 +68,6 @@ function CountryView() {
     };
     return acc;
   }, {});
-
-
-
-
-
- 
-
 
   const handleClick = (country) => {
     const aggregatedData = {};
@@ -93,20 +93,21 @@ function CountryView() {
     // Convert the aggregatedData object back to an array of objects
     const resultArray = Object.values(aggregatedData);
 
-    const foundCountry = resultArray.find(item => item.countryName === country.countryName);
-    
+    const foundCountry = resultArray.find(
+      (item) => item.countryName === country.countryName
+    );
+
     window.localStorage.setItem("hoveredCountry", country.countryName);
     window.localStorage.setItem("hoveredPositive", foundCountry.positive);
     window.localStorage.setItem("hoveredNegative", foundCountry.negative);
     window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
     window.dispatchEvent(new Event("storage"));
     window.location.href = "/country-detail";
-
-    
   };
 
   useEffect(() => {
     const fetchAllFlags = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(
           "https://kutniti-server.onrender.com/api/country/getallCountryArticleNumber",
@@ -117,7 +118,7 @@ function CountryView() {
 
         if (response.ok) {
           const getData = await response.json();
-
+          setIsLoading(false);
           const uniqueCountries = [];
           const countryNames = {};
 
@@ -136,6 +137,7 @@ function CountryView() {
           console.error("API call failed");
         }
       } catch (error) {
+        setIsLoading(false);
         console.error("Error:", error);
       }
     };
@@ -414,7 +416,11 @@ function CountryView() {
                   </div>
                 </div>
                 <div className="bg-white bg-opacity-30 shadow-2xl rounded-xl p-10">
-                  <div className="flex mb-4">
+
+                  <div className="flex mb-4 justify-between">
+                  <div className="flex">
+
+                  
                     <div className="text-xl font-bold ">Country</div>
 
                     <h2 className="text-xl font-semibold ml-10">
@@ -427,7 +433,9 @@ function CountryView() {
                     {/* <div className="text-xl invisible font-semibold ml-4">
                       Perception
                     </div> */}
+                    </div>
 
+                    <div className="flex mr-10">
                     <div className="w-5 h-5 mt-1 bg-green-500 ml-10 rounded-sm"></div>
                     <div className="ml-3">Positive</div>
 
@@ -436,55 +444,85 @@ function CountryView() {
 
                     <div className="w-5 h-5 mt-1 bg-yellow-300 ml-7 rounded-sm"></div>
                     <div className="ml-3">Neutral</div>
+                    </div>
+
                   </div>
+                  
                   <hr className="border-t-1 border-black w-full" />
 
-                  {allCountryData.map((country, index) => (
+                  {isLoading && (
                     <div
-                      className="mt-4 mb-4 hover:cursor-pointer"
-                      key={index}
-                      onClick={() => handleClick(country)}
+                      style={{
+                        display: "flex",
+                        position: "relative",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: "2",
+                      }}
                     >
-                      <div className="flex justify-between">
-                        <div className="mb-3 border border-black rounded-lg overflow-hidden">
-                          {country.flagLogo && (
-                            <img
-                              src={country.flagLogo}
-                              alt="Country Flag"
-                              className="w-20 h-10 "
-                            />
-                          )}
-                        </div>
-
-                        <h2 className="text-lg font-semibold w-20">
-                          {country.countryName}
-                        </h2>
-                        <div className=" ">{country.positive + country.negative + country.neutral}</div>
-
-                        <div className=" ">
-                          {country.negative === 0 &&
-                          country.positive === 0 &&
-                          country.neutral === 0 ? (
-                            <div className="flex">
-                              <div className="invisible">t Enough Data</div>
-                              {/* <div className="invisible">Not Enough Data</div> */}
-                              <div>Not Enough Data</div>
-                              <div className="invisible">Not Enough Data</div>
-                              <div className="invisible">Not Enough Data Datad</div>
-                            </div>
-                          ) : (
-                            <BigSingleHorizontalBar
-                              positiveValue={country.positive}
-                              negativeValue={country.negative}
-                              neutralValue={country.neutral}
-                            />
-                          )}
-                        </div>
-                        {/* <div className="p-0 ml-20 w-auto ">Map Area</div> */}
+                      <div className="spinner-container mt-10">
+                        <BarLoader color="black" width={200} />
                       </div>
-                      <hr className="border-t-1 border-black w-full" />
                     </div>
-                  ))}
+                  )}
+                  {!isLoading && (
+                    <div>
+                      {allCountryData.map((country, index) => (
+                        <div
+                          className="mt-4 mb-4 hover:cursor-pointer"
+                          key={index}
+                          onClick={() => handleClick(country)}
+                        >
+                          <div className="flex justify-between">
+                            <div className="mb-3 border border-black rounded-lg overflow-hidden">
+                              {country.flagLogo && (
+                                <img
+                                  src={country.flagLogo}
+                                  alt="Country Flag"
+                                  className="w-20 h-10 "
+                                />
+                              )}
+                            </div>
+
+                            <h2 className="text-lg font-semibold w-20">
+                              {country.countryName}
+                            </h2>
+                            <div className=" ">
+                              {country.positive +
+                                country.negative +
+                                country.neutral}
+                            </div>
+
+                            <div className=" ">
+                              {country.negative === 0 &&
+                              country.positive === 0 &&
+                              country.neutral === 0 ? (
+                                <div className="flex">
+                                  <div className="invisible">t Enough Data</div>
+                                  {/* <div className="invisible">Not Enough Data</div> */}
+                                  <div>Not Enough Data</div>
+                                  <div className="invisible">
+                                    Not Enough Data
+                                  </div>
+                                  <div className="invisible">
+                                    Not Enough Data Datad
+                                  </div>
+                                </div>
+                              ) : (
+                                <BigSingleHorizontalBar
+                                  positiveValue={country.positive}
+                                  negativeValue={country.negative}
+                                  neutralValue={country.neutral}
+                                />
+                              )}
+                            </div>
+                            {/* <div className="p-0 ml-20 w-auto ">Map Area</div> */}
+                          </div>
+                          <hr className="border-t-1 border-black w-full" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -501,50 +539,46 @@ function CountryView() {
               </h2>
             </div>
 
-
-
-            <div className="ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
-            <div className="  px-2 pt-2 w-full overflow-x-scroll">
-              <div className=" w-500">
-                <div
-                  className=" w-full max-w-full overflow-x-scroll"
-                  style={{ maxWidth: "370px" }}
-                >
-                  <Slider
-                    min={0}
-                    max={11}
-                    marks={sliderMarks}
-                    step={1}
-                    value={selectedMonth}
-                    onChange={handleSliderChange}
-                    railStyle={{ backgroundColor: "black" }}
-                    trackStyle={{ backgroundColor: "black" }}
-                    handleStyle={{
-                      borderColor: "black",
-                      width: 20,
-                      height: 10,
-                      marginTop: -2,
-                      borderRadius: 4,
-                      backgroundColor: "black",
-                      border: "2px solid black",
-                    }}
-                  />
-                  <div className="invisible">{selectedMonth}</div>
+            <div className="ml-1 mr-2 mb-5 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+              <div className="  px-2 pt-2 w-full overflow-x-scroll">
+                <div className=" w-500">
+                  <div
+                    className=" w-full max-w-full overflow-x-scroll"
+                    style={{ maxWidth: "370px" }}
+                  >
+                    <Slider
+                      min={0}
+                      max={11}
+                      marks={sliderMarks}
+                      step={1}
+                      value={selectedMonth}
+                      onChange={handleSliderChange}
+                      railStyle={{ backgroundColor: "black" }}
+                      trackStyle={{ backgroundColor: "black" }}
+                      handleStyle={{
+                        borderColor: "black",
+                        width: 20,
+                        height: 10,
+                        marginTop: -2,
+                        borderRadius: 4,
+                        backgroundColor: "black",
+                        border: "2px solid black",
+                      }}
+                    />
+                    <div className="invisible">{selectedMonth}</div>
+                  </div>
                 </div>
               </div>
+
+              <div>
+                <button
+                  onClick={allTimeData}
+                  className="bg-black text-white rounded-3xl p-1 mt-2 mr-3 w-20"
+                >
+                  All Time
+                </button>
+              </div>
             </div>
-
-            <div>
-              <button
-                onClick={allTimeData}
-                className="bg-black text-white rounded-3xl p-1 mt-2 mr-3 w-20"
-              >
-                All Time
-              </button>
-            </div>
-          </div>
-
-
 
             <div className=" items-center min-h-screen">
               <div className="flex justify-between">
@@ -554,59 +588,83 @@ function CountryView() {
                 <div className="mr-2">Neutral</div>
               </div>
               <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
-              {allCountryData.map((country, index) => (
-                <div className="" onClick={() => handleClick(country)}>
-                  <div key={index} className="grid grid-cols-5  gap-4">
-                    {country.flagLogo && (
-                      <img
-                        src={country.flagLogo}
-                        alt="Country Flag"
-                        className="w-20 h-10 mt-1"
-                      />
-                    )}
-                    <h2 className=" mt-3">{country.countryName}</h2>
-                    <div className="flex ">
-                      <p className="text-sm mt-3">{country.positive}</p>
-                      <MicroPieChart
-                        hoveredPositive={country.positive}
-                        hoveredNegative={
-                          country.positive + country.negative + country.neutral
-                        }
-                        fillType="positive"
-                      />
-                    </div>
 
-                    <div className="flex ">
-                      <p className="text-sm mt-3">{country.negative}</p>
-                      <MicroPieChart
-                        hoveredPositive={country.negative}
-                        hoveredNegative={
-                          country.positive + country.negative + country.neutral
-                        }
-                        fillType="negative"
-                      />
-                    </div>
-
-                    <div className="flex ">
-                      <p className="text-sm mt-3">{country.neutral}</p>
-                      <MicroPieChart
-                        hoveredPositive={country.neutral}
-                        hoveredNegative={
-                          country.positive + country.negative + country.neutral
-                        }
-                        fillType="neutral"
-                      />
-                    </div>
+              {isLoading && (
+                <div
+                  style={{
+                    display: "flex",
+                    position: "relative",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: "2",
+                  }}
+                >
+                  <div className="spinner-container mt-10">
+                    <BarLoader color="black" width={100} />
                   </div>
-                  <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
                 </div>
-              ))}
+              )}
+              {!isLoading && (
+                <div>
+                  {allCountryData.map((country, index) => (
+                    <div className="" onClick={() => handleClick(country)}>
+                      <div key={index} className="grid grid-cols-5  gap-4">
+                        {country.flagLogo && (
+                          <img
+                            src={country.flagLogo}
+                            alt="Country Flag"
+                            className="w-20 h-10 mt-1"
+                          />
+                        )}
+                        <h2 className=" mt-3">{country.countryName}</h2>
+                        <div className="flex ">
+                          <p className="text-sm mt-3">{country.positive}</p>
+                          <MicroPieChart
+                            hoveredPositive={country.positive}
+                            hoveredNegative={
+                              country.positive +
+                              country.negative +
+                              country.neutral
+                            }
+                            fillType="positive"
+                          />
+                        </div>
+
+                        <div className="flex ">
+                          <p className="text-sm mt-3">{country.negative}</p>
+                          <MicroPieChart
+                            hoveredPositive={country.negative}
+                            hoveredNegative={
+                              country.positive +
+                              country.negative +
+                              country.neutral
+                            }
+                            fillType="negative"
+                          />
+                        </div>
+
+                        <div className="flex ">
+                          <p className="text-sm mt-3">{country.neutral}</p>
+                          <MicroPieChart
+                            hoveredPositive={country.neutral}
+                            hoveredNegative={
+                              country.positive +
+                              country.negative +
+                              country.neutral
+                            }
+                            fillType="neutral"
+                          />
+                        </div>
+                      </div>
+                      <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
-
-  
     </div>
   );
 }
