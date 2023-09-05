@@ -37,12 +37,12 @@ function CountryDetails() {
 
   const newspaperData = [
     { name: "Times Gazette", articles: 150 },
-    { name: "Morning Chronicle", articles: 120 },
-    { name: "Evening Post", articles: 200 },
-    { name: "Sunrise News", articles: 90 },
+    { name: "Morning Chron", articles: 120 },
+    { name: "Evening Poste", articles: 200 },
+    { name: "Sunrise Newse", articles: 190 },
     { name: "Metro Journal", articles: 180 },
     { name: "Times Gazette", articles: 150 },
-    { name: "Morning Chronicle", articles: 120 },
+    { name: "Morning Chron", articles: 120 },
   ];
 
   const [countryData, setCountryData] = useState({
@@ -680,9 +680,9 @@ function CountryDetails() {
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* 1 */}
               <div>
-                <div className="bg-white items-center rounded-3xl max-w-[500px] max-h-[400px] justify-between flex m-3 r-0">
+                <div className="bg-opacity-40 bg-white items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex m-3 r-0">
                   <div className="pb-2 ">
-                    <p className="flex justify-center text-2xl mt-5">
+                    <p className="flex justify-center text-2xl mt-5 ml-2">
                       Sentiment of {countryData.name} towards India
                     </p>
                     {isMobile && (
@@ -706,7 +706,7 @@ function CountryDetails() {
                       </div>
                     )}
                     {isLaptop && (
-                      <div>
+                      <div className="ml-10">
                         <PieChartComponent
                           hoveredPositive={countryData.positive}
                           hoveredNegative={countryData.negative}
@@ -730,7 +730,7 @@ function CountryDetails() {
 
                 <div>
                   {isMobile && (
-                    <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <div className="p-2 m-2 flex bg-opacity-40 bg-white shadow-md rounded-lg max-w-[500px]">
                       <p className="text-gray-700 mx-4 ">
                         Articles Published by {countryData.name}
                       </p>
@@ -744,7 +744,7 @@ function CountryDetails() {
                     </div>
                   )}
                   {isLaptop && (
-                    <div className="p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <div className="bg-opacity-40 p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
                       <p className="text-gray-700 mx-8 ">
                         Articles Published by {countryData.name}
                       </p>
@@ -763,7 +763,7 @@ function CountryDetails() {
               {/* 2 */}
 
               <div className="w-[340px] mt-5 lg:w-[550px]">
-                <div className="bg-white m-auto shadow-xl rounded-3xl w-full h-1000 overflow-x-auto">
+                <div className="bg-white bg-opacity-40 m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
@@ -825,25 +825,28 @@ function CountryDetails() {
                           <div className="flex ">
                             <p className="text-lg mt-2">57</p>
                             <MicroPieChart
-                              hoveredPositive={10}
-                              hoveredNegative={40}
-                            />
+                            hoveredPositive={10}
+                            hoveredNegative={30}
+                            fillType="positive"
+                          />
                           </div>
 
                           <div className="flex ">
                             <p className="text-lg mt-2">57</p>
                             <MicroPieChart
-                              hoveredPositive={40}
-                              hoveredNegative={10}
-                            />
+                            hoveredPositive={10}
+                            hoveredNegative={30}
+                            fillType="negative"
+                          />
                           </div>
 
                           <div className="flex ">
                             <p className="text-lg mt-2">57</p>
                             <MicroPieChart
-                              hoveredPositive={50}
-                              hoveredNegative={10}
-                            />
+                            hoveredPositive={10}
+                            hoveredNegative={30}
+                            fillType="neutral"
+                          />
                           </div>
                         </div>
                         <hr className="border-t-2 border-black w-full" />

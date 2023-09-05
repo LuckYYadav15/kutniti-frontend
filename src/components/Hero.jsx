@@ -971,7 +971,7 @@ const Hero = () => {
 
       {!isMobile && (
         <div className="font-custom flex w-full justify-between">
-          <div className="ml-5 w-2/3 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+          <div className="bg-opacity-30 ml-5 w-2/3 inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
             <div className=" pb-7 pt-3 px-5 w-5/6">
               <div className="ml-2 mt-2">
                 <Slider
@@ -1094,7 +1094,7 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
+              <div className="bg-white rounded-lg shadow-lg p-3 flex h-9 my-1 mb-2">
                 <div className="font-custom text-xs">
                   <span className="m-1" style={{ color: "#17fc03" }}>
                     Positive
