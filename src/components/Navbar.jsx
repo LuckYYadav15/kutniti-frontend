@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import logo from "../assets/kutniti-Logo.png";
-import bulb from "../assets/Bulb.png";
-import global from "../assets/global.png";
-import home from "../assets/home-2.png";
-import newspaper from "../assets/newspaper.png";
-import vector from "../assets/Vector.png";
-import twitter from "../assets/twitter.png";
-import youtube from "../assets/youtube.png";
-import linkedin from "../assets/linkedin.png";
+import logo from "../assets/kutniti-logo.svg";
+import logo2 from "../assets/Beta.svg";
+import bulb from "../assets/Bulb.svg";
+import global from "../assets/global.svg";
+import home from "../assets/home-2.svg";
+import newspaper from "../assets/newspaper.svg";
+import vector from "../assets/Vector.svg";
+import twitter from "../assets/twitter.svg";
+import youtube from "../assets/youtube.svg";
+import linkedin from "../assets/linkedin.svg";
 import { useMediaQuery } from "react-responsive";
 
 
@@ -38,9 +39,10 @@ const Navbar = () => {
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   return (
-    <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center max-w-[1240px]  px-2 py-2 ">
+    <div className="shadow-2xl z-50 h-auto top-0 left-0 right-0 bg-white m-5 rounded-lg fixed flex justify-between items-center   px-2 py-2 ">
       <Link to="/" className="home-link flex">
-        <img src={logo} alt="logo" className="" />
+        <img src={logo} alt="logo" className=" " />
+        <img src={logo2} alt="logo" className="mt-3 " />
         {/* <h1 className='w-full text-3xl text-black hover:text-purple-600' >Kutniti Watch</h1>
       <p style={{ color: "rgb(121, 0, 255)"}} className='text-sm p-3'>Beta</p> */}
       </Link>
@@ -49,9 +51,9 @@ const Navbar = () => {
 
       <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center py-1">
           <div className="mr-1">
-            <img src={home} alt="global" style={{ filter: 'grayscale(100%)' }} className="m-auto filter grayscale filter-grayscale-75" />
+            <img src={home} alt="global"  className="m-auto fill-black" />
           </div>
-          <div className="mb-1">
+          <div className="">
             <a href="/">Home</a>
           </div>
         </li>
@@ -59,9 +61,9 @@ const Navbar = () => {
 
         <li className="cursor-pointer hover:bg-black hover:text-white rounded-full px-3 flex items-center ">
           <div className="mr-1">
-            <img src={global} alt="global" className="m-auto" />
+            <img src={global} alt="global" className="m-auto " />
           </div>
-          <div className="mb-1">
+          <div className="">
             <a href="/country-view">Countries</a>
           </div>
         </li>
@@ -70,7 +72,7 @@ const Navbar = () => {
           <div className="mr-1">
             <img src={newspaper} alt="global" className="m-auto" />
           </div>
-          <div className="mb-1">
+          <div className="">
             <a href="/newspaper-view">Newspapers</a>
           </div>
         </li>
@@ -79,7 +81,7 @@ const Navbar = () => {
           <div className="mr-1">
             <img src={bulb} alt="global " className="m-auto" />
           </div>
-          <div className="mb-1">
+          <div className="">
             <a href="/methodology">Methodology</a>
           </div>
         </li>
@@ -88,7 +90,7 @@ const Navbar = () => {
           <div className="mr-1">
             <img src={vector} alt="global " className="m-auto" />
           </div>
-          <div className="mb-1">
+          <div className="">
             <a href="/about">About</a>
           </div>
         </li>
