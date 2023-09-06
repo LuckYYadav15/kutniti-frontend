@@ -15,6 +15,7 @@ import arrowRight from "../assets/Arrow 1.svg";
 import negative from "../assets/NEGATIVE.png";
 import perception from "../assets/Perception.png";
 import positive from "../assets/POSITIVE.png";
+
 import {
   BarLoader,
   BounceLoader,
@@ -44,11 +45,8 @@ const Hero = () => {
     "Dec",
   ];
 
-
-
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [isLoading, setIsLoading] = useState(false);
-
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
@@ -185,7 +183,6 @@ const Hero = () => {
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   useEffect(() => {
-    
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
@@ -382,15 +379,13 @@ const Hero = () => {
           // setData(newArray);
 
           // ----------------UPDATING ACC TO ALL TIME BUTTON ----------------
-          
-
 
           const aggregatedData = {};
 
           // Iterate through the monthwiseData array and accumulate data for each country
           newData.forEach((data) => {
             const { countryName, positive, negative, neutral } = data;
-      
+
             if (!aggregatedData[countryName]) {
               aggregatedData[countryName] = {
                 countryName,
@@ -404,26 +399,27 @@ const Hero = () => {
               aggregatedData[countryName].neutral += neutral;
             }
           });
-      
+
           // Convert the aggregatedData object back to an array of objects
           const resultArray = Object.values(aggregatedData);
-      
+
           //--------------------Sort the countries on value of negative and provide a rank attribute to all----------------------------------------------------
           const rankeddData = resultArray
             .slice() // Create a copy of the filteredData array
             .sort((a, b) => b.negative - a.negative)
             .map((item, index) => ({ ...item, value: index + 1 }));
-      
+
           // console.log(rankedData);
           //----------------------Traverse through data to update values--------------------------
-      
+
           const newwArray = data.map((item) => {
             const matchingRank = rankeddData.find(
               (rankItem) =>
                 rankItem.countryName === item.name ||
-                (rankItem.countryName === "USA" && item.name === "United States")
+                (rankItem.countryName === "USA" &&
+                  item.name === "United States")
             );
-      
+
             if (matchingRank) {
               return {
                 ...item,
@@ -433,12 +429,11 @@ const Hero = () => {
                 value: matchingRank.value,
               };
             }
-      
+
             return item;
           });
           setIsLoading(false);
           setData(newwArray);
-
         } else {
           setIsLoading(false);
           console.error("API call failed");
@@ -450,10 +445,7 @@ const Hero = () => {
 
     fetchAllCountries();
 
-    clickAction({countryName: 'United States'});
-    
-   
-    
+    clickAction({ countryName: "United States" });
   }, []);
 
   //--------------------Updating the worldwide data as the slider changes the month-------------------------------------
@@ -531,16 +523,14 @@ const Hero = () => {
   //   fetchTempData();
   // }, [selectedMonth]);
 
-
   // Call the clickAction function whenever selectedMonth changes
   useEffect(() => {
     const customObject = {
       countryName: countryData.Name || "United States",
     };
-  
+
     clickAction(customObject);
   }, [data]);
-  
 
   const allTimeData = () => {
     // Create an object to store the accumulated data for each country
@@ -601,7 +591,7 @@ const Hero = () => {
 
   const clickAction = async (countryDetails) => {
     console.log(countryDetails);
-    
+
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
     }
@@ -624,15 +614,12 @@ const Hero = () => {
       );
       // console.log(foundCountry);
 
-     
-
       if (foundCountry) {
+        window.localStorage.setItem("hoveredPositive", foundCountry.positive);
+        window.localStorage.setItem("hoveredNegative", foundCountry.negative);
+        window.localStorage.setItem("hoveredNeutral", foundCountry.neutral);
+        window.dispatchEvent(new Event("storage"));
 
-        window.localStorage.setItem("hoveredPositive", foundCountry.positive );
-      window.localStorage.setItem("hoveredNegative", foundCountry.negative );
-      window.localStorage.setItem("hoveredNeutral", foundCountry.neutral );
-      window.dispatchEvent(new Event("storage"));
-      
         setCountryData({
           positive: foundCountry.positive || 0,
           negative: foundCountry.negative,
@@ -645,7 +632,6 @@ const Hero = () => {
           negative: clickedData.negative || 0,
           neutral: clickedData.neutral || 0,
           Name: countryDetails.countryName,
-          
         });
       }
 
@@ -656,15 +642,11 @@ const Hero = () => {
     }
   };
 
-
-
   if (modal) {
     document.body.classList.add("active-modal");
   } else {
     document.body.classList.remove("active-modal");
   }
-
-
 
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
@@ -673,8 +655,6 @@ const Hero = () => {
     };
     return acc;
   }, {});
-
-
 
   const getStyle = ({
     countryValue,
@@ -723,6 +703,8 @@ const Hero = () => {
       // fillOpacity: countryValue
       //   ? 0.1 + (1.5 * (countryValue - minValue)) / (maxValue - minValue)
       //   : 0,
+      // fillOpacity: 0, // Set the fill opacity to 0.5 for transparency
+      // transform: "scale(1.2)",
       stroke: "Black",
       strokeWidth: 1,
       strokeOpacity: 0.2,
@@ -730,7 +712,6 @@ const Hero = () => {
       // filter: `brightness(${1 + countrySize / 100})`, // Adjust the brightness based on countrySize
     };
   };
-
 
   const handleDownload = async () => {
     const chartRef = document.getElementById("worldmap"); // Get the chart element
@@ -747,8 +728,6 @@ const Hero = () => {
       console.error("Error generating image:", error);
     }
   };
-
-
 
   const changeToRed = () => {
     setSelectedColor(1);
@@ -780,16 +759,15 @@ const Hero = () => {
     window.location.href = "/country-detail";
   };
 
-  const mapStyle = {
-    transform: window.innerWidth < 500 ? "scale(1.5)" : "scale(1)", // Apply zoom
-    width: window.innerWidth < 500 ? "150%" : "100%", // Adjust width
-    height: "auto", // Allow the height to adjust based on the aspect ratio
-  };
+  // const mapStyle = {
+  //   backgroundColor: "black", // Set background to transparent
+  //   transform: "scale(1.3)", // Set scale to 1.3
+  // };
 
   // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
 
   return (
-    <div className="mb-10 ml-1 w-full">
+    <div className="mb-auto w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
         <h1 className="font-custom font-bold text-3xl lg:ml-5 lg:mt-20 ">
@@ -809,7 +787,10 @@ const Hero = () => {
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-10 pb-10 pt-5">
-        <div id="worldmap" className="border border-gray-300 bg-opacity-30 absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3">
+        <div
+          id="worldmap"
+          className="border border-gray-300 bg-opacity-40 absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
+        >
           {!isLaptop && (
             <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
@@ -848,8 +829,8 @@ const Hero = () => {
           )}
 
           <div className="world-map-container ">
-            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg ">
-              <div className="text-center flex flex-col ">
+            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg  ">
+              <div className="text-center flex flex-col">
                 <button
                   className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
                   onClick={handleDownload}
@@ -872,24 +853,12 @@ const Hero = () => {
               data={data}
               onClickFunction={clickAction}
               styleFunction={getStyle}
-              style={mapStyle} // Apply inline styles
             />
           </div>
-          {/* 
-          <WorldMap
-            className="world-map "
-            color="gray"
-            // title="Top 10 Populous Countries"
-            value-suffix="people"
-            size="xl"
-            data={data}
-            onClickFunction={clickAction}
-            styleFunction={getStyle}
-          /> */}
         </div>
 
         {!isMobile && (
-          <div className="border border-gray-300 bg-white bg-opacity-30 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4 ">
+          <div className="border border-gray-300 bg-white bg-opacity-40 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4 ">
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -939,54 +908,55 @@ const Hero = () => {
                 </div>
 
                 {isLoading && (
-                <div
-                  style={{
-                    display: "flex",
-                    position: "relative",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: "2",
-                  }}
-                >
-                  <div className="spinner-container mt-10">
-                    <CircleLoader color="#3af2d7" size={80} />
+                  <div
+                    style={{
+                      display: "flex",
+                      position: "relative",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      zIndex: "2",
+                    }}
+                  >
+                    <div className="spinner-container mt-10">
+                      <CircleLoader color="#3af2d7" size={80} />
+                    </div>
                   </div>
-                </div>
-              )}
-              {!isLoading && (
-                <div className="pb-4">
-
-                  {countryData.positive +
-                  countryData.negative +
-                  countryData.neutral ? (
-                    <PieChartComponent
-                      hoveredPositive={countryData.positive}
-                      hoveredNegative={countryData.negative}
-                      hoveredNeutral={countryData.neutral}
-                    />
-                  ) : null}
-
-                  <div className="flex ">
-                    {countryData.positive ? (
-                      <p className="font-custom text-green-500 text-sm m-auto ">
-                        Positive: {countryData.positive}
-                      </p>
+                )}
+                {!isLoading && (
+                  <div className="pb-4 ">
+                    {countryData.positive +
+                    countryData.negative +
+                    countryData.neutral ? (
+                      <div className="flex justify-center">
+                        <PieChartComponent
+                          hoveredPositive={countryData.positive}
+                          hoveredNegative={countryData.negative}
+                          hoveredNeutral={countryData.neutral}
+                        />
+                      </div>
                     ) : null}
 
-                    {countryData.negative ? (
-                      <p className="font-custom text-red-500 text-sm m-auto ">
-                        Negative: {countryData.negative}
-                      </p>
-                    ) : null}
+                    <div className="flex ">
+                      {countryData.positive ? (
+                        <p className="font-custom text-green-500 text-sm m-auto ">
+                          Positive: {countryData.positive}
+                        </p>
+                      ) : null}
 
-                    {countryData.neutral ? (
-                      <p className="font-custom text-blue-500 text-sm m-auto ">
-                        Neutral: {countryData.neutral}
-                      </p>
-                    ) : null}
+                      {countryData.negative ? (
+                        <p className="font-custom text-red-500 text-sm m-auto ">
+                          Negative: {countryData.negative}
+                        </p>
+                      ) : null}
+
+                      {countryData.neutral ? (
+                        <p className="font-custom text-blue-500 text-sm m-auto ">
+                          Neutral: {countryData.neutral}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               </div>
             </div>
           </div>
@@ -994,9 +964,52 @@ const Hero = () => {
       </div>
 
       {!isMobile && (
-        <div className="font-custom flex w-full justify-between">
-          <div className="bg-opacity-30 ml-5 w-2/3 inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
-            <div className=" pb-7 pt-3 px-5 w-5/6">
+        <div className="ml-1 font-custom flex w-[99%] justify-around lg:mb-5 ">
+          <div className=" bg-opacity-30 bg-white pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
+            <div>
+              <button
+                className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
+                onClick={changeToRed}
+              >
+                0%
+              </button>
+              <button
+                className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-4 "
+                onClick={changeToOrange}
+              >
+                25%
+              </button>
+              <button
+                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-4 "
+                onClick={changeToYellow}
+              >
+                50%
+              </button>
+              <button
+                className="bg-green-300 hover:bg-green-500 text-white font-bold px-4 "
+                onClick={changeToLightGreen}
+              >
+                75%
+              </button>
+              <button
+                className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
+                onClick={changeToGreen}
+              >
+                100%
+              </button>
+            </div>
+
+            <div className="flex justify-between ml-2 mr-2 mt-2">
+              <img src={arrowLeft} alt="" className="" />
+              <p className="text-xs">Negative</p>
+              <p className="text-xs">Perception</p>
+              <p className="text-xs">Positive</p>
+              <img src={arrowRight} alt="" className="" />
+            </div>
+          </div>
+
+          <div className="border-gray-300 bg-opacity-50 w-2/3 inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-around">
+            <div className=" pb-7 pt-3 px-2 w-5/6">
               <div className="ml-2 mt-2">
                 <Slider
                   min={0}
@@ -1020,80 +1033,18 @@ const Hero = () => {
                 />
               </div>
             </div>
-            <div>
+            <div className="flex items-center justify-center">
               <button
                 onClick={allTimeData}
-                className="font-custom bg-black text-white rounded-full px-3 py-2 mt-2 mr-8"
+                className="font-custom bg-black text-white rounded-full px-3 py-2"
               >
                 All Time
               </button>
             </div>
           </div>
-
-          <div className="text-center mr-7 w-1/4">
-            <div>
-              <button
-                className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
-                onClick={changeToRed}
-              >
-                0%
-              </button>
-              <button
-                className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-3 "
-                onClick={changeToOrange}
-              >
-                25%
-              </button>
-              <button
-                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-3 "
-                onClick={changeToYellow}
-              >
-                50%
-              </button>
-              <button
-                className="bg-green-300 hover:bg-green-500 text-white font-bold px-3 "
-                onClick={changeToLightGreen}
-              >
-                75%
-              </button>
-              <button
-                className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
-                onClick={changeToGreen}
-              >
-                100%
-              </button>
-            </div>
-
-            <div className="flex justify-between">
-              <img
-                src={arrowLeft}
-                alt=""
-                className=""
-              />
-              <p className="text-xs">Negative</p>
-              <p className="text-xs">Perception</p>
-              <p className="text-xs">Positive</p>
-              <img
-                src={arrowRight}
-                alt=""
-                className=""
-              />
-            </div>
-          </div>
         </div>
       )}
 
-      {/* <MonthPicker onChange={(date)=>{console.log(date);}} /> */}
-      {/* <div className="flex items-center justify-center h-full">
-        <MonthPickerInput
-          year={2018}
-          month={8}
-          onChange={(maskedValue, selectedYear, selectedMonth) => {
-            console.log(maskedValue, selectedYear, selectedMonth);
-          }}
-          className="bg-gray-200 px-4 py-2 rounded-md text-gray-800 cursor-pointer"
-        />
-      </div> */}
       {!isLaptop && (
         <div className="">
           <div className="flex">
@@ -1109,7 +1060,9 @@ const Hero = () => {
                   )}
                 </div>
 
-                <div className="text-2xl font-custom font-bold">{countryData.Name}</div>
+                <div className="text-2xl font-custom font-bold">
+                  {countryData.Name}
+                </div>
               </div>
 
               <div className="font-custom bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
