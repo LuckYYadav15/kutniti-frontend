@@ -15,6 +15,18 @@ import arrowRight from "../assets/Arrow 1.svg";
 import negative from "../assets/NEGATIVE.png";
 import perception from "../assets/Perception.png";
 import positive from "../assets/POSITIVE.png";
+import {
+  BarLoader,
+  BounceLoader,
+  CircleLoader,
+  ClimbingBoxLoader,
+  ClipLoader,
+  HashLoader,
+  MoonLoader,
+  PuffLoader,
+  PulseLoader,
+  ScaleLoader,
+} from "react-spinners";
 
 const Hero = () => {
   const months = [
@@ -35,6 +47,8 @@ const Hero = () => {
 
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSliderChange = (value) => {
     setSelectedMonth(value);
@@ -171,6 +185,7 @@ const Hero = () => {
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
   useEffect(() => {
+    
     const fetchAllFlags = async () => {
       try {
         const response = await fetch(
@@ -208,6 +223,7 @@ const Hero = () => {
     fetchAllFlags();
 
     const fetchAllCountries = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(
           "https://kutniti-server.onrender.com/api/country/getallCountryArticlesMonth",
@@ -420,21 +436,11 @@ const Hero = () => {
       
             return item;
           });
-      
+          setIsLoading(false);
           setData(newwArray);
 
-
-
-
-
-
-
-
-
-
-
-
         } else {
+          setIsLoading(false);
           console.error("API call failed");
         }
       } catch (error) {
@@ -446,7 +452,7 @@ const Hero = () => {
 
     clickAction({countryName: 'United States'});
     
-    
+   
     
   }, []);
 
@@ -595,7 +601,7 @@ const Hero = () => {
 
   const clickAction = async (countryDetails) => {
     console.log(countryDetails);
- 
+    
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
     }
@@ -639,6 +645,7 @@ const Hero = () => {
           negative: clickedData.negative || 0,
           neutral: clickedData.neutral || 0,
           Name: countryDetails.countryName,
+          
         });
       }
 
@@ -785,7 +792,7 @@ const Hero = () => {
     <div className="mb-10 ml-1 w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
-        <h1 className="font-custom font-bold text-3xl  lg:ml-5 lg:mt-20 ">
+        <h1 className="font-custom font-bold text-3xl lg:ml-5 lg:mt-20 ">
           What is the perception of{" "}
           <span className="text-blue-500">India </span>
           in the world ?
@@ -801,7 +808,7 @@ const Hero = () => {
       )}
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
-      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-10 lg:mb-10 pb-10 pt-5">
+      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-10 pb-10 pt-5">
         <div id="worldmap" className="border border-gray-300 bg-opacity-30 absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3">
           {!isLaptop && (
             <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
@@ -931,6 +938,22 @@ const Hero = () => {
                   </div>
                 </div>
 
+                {isLoading && (
+                <div
+                  style={{
+                    display: "flex",
+                    position: "relative",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: "2",
+                  }}
+                >
+                  <div className="spinner-container mt-10">
+                    <CircleLoader color="#3af2d7" size={80} />
+                  </div>
+                </div>
+              )}
+              {!isLoading && (
                 <div className="pb-4">
 
                   {countryData.positive +
@@ -963,6 +986,7 @@ const Hero = () => {
                     ) : null}
                   </div>
                 </div>
+              )}
               </div>
             </div>
           </div>
@@ -1117,7 +1141,7 @@ const Hero = () => {
               />
             </div>
           </div>
-          <div className="font-custom mx-5">
+          <div className="font-custom mx-5 mb-3">
             {countryData.Name && (
               <button
                 onClick={() => sendToDetails(countryData)}
@@ -1133,7 +1157,7 @@ const Hero = () => {
                 <div className=" pb-7 pt-3 px-5 w-5/6">
               <div className="ml-2 mt-2"> */}
 
-          <div className="font-custom ml-1 mr-2 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+          <div className="font-custom ml-1 mr-2 mb-5 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
             <div className="  px-2 pt-2 w-full overflow-x-scroll">
               <div className=" w-500">
                 <div

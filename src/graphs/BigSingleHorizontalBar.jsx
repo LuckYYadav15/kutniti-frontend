@@ -19,7 +19,7 @@ class ApexChart extends React.Component {
           },
         chart: {
           type: 'bar',
-          width: '25%',
+          width: '100%',
           height: 50, // Set height as needed
           stacked: true,
           stackType: '100%',
@@ -78,7 +78,7 @@ class ApexChart extends React.Component {
 
   render() {
     return (
-        <div id="chart" style={{ width: '200%', marginTop: '-30px', marginBottom: '-20px' }}>
+        <div id="chart" style={{ width: '100%', marginTop: '-30px', marginBottom: '-20px' }}>
         <ReactApexChart
           options={this.state.options}
           series={this.state.series}
