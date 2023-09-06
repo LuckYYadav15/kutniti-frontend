@@ -147,7 +147,7 @@ export default function PieChartComponent({ hoveredPositive, hoveredNegative, ho
   return shouldRender ? (
     <div>
    
-    <PieChart width={420} height={300}>
+    <PieChart width={300} height={300}>
     <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}

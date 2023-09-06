@@ -523,8 +523,8 @@ function CountryDetails() {
 
           <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600">
             <div className="">
-              <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl h-12 p-2 mb-5">
-                <div className="flex">
+              <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
+                <div className="flex m-1">
                   <div className="rounded-lg overflow-hidden ">
                     {flagObjectSelected && (
                       <img
@@ -789,7 +789,7 @@ function CountryDetails() {
                           </div>
                           <p>{newspaper.articles}</p>
 
-                          <div className="">
+                          <div className="w-1/2">
                             <BigSingleHorizontalBar
                               positiveValue={10}
                               negativeValue={10}

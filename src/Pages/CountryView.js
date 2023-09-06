@@ -5,17 +5,7 @@ import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import MicroPieChart from "../graphs/MicroPieChart";
 import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
-import {
-  BarLoader,
-  CircleLoader,
-  ClimbingBoxLoader,
-  ClipLoader,
-  HashLoader,
-  MoonLoader,
-  PuffLoader,
-  PulseLoader,
-  ScaleLoader,
-} from "react-spinners";
+import {BarLoader} from "react-spinners";
 
 function CountryView() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -361,7 +351,7 @@ function CountryView() {
     backgroundSize: "cover", // Adjust background sizing
     backgroundRepeat: "no-repeat", // Prevent repeating of background image
     backgroundColor: "#f2f2f2",
-    width: "100vw",
+    width: "98vw",
     height: "100%",
     // Add other styles as needed
   };
@@ -379,7 +369,7 @@ function CountryView() {
                   <h2 className="text-2xl font-bold mb-5 ">
                     Countries ranked by their perception of India
                   </h2>
-                  <div className=" ml-5 w-1/2 inline-flex rounded-3xl border border-black-800 bg-white p-0 justify-between">
+                  <div className=" ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
                     <div className=" pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
@@ -408,7 +398,7 @@ function CountryView() {
                     <div>
                       <button
                         onClick={allTimeData}
-                        className="bg-black text-white rounded-3xl px-3 py-2 mt-3 mr-2 w-30"
+                        className="bg-black text-white text-sm rounded-3xl px-3 py-2 mt-3 mr-2 w-30"
                       >
                         All Time
                       </button>
@@ -493,7 +483,7 @@ function CountryView() {
                                 country.neutral}
                             </div>
 
-                            <div className=" ">
+                            <div className=" w-1/2 ">
                               {country.negative === 0 &&
                               country.positive === 0 &&
                               country.neutral === 0 ? (
@@ -501,19 +491,16 @@ function CountryView() {
                                   <div className="invisible">t Enough Data</div>
                                   {/* <div className="invisible">Not Enough Data</div> */}
                                   <div>Not Enough Data</div>
-                                  <div className="invisible">
-                                    Not Enough Data
-                                  </div>
-                                  <div className="invisible">
-                                    Not Enough Data Datad
-                                  </div>
+                              
                                 </div>
                               ) : (
+                               
                                 <BigSingleHorizontalBar
                                   positiveValue={country.positive}
                                   negativeValue={country.negative}
                                   neutralValue={country.neutral}
                                 />
+                               
                               )}
                             </div>
                             {/* <div className="p-0 ml-20 w-auto ">Map Area</div> */}
