@@ -521,7 +521,7 @@ function CountryDetails() {
             Providing Free spacing
           </h1>
 
-          <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600">
+          <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
             <div className="">
               <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
                 <div className="flex m-1">
@@ -680,9 +680,9 @@ function CountryDetails() {
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* 1 */}
               <div>
-                <div className="bg-opacity-40 bg-white items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex m-3 r-0">
+                <div className="bg-opacity-40 bg-white items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
                   <div className="pb-2 ">
-                    <p className="flex justify-center text-2xl mt-5 ml-2">
+                    <p className="flex justify-center text-2xl mt-5 ml-2 lg:ml-5 ">
                       Sentiment of {countryData.name} towards India
                     </p>
                     {isMobile && (
@@ -706,12 +706,14 @@ function CountryDetails() {
                       </div>
                     )}
                     {isLaptop && (
-                      <div className="ml-10">
+                      <div className="ml-10 ">
+                      <div className="flex justify-center">
                         <PieChartComponent
                           hoveredPositive={countryData.positive}
                           hoveredNegative={countryData.negative}
                           hoveredNeutral={countryData.neutral}
                         />
+                        </div>
                         <div className="flex">
                           <p className="text-green-500 ml-10 m-3">
                             Positive: {countryData.positive}
@@ -744,7 +746,7 @@ function CountryDetails() {
                     </div>
                   )}
                   {isLaptop && (
-                    <div className="bg-opacity-40 p-2 m-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <div className="bg-opacity-40 p-2 mr-2 mb-2 mt-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
                       <p className="text-gray-700 mx-8 ">
                         Articles Published by {countryData.name}
                       </p>

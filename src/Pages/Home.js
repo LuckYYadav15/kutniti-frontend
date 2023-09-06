@@ -13,8 +13,8 @@ function Home() {
     backgroundSize: 'cover', // Adjust background sizing
     backgroundRepeat: 'no-repeat', // Prevent repeating of background image
     backgroundColor: '#f2f2f2',
-    width: '98vw',
-    height: "100%",
+    width: '98.5vw',
+    height: "130vh",
     // Add other styles as needed
   };
 

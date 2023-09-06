@@ -250,6 +250,7 @@ function CountryView() {
           const newData = generateNewData(combinedData);
 
           setMonthwiseData(newData);
+          // console.log(newData);
 
           //----------------------------------Api data updated till here------------------------------
 
@@ -366,11 +367,11 @@ function CountryView() {
             <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
               <div className="m-5 p-5 w-full">
                 <div className="flex mb-10">
-                  <h2 className="text-2xl font-bold mb-5 ">
+                  <h2 className="text-2xl font-bold mb-5 mt-5">
                     Countries ranked by their perception of India
                   </h2>
-                  <div className=" ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
-                    <div className=" pb-7 pt-3 px-5 w-5/6">
+                  <div className="ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
+                    <div className="pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
                           min={0}
@@ -395,10 +396,10 @@ function CountryView() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="flex items-center justify-center">
                       <button
                         onClick={allTimeData}
-                        className="bg-black text-white text-sm rounded-3xl px-3 py-2 mt-3 mr-2 w-30"
+                        className="bg-black text-white text-sm rounded-3xl px-3 py-2  mr-2 w-30"
                       >
                         All Time
                       </button>
@@ -464,12 +465,12 @@ function CountryView() {
                           onClick={() => handleClick(country)}
                         >
                           <div className="flex justify-between">
-                            <div className="mb-3 border border-black rounded-lg overflow-hidden">
+                            <div className="mb-3 rounded-lg overflow-hidden">
                               {country.flagLogo && (
                                 <img
                                   src={country.flagLogo}
                                   alt="Country Flag"
-                                  className="w-20 h-10 "
+                                  className="w-20 "
                                 />
                               )}
                             </div>
