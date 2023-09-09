@@ -858,7 +858,7 @@ const Hero = () => {
         </div>
 
         {!isMobile && (
-          <div className="border border-gray-300 bg-white bg-opacity-40 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4 ">
+          <div className="border border-gray-300 bg-white bg-opacity-40 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -934,7 +934,23 @@ const Hero = () => {
                           hoveredNeutral={countryData.neutral}
                         />
                       </div>
-                    ) : null}
+                    ) : 
+                    <div>
+                    <div className="flex text-gray-600 ml-10 my-20">
+                      Click on a country to study
+                    </div>
+                    
+                    <div className="invisible flex text-gray-600 ml-10 my-20">
+                      Click on a country to study
+                    </div>
+
+                    <div className="invisible flex text-gray-600 ml-10 my-3">
+                      Click on a country to study
+                    </div>
+
+                    </div>
+
+                    }
 
                     <div className="flex ">
                       {countryData.positive ? (

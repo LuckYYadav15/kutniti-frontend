@@ -417,13 +417,13 @@ function CountryDetails() {
   };
 
   // const chartData = [
-  //   {
-  //     name: 'JAN',
-  //     neg: 40,
-  //     pos: 24,
-  //     neu: 14,
-  //     grey: 0,
-  //   },
+    // {
+    //   name: 'JAN',
+    //   neg: 40,
+    //   pos: 24,
+    //   neu: 14,
+    //   grey: 0,
+    // },
   //   {
   //     name: 'FEB',
   //     neg: 20,
