@@ -194,7 +194,7 @@ function NewspaperDetails() {
         };
   
         const response = await fetch(
-          "http://65.2.183.51:8000/api/newspaper/getAllDataForNewspaper",
+          "https://kutniti-server.onrender.com/api/newspaper/getAllDataForNewspaper",
           {
             method: "POST",
             headers: {
