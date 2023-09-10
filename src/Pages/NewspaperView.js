@@ -153,7 +153,7 @@ function NewspaperView() {
     async function fetchNewspapers() {
       try {
         const response = await fetch(
-          "http://65.2.183.51:8000/api/newspaper/getAllNewspapers"
+          "https://kutniti-server.onrender.com/api/newspaper/getAllNewspapers"
         );
 
         if (!response.ok) {
@@ -392,10 +392,10 @@ function NewspaperView() {
                       <div className="flex">
                         <div className="w-4 h-4 mt-1 bg-green-500 ml-3 rounded-sm"></div>
                         <div className="ml-2 text-sm">Positive</div>
-                        <div className="w-5 h-5 mt-1 bg-red-500 ml-3 rounded-sm"></div>
+                        <div className="w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"></div>
                         <div className="ml-2 text-sm">Negative</div>
 
-                        <div className="w-5 h-5 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
+                        <div className="w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
                         <div className="ml-2 text-sm">Neutral</div>
                       </div>
                     </div>
