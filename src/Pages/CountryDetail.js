@@ -638,7 +638,7 @@ function CountryDetails() {
 
           <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
             <div className="">
-              <div className="lg:w-full bg-opacity-40 bg-white flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
+              <div className="lg:w-full bg-opacity-0 backdrop-blur-[3px] flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
                 <div className="flex m-1">
                   <div className="rounded-lg overflow-hidden ">
                     {flagObjectSelected && (
@@ -670,7 +670,7 @@ function CountryDetails() {
               </div>
             </div>
 
-            <div className="bg-opacity-40 bg-white items-center rounded-xl shadow-lg p-2 h-30">
+            <div className="bg-opacity-0 backdrop-blur-[3px] items-center rounded-xl shadow-lg p-2 h-30">
               <div className="text-2xl">
                 <p className="mx-2 mt-2 mb-4">
                   Why {countryData.name} matters to India
@@ -805,7 +805,7 @@ function CountryDetails() {
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* 1 */}
               <div>
-                <div className="bg-opacity-40 bg-white items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
+                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
                   <div className="pb-2 ">
                     <p className="flex justify-center text-2xl mt-5 ml-2 lg:ml-5 ">
                       Sentiment of {countryData.name} towards India
@@ -857,7 +857,7 @@ function CountryDetails() {
 
                 <div>
                   {isMobile && (
-                    <div className="p-2 m-2 flex bg-opacity-40 bg-white shadow-md rounded-lg max-w-[500px]">
+                    <div className="p-2 m-2 flex bg-opacity-0 backdrop-blur-[3px] shadow-md rounded-lg max-w-[500px]">
                       <p className="text-gray-700 mx-4 ">
                         Articles Published by {countryData.name}
                       </p>
@@ -871,7 +871,7 @@ function CountryDetails() {
                     </div>
                   )}
                   {isLaptop && (
-                    <div className="bg-opacity-40 p-2 mr-2 mb-2 mt-2 flex bg-white shadow-md rounded-lg max-w-[500px]">
+                    <div className="bg-opacity-0 backdrop-blur-[3px] p-2 mr-2 mb-2 mt-2 flex  shadow-md rounded-lg max-w-[500px]">
                       <p className="text-gray-700 mx-8 ">
                         Articles Published by {countryData.name}
                       </p>
@@ -890,7 +890,7 @@ function CountryDetails() {
               {/* 2 */}
 
               <div className="w-[340px] mt-5 lg:w-[550px]">
-                <div className="bg-white bg-opacity-40 m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
+                <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
@@ -898,7 +898,7 @@ function CountryDetails() {
 
             <div className="flex">
               {isLaptop && (
-                <div className="m-10 p-5 w-full">
+                <div className="m-10 p-5 w-full backdrop-blur-[3px] bg-opacity-0">
                   <div className=" my-1">
                     <h2 className="text-2xl font-bold mb-5  ">
                       Most Read Newspapers of {countryData.name}

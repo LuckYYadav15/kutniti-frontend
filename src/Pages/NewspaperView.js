@@ -6,6 +6,7 @@ import MicroPieChart from "../graphs/MicroPieChart";
 import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
 import { BarLoader } from "react-spinners";
+import updown from "../assets/updownarrow.svg";
 
 function NewspaperView() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -52,7 +53,8 @@ function NewspaperView() {
 
     // Iterate through the monthwiseData array and accumulate data for each newspaper
     monthwiseData.forEach((data) => {
-      const { newspaper_name, positive, negative, neutral, country, logo } = data;
+      const { newspaper_name, positive, negative, neutral, country, logo } =
+        data;
 
       if (!aggregatedData[newspaper_name]) {
         aggregatedData[newspaper_name] = {
@@ -94,10 +96,7 @@ function NewspaperView() {
       "hoveredNewspaperCountry",
       foundNewspaper.country
     );
-    window.localStorage.setItem(
-      "hoveredNewspaperLogo",
-      foundNewspaper.logo
-    );
+    window.localStorage.setItem("hoveredNewspaperLogo", foundNewspaper.logo);
 
     window.dispatchEvent(new Event("storage"));
     window.location.href = "/newspaper-detail";
@@ -326,6 +325,60 @@ function NewspaperView() {
     // Add other styles as needed
   };
 
+  const sortAlphabeticallyNewspaper = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      return a.newspaper_name.localeCompare(b.newspaper_name);
+    });
+
+    setAllNewspaperData(sortedData);
+  };
+
+
+  const sortAlphabeticallyCountry = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      return a.country.localeCompare(b.country);
+    });
+
+    setAllNewspaperData(sortedData);
+  };
+
+  const sortDataByTotal = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      const totalA = a.positive + a.negative + a.neutral;
+      const totalB = b.positive + b.negative + b.neutral;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllNewspaperData(sortedData);
+  };
+
+  const sortDataByPositive = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      const totalA = a.positive;
+      const totalB = b.positive;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllNewspaperData(sortedData);
+  };
+
+  const sortDataByNegative = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      const totalA = a.negative;
+      const totalB = b.negative;
+      return totalB - totalA; // Sort in descending order
+    });
+
+    setAllNewspaperData(sortedData);
+  };
+
+  const sortDataByNeutral = () => {
+    const sortedData = [...allNewspaperData].sort((a, b) => {
+      const totalA = a.neutral;
+      const totalB = b.neutral;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllNewspaperData(sortedData);
+  };
+
   return (
     <div id="" style={containerStyle} className="font-custom">
       <Navbar />
@@ -375,28 +428,41 @@ function NewspaperView() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white bg-opacity-30 shadow-2xl rounded-xl p-10">
+                <div className="bg-white bg-opacity-0 backdrop-blur-[3px] shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4 justify-between">
-                    <div className="text-md font-bold ml-5 w-1/5">
+                    <div onClick={sortAlphabeticallyNewspaper} className="cursor-pointer flex text-md font-semibold ml-5 w-1/5">
                       Newspaper
-                    </div>
-                    <div className="text-lg font-bold">Country</div>
-                    <div className="text-md font-bold ml-5">
-                      Articles Published
+                      <img src={updown} alt="" className="ml-1" />
                     </div>
 
-                    <div className="flex w-1/2">
-                      <div className="text-md font-bold ml-5">
+                    <div onClick={sortAlphabeticallyCountry} className=" cursor-pointer flex text-md font-semibold">
+                      Country
+                      <img src={updown} alt="" className="ml-1" />
+                    </div>
+
+                    <div onClick={sortDataByTotal} className="cursor-pointer flex text-md font-semibold ml-5">
+                      Articles Published
+                      <img src={updown} alt="" className="ml-1" />
+                    </div>
+
+                    <div className="flex w-1/2 pl-20">
+                      <div className="text-md font-semibold ml-5">
                         Perception
                       </div>
                       <div className="flex">
-                        <div className="w-4 h-4 mt-1 bg-green-500 ml-3 rounded-sm"></div>
-                        <div className="ml-2 text-sm">Positive</div>
-                        <div className="w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"></div>
-                        <div className="ml-2 text-sm">Negative</div>
+                        <div onClick={sortDataByPositive} className="cursor-pointer w-4 h-4 mt-1 bg-green-500 ml-5 rounded-sm"></div>
+                        <div onClick={sortDataByPositive} className="cursor-pointer ml-2 text-sm font-semibold">
+                          Positive
+                        </div>
+                        <div onClick={sortDataByNegative} className="cursor-pointer w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"></div>
+                        <div onClick={sortDataByNegative} className="cursor-pointer ml-2 text-sm font-semibold">
+                          Negative
+                        </div>
 
-                        <div className="w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
-                        <div className="ml-2 text-sm">Neutral</div>
+                        <div onClick={sortDataByNeutral} className="cursor-pointer w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
+                        <div onClick={sortDataByNeutral} className="cursor-pointer ml-2 text-sm font-semibold">
+                          Neutral
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -474,6 +540,7 @@ function NewspaperView() {
                                 </div>
                               ) : (
                                 <BigSingleHorizontalBar
+                                  key={newspaper.newspaper_name}
                                   positiveValue={newspaper.positive}
                                   negativeValue={newspaper.negative}
                                   neutralValue={newspaper.neutral}
@@ -503,7 +570,7 @@ function NewspaperView() {
               </h2>
             </div>
 
-            <div className="ml-1 mr-2 mb-5 w-full inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-between">
+            <div className="ml-1 mr-2 mb-5 w-full inline-flex rounded-2xl border border-black-800 bg-opacity-0 backdrop-blur-[3px] p-0 justify-between">
               <div className="  px-2 pt-2 w-full overflow-x-scroll">
                 <div className=" w-500">
                   <div
@@ -546,10 +613,10 @@ function NewspaperView() {
 
             <div className=" items-center min-h-screen">
               <div className="flex justify-between">
-                <div>Newspaper</div>
-                <div>Positive</div>
-                <div>Negative</div>
-                <div className="mr-2">Neutral</div>
+                <div onClick={sortAlphabeticallyNewspaper} >Newspaper</div>
+                <div onClick={sortDataByPositive}>Positive</div>
+                <div onClick={sortDataByNegative}>Negative</div>
+                <div onClick={sortDataByNeutral} className="mr-2">Neutral</div>
               </div>
               <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
 
@@ -586,6 +653,7 @@ function NewspaperView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{newspaper.positive}</p>
                           <MicroPieChart
+                            key={newspaper.newspaper_name}
                             hoveredPositive={newspaper.positive}
                             hoveredNegative={
                               newspaper.positive +
@@ -599,6 +667,7 @@ function NewspaperView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{newspaper.negative}</p>
                           <MicroPieChart
+                            key={newspaper.newspaper_name}
                             hoveredPositive={newspaper.negative}
                             hoveredNegative={
                               newspaper.positive +
@@ -612,6 +681,7 @@ function NewspaperView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{newspaper.neutral}</p>
                           <MicroPieChart
+                            key={newspaper.newspaper_name}
                             hoveredPositive={newspaper.neutral}
                             hoveredNegative={
                               newspaper.positive +
