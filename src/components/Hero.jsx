@@ -524,6 +524,28 @@ const Hero = () => {
   // }, [selectedMonth]);
 
   // Call the clickAction function whenever selectedMonth changes
+
+  useEffect(() => {
+    // Define the style function to make the background transparent and scale to 1.3
+    const getDynamicStyle = () => {
+      return {
+        backgroundColor: 'transparent',
+        transform: 'scale(1.3)',
+      };
+    };
+
+    // Apply the style function to the WorldMap component
+    const worldMapElement = document.querySelector('.world-map'); // Make sure to replace with the actual selector used by your WorldMap library
+    if (worldMapElement) {
+      const style = getDynamicStyle();
+      Object.keys(style).forEach((prop) => {
+        worldMapElement.style[prop] = style[prop];
+      });
+    }
+  }, []);
+
+
+
   useEffect(() => {
     const customObject = {
       countryName: countryData.Name || "United States",
@@ -789,7 +811,7 @@ const Hero = () => {
       <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-10 pb-10 pt-5">
         <div
           id="worldmap"
-          className="border border-gray-300 bg-opacity-40 absolute inset-0 flex justify-center items-center bg-white shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
+          className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
         >
           {!isLaptop && (
             <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
@@ -858,7 +880,7 @@ const Hero = () => {
         </div>
 
         {!isMobile && (
-          <div className="border border-gray-300 bg-white bg-opacity-40 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -981,7 +1003,7 @@ const Hero = () => {
 
       {!isMobile && (
         <div className="ml-1 font-custom flex w-[99%] justify-around lg:mb-5 ">
-          <div className=" bg-opacity-30 bg-white pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
+          <div className=" bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
             <div>
               <button
                 className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
@@ -1024,7 +1046,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="border-gray-300 bg-opacity-50 w-2/3 inline-flex rounded-2xl border border-black-800 bg-white p-0 justify-around">
+          <div className="border-gray-300 bg-opacity-0 w-2/3 inline-flex rounded-2xl border border-black-800 backdrop-blur-[3px] p-0 justify-around">
             <div className=" pb-7 pt-3 px-2 w-5/6">
               <div className="ml-2 mt-2">
                 <Slider

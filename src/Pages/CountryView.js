@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import backgroundImage from "../assets/backgroundMain.jpg";
+import updown from "../assets/updownarrow.svg";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import MicroPieChart from "../graphs/MicroPieChart";
 import { useMediaQuery } from "react-responsive";
 import Slider from "rc-slider";
-import {BarLoader} from "react-spinners";
+import { BarLoader } from "react-spinners";
 
 function CountryView() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
@@ -357,6 +358,51 @@ function CountryView() {
     // Add other styles as needed
   };
 
+  const sortAlphabetically = () => {
+    const sortedData = [...allCountryData].sort((a, b) => {
+      return a.countryName.localeCompare(b.countryName);
+    });
+
+    setAllCountryData(sortedData);
+  };
+
+  const sortDataByTotal = () => {
+    const sortedData = [...allCountryData].sort((a, b) => {
+      const totalA = a.positive + a.negative + a.neutral;
+      const totalB = b.positive + b.negative + b.neutral;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllCountryData(sortedData);
+  };
+
+  const sortDataByPositive = () => {
+    const sortedData = [...allCountryData].sort((a, b) => {
+      const totalA = a.positive;
+      const totalB = b.positive;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllCountryData(sortedData);
+  };
+
+  const sortDataByNegative = () => {
+    const sortedData = [...allCountryData].sort((a, b) => {
+      const totalA = a.negative;
+      const totalB = b.negative;
+      return totalB - totalA; // Sort in descending order
+    });
+
+    setAllCountryData(sortedData);
+  };
+
+  const sortDataByNeutral = () => {
+    const sortedData = [...allCountryData].sort((a, b) => {
+      const totalA = a.neutral;
+      const totalB = b.neutral;
+      return totalB - totalA; // Sort in descending order
+    });
+    setAllCountryData(sortedData);
+  };
+
   return (
     <div id="" style={containerStyle} className="font-custom">
       <Navbar />
@@ -367,10 +413,10 @@ function CountryView() {
             <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
               <div className="m-5 p-5 w-full">
                 <div className="flex mb-10">
-                  <h2 className="text-2xl font-bold mb-5 mt-5">
+                  <h2 className="text-xl font-bold mb-5 mt-5">
                     Countries ranked by their perception of India
                   </h2>
-                  <div className="ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
+                  <div className="ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 backdrop-blur-[3px] bg-opacity-0 p-0 justify-between">
                     <div className="pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
@@ -406,39 +452,75 @@ function CountryView() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white bg-opacity-30 shadow-2xl rounded-xl p-10">
-
+                <div className=" bg-opacity-0 backdrop-blur-[3px] shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4 justify-between">
-                  <div className="flex">
+                    <div className="flex">
+                      <div className="flex">
+                        <div
+                          onClick={sortAlphabetically}
+                          className="cursor-pointer  ml-10 font-semibold  "
+                        >
+                          Country
+                        </div>
+                        <img src={updown} alt="" className="ml-1" />
+                      </div>
 
-                  
-                    <div className="text-xl font-bold ">Country</div>
+                     <div className="invisible">
+                      dfghjkl;
+                     </div>
 
-                    <h2 className="text-xl font-semibold ml-10">
-                      Articles Published
-                    </h2>
+                      <div className="flex">
+                        <h2
+                          onClick={sortDataByTotal}
+                          className="cursor-pointer ml-20 font-semibold "
+                        >
+                          Articles Published
+                        </h2>
+                        <img src={updown} alt="" className="ml-1" />
+                      </div>
 
-                    <div className="text-xl font-semibold ml-10">
-                      Perception
-                    </div>
-                    {/* <div className="text-xl invisible font-semibold ml-4">
+                      {/* <div className="text-xl invisible font-semibold ml-4">
                       Perception
                     </div> */}
                     </div>
 
-                    <div className="flex mr-10">
-                    <div className="w-5 h-5 mt-1 bg-green-500 ml-10 rounded-sm"></div>
-                    <div className="ml-3">Positive</div>
+                    <div className="flex w-1/2 px-2">
+                      <div className=" font-semibold ">Perception</div>
+                      <div
+                        onClick={sortDataByPositive}
+                        className="cursor-pointer w-5 h-5 mt-1 bg-green-500 rounded-sm ml-5"
+                      ></div>
+                      <div
+                        onClick={sortDataByPositive}
+                        className="cursor-pointer ml-3 font-semibold"
+                      >
+                        Positive
+                      </div>
 
-                    <div className="w-5 h-5 mt-1 bg-red-500 ml-7 rounded-sm"></div>
-                    <div className="ml-3">Negative</div>
+                      <div
+                        onClick={sortDataByNegative}
+                        className="cursor-pointer w-5 h-5 mt-1 bg-red-500 ml-7 rounded-sm"
+                      ></div>
+                      <div
+                        onClick={sortDataByNegative}
+                        className="cursor-pointer ml-3 font-semibold"
+                      >
+                        Negative
+                      </div>
 
-                    <div className="w-5 h-5 mt-1 bg-yellow-300 ml-7 rounded-sm"></div>
-                    <div className="ml-3">Neutral</div>
+                      <div
+                        onClick={sortDataByNeutral}
+                        className=" cursor-pointer w-5 h-5 mt-1 bg-yellow-300 ml-7 rounded-sm"
+                      ></div>
+                      <div
+                        onClick={sortDataByNeutral}
+                        className="cursor-pointer ml-3 font-semibold"
+                      >
+                        Neutral
+                      </div>
                     </div>
-
                   </div>
-                  
+
                   <hr className="border-t-1 border-black w-full" />
 
                   {isLoading && (
@@ -465,20 +547,23 @@ function CountryView() {
                           onClick={() => handleClick(country)}
                         >
                           <div className="flex justify-between">
-                            <div className="mb-3 rounded-lg overflow-hidden">
-                              {country.flagLogo && (
-                                <img
-                                  src={country.flagLogo}
-                                  alt="Country Flag"
-                                  className="w-20 "
-                                />
-                              )}
+                            <div className="flex w-1/5">
+                              <div className="mb-3 rounded-lg overflow-hidden">
+                                {country.flagLogo && (
+                                  <img
+                                    src={country.flagLogo}
+                                    alt="Country Flag"
+                                    className="h-10"
+                                  />
+                                )}
+                              </div>
+
+                              <h2 className="text-lg ml-5 font-semibold">
+                                {country.countryName}
+                              </h2>
                             </div>
 
-                            <h2 className="text-lg font-semibold w-20">
-                              {country.countryName}
-                            </h2>
-                            <div className=" ">
+                            <div className="">
                               {country.positive +
                                 country.negative +
                                 country.neutral}
@@ -492,16 +577,14 @@ function CountryView() {
                                   <div className="invisible">t Enough Data</div>
                                   {/* <div className="invisible">Not Enough Data</div> */}
                                   <div>Not Enough Data</div>
-                              
                                 </div>
                               ) : (
-                               
                                 <BigSingleHorizontalBar
+                                  key={country.countryName}
                                   positiveValue={country.positive}
                                   negativeValue={country.negative}
                                   neutralValue={country.neutral}
                                 />
-                               
                               )}
                             </div>
                             {/* <div className="p-0 ml-20 w-auto ">Map Area</div> */}
@@ -570,10 +653,12 @@ function CountryView() {
 
             <div className=" items-center min-h-screen">
               <div className="flex justify-between">
-                <div>Country</div>
-                <div>Positive</div>
-                <div>Negative</div>
-                <div className="mr-2">Neutral</div>
+                <div onClick={sortAlphabetically}>Country</div>
+                <div onClick={sortDataByPositive}>Positive</div>
+                <div onClick={sortDataByNegative}>Negative</div>
+                <div onClick={sortDataByNeutral} className="mr-2">
+                  Neutral
+                </div>
               </div>
               <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
 
@@ -608,6 +693,7 @@ function CountryView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{country.positive}</p>
                           <MicroPieChart
+                            key={country.countryName}
                             hoveredPositive={country.positive}
                             hoveredNegative={
                               country.positive +
@@ -621,6 +707,7 @@ function CountryView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{country.negative}</p>
                           <MicroPieChart
+                            key={country.countryName}
                             hoveredPositive={country.negative}
                             hoveredNegative={
                               country.positive +
@@ -634,6 +721,7 @@ function CountryView() {
                         <div className="flex ">
                           <p className="text-sm mt-3">{country.neutral}</p>
                           <MicroPieChart
+                            key={country.countryName}
                             hoveredPositive={country.neutral}
                             hoveredNegative={
                               country.positive +
