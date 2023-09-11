@@ -419,7 +419,7 @@ function CountryView() {
                     </h2>
 
                     <div className="text-xl font-semibold ml-10">
-                      Perception of India
+                      Perception
                     </div>
                     {/* <div className="text-xl invisible font-semibold ml-4">
                       Perception
