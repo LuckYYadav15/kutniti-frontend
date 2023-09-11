@@ -5,8 +5,8 @@ import PieChartComponent from "../graphs/PieChartComponent";
 import html2canvas from "html2canvas";
 // import backgroundImage from "../assets/background.png";
 
-import CountryDsipoCard from "../components/CountryDsipoCard"
-import CountryEcoCard from "../components/CountryEcoCard"
+import CountryDsipoCard from "../components/CountryDsipoCard";
+import CountryEcoCard from "../components/CountryEcoCard";
 
 import share from "../assets/shareButton.png";
 import backgroundImage from "../assets/backgroundMain.jpg";
@@ -16,7 +16,6 @@ import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
-
 
 import bricsImg from "../assets/countryStats/brics.png";
 import fiveEyesImg from "../assets/countryStats/fiveEyes.png";
@@ -30,20 +29,10 @@ import CountryDefenseCard from "../components/CountryDefenseCard";
 import CountryTourismCard from "../components/CountryTourismCard";
 
 function CountryDetails() {
-
-
   // const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
 
-  const newspaperData = [
-    { name: "Times Gazette", articles: 150 },
-    { name: "Morning Chron", articles: 120 },
-    { name: "Evening Poste", articles: 200 },
-    { name: "Sunrise Newse", articles: 190 },
-    { name: "Metro Journal", articles: 180 },
-    { name: "Times Gazette", articles: 150 },
-    { name: "Morning Chron", articles: 120 },
-  ];
+  const [newspaperData, setNewspaperData] = useState([]);
 
   const [countryData, setCountryData] = useState({
     name: "",
@@ -94,6 +83,141 @@ function CountryDetails() {
       }
     };
     getStats();
+
+    async function fetchNewspapers() {
+      try {
+        const response = await fetch(
+          "https://kutniti-server.onrender.com/api/newspaper/getAllNewspapers"
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+
+        const newArrayOfObjects = data.flatMap((newspaper) =>
+          Object.entries(newspaper.articles).map(([month, stats]) => ({
+            newspaper_id: newspaper.newspaper_id,
+            newspaper_name: newspaper.newspaper_name,
+            link: newspaper.link,
+            country: newspaper.country,
+            logo: newspaper.logo,
+            month: monthToNumber(month), // Convert month to number (e.g., "June" to 6)
+            positive: stats.Positive || 0, // Set to 0 if not present
+            negative: stats.Negative || 0, // Set to 0 if not present
+            neutral: stats.Neutral || 0, // Set to 0 if not present
+          }))
+        );
+
+        function monthToNumber(month) {
+          // Map month names to numbers
+          const monthMap = {
+            January: 1,
+            February: 2,
+            March: 3,
+            April: 4,
+            May: 5,
+            June: 6,
+            July: 7,
+            August: 8,
+            September: 9,
+            October: 10,
+            November: 11,
+            December: 12,
+          };
+
+          return monthMap[month] || 0; // Default to 0 if month is not found
+        }
+
+        //---------Now make objects for remaining months with 0s in positive neg and neu---
+
+        const monthlyData = [];
+
+        // Iterate over each object in the original array
+        newArrayOfObjects.forEach((item) => {
+          // Iterate over 12 months
+          for (let month = 1; month <= 12; month++) {
+            // Check if the month already exists in the original data
+            const existingMonthData = newArrayOfObjects.find(
+              (x) => x.newspaper_id === item.newspaper_id && x.month === month
+            );
+
+            if (existingMonthData) {
+              // If the month exists, push the existing data
+              monthlyData.push(existingMonthData);
+            } else {
+              // If the month does not exist, create a new object with zeros
+              monthlyData.push({
+                ...item,
+                month: month,
+                positive: 0,
+                negative: 0,
+                neutral: 0,
+              });
+            }
+          }
+        });
+        //----------------------------sTORE ALL MONTHS DATA IN monthwiseData------------------------------------
+        // Remove duplicates
+        const uniqueMonthlyData = monthlyData.filter((item, index, self) => {
+          // Find the index of the first occurrence of the current item
+          const firstIndex = self.findIndex(
+            (otherItem) =>
+              otherItem.newspaper_name === item.newspaper_name &&
+              otherItem.month === item.month
+          );
+
+          // Keep the current item only if its index is the same as the first index found
+          return index === firstIndex;
+        });
+
+        const aggregatedData = {};
+
+        uniqueMonthlyData.forEach((data) => {
+          const { newspaper_name, positive, negative, neutral, logo, country } =
+            data;
+
+          if (!aggregatedData[newspaper_name]) {
+            aggregatedData[newspaper_name] = {
+              newspaper_name,
+              positive,
+              negative,
+              neutral,
+              logo,
+              country,
+            };
+          } else {
+            aggregatedData[newspaper_name].positive += positive;
+            aggregatedData[newspaper_name].negative += negative;
+            aggregatedData[newspaper_name].neutral += neutral;
+          }
+        });
+
+        // Convert the aggregatedData object back to an array of objects
+        const resultArray = Object.values(aggregatedData);
+
+        // ----------------------------Filter only the newspapers with country as tempName---------------------
+
+        if (tempName === "United States") {
+          tempName = "USA";
+        }
+
+        const filteredArray = resultArray.filter(
+          (obj) => obj.country === tempName
+        );
+
+        if (tempName === "USA") {
+          tempName = "United States";
+        }
+
+        setNewspaperData(filteredArray);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchNewspapers();
 
     const fetchAllFlags = async () => {
       try {
@@ -344,41 +468,33 @@ function CountryDetails() {
       if (country.borDisp === tempContName) {
         setBorDisp(true);
       }
-      
     });
-
-
-
 
     // Map through countryStats looking for tempContName attribute in each object and extract 1st object's value as ...
 
-
-  let i=0;
-  countryStats.forEach((item) => {
-    if(i==0){
-      setEcoRank(item[tempContName])
-    }
-    if(i==1){
-      setDiaspRank(item[tempContName])
-    }
-    if(i==2){
-      setImportRank(item[tempContName])
-    }
-    if(i==3){
-      setExportRank(item[tempContName])
-    }
-    if(i==4){
-      srtDefenseRank(item[tempContName])
-    }
-    if(i==5){
-      setTourismRank(item[tempContName])
-    }
-  i++;
-  });
-
-
+    let i = 0;
+    countryStats.forEach((item) => {
+      if (i == 0) {
+        setEcoRank(item[tempContName]);
+      }
+      if (i == 1) {
+        setDiaspRank(item[tempContName]);
+      }
+      if (i == 2) {
+        setImportRank(item[tempContName]);
+      }
+      if (i == 3) {
+        setExportRank(item[tempContName]);
+      }
+      if (i == 4) {
+        srtDefenseRank(item[tempContName]);
+      }
+      if (i == 5) {
+        setTourismRank(item[tempContName]);
+      }
+      i++;
+    });
   }, [countryStats]);
-
 
   // console.log(diaspRank, ecoRank);
 
@@ -388,7 +504,6 @@ function CountryDetails() {
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
   const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
-
 
   const handleDownload = async () => {
     const chartRef = document.getElementById("pie-chart"); // Get the chart element
@@ -417,13 +532,13 @@ function CountryDetails() {
   };
 
   // const chartData = [
-    // {
-    //   name: 'JAN',
-    //   neg: 40,
-    //   pos: 24,
-    //   neu: 14,
-    //   grey: 0,
-    // },
+  // {
+  //   name: 'JAN',
+  //   neg: 40,
+  //   pos: 24,
+  //   neu: 14,
+  //   grey: 0,
+  // },
   //   {
   //     name: 'FEB',
   //     neg: 20,
@@ -562,109 +677,119 @@ function CountryDetails() {
                 </p>
                 <div className="flex justify-between">
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-
-
-                  {(diaspRank !== 0) && (
+                    {diaspRank !== 0 && (
                       <div className="">
-                      <CountryDsipoCard firstValue={diaspRank} secondValue="Indian Dispora in the World"/>
+                        <CountryDsipoCard
+                          firstValue={diaspRank}
+                          secondValue="Indian Dispora in the World"
+                        />
                       </div>
-                  )}
-                      
-                      {(ecoRank !== 0) && (
+                    )}
+
+                    {ecoRank !== 0 && (
                       <div className="">
-                      <CountryEcoCard firstValue={ecoRank} secondValue="Economic Power in the World"/>
+                        <CountryEcoCard
+                          firstValue={ecoRank}
+                          secondValue="Economic Power in the World"
+                        />
                       </div>
-                      )}
+                    )}
 
-                      {(importRank !== 0) && (
+                    {importRank !== 0 && (
                       <div className="">
-                      <CountryImportCard firstValue={importRank} secondValue="Import partner of India"/>
+                        <CountryImportCard
+                          firstValue={importRank}
+                          secondValue="Import partner of India"
+                        />
                       </div>
-                      )}
+                    )}
 
-                      {(exportRank != 0) && (
+                    {exportRank != 0 && (
                       <div className="">
-                      <CountryExportCard firstValue={exportRank} secondValue="Export partner of India"/>
+                        <CountryExportCard
+                          firstValue={exportRank}
+                          secondValue="Export partner of India"
+                        />
                       </div>
-                      )}
+                    )}
 
-                      {(defenseRank !== 0) && (
+                    {defenseRank !== 0 && (
                       <div className="">
-                      <CountryDefenseCard firstValue={defenseRank} secondValue="Defence provider to India"/>
+                        <CountryDefenseCard
+                          firstValue={defenseRank}
+                          secondValue="Defence provider to India"
+                        />
                       </div>
-                      )}
+                    )}
 
-                      {(tourismRank != 0) && (
+                    {tourismRank != 0 && (
                       <div className="">
-                      <CountryTourismCard firstValue={tourismRank} secondValue="Nation visiting India for tourism"/>
+                        <CountryTourismCard
+                          firstValue={tourismRank}
+                          secondValue="Nation visiting India for tourism"
+                        />
                       </div>
-                      )}
-
-
-
+                    )}
 
                     {brics && (
-                        <div className="">
-                          <img
-                            src={bricsImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
-                       
+                      <div className="">
+                        <img
+                          src={bricsImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
 
                     {qsd && (
                       <div className="">
-                          <img
-                            src={qsdImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
+                        <img
+                          src={qsdImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
 
                     {unsc && (
                       <div className="">
-                          <img
-                            src={unscImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
+                        <img
+                          src={unscImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
 
                     {nuclear && (
                       <div className="">
-                          <img
-                            src={nuclearImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
+                        <img
+                          src={nuclearImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
 
                     {borDisp && (
                       <div className="">
-                          <img
-                            src={borDispImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
+                        <img
+                          src={borDispImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
 
                     {fiveEyes && (
                       <div className="">
-                          <img
-                            src={fiveEyesImg}
-                            alt="Relation "
-                            className=" rounded-lg"
-                          />
-                        </div>
+                        <img
+                          src={fiveEyesImg}
+                          alt="Relation "
+                          className=" rounded-lg"
+                        />
+                      </div>
                     )}
-
-
                   </div>
                 </div>
               </div>
@@ -707,12 +832,12 @@ function CountryDetails() {
                     )}
                     {isLaptop && (
                       <div className="ml-10 ">
-                      <div className="flex justify-center">
-                        <PieChartComponent
-                          hoveredPositive={countryData.positive}
-                          hoveredNegative={countryData.negative}
-                          hoveredNeutral={countryData.neutral}
-                        />
+                        <div className="flex justify-center">
+                          <PieChartComponent
+                            hoveredPositive={countryData.positive}
+                            hoveredNegative={countryData.negative}
+                            hoveredNeutral={countryData.neutral}
+                          />
                         </div>
                         <div className="flex">
                           <p className="text-green-500 ml-10 m-3">
@@ -780,34 +905,77 @@ function CountryDetails() {
                     </h2>
                   </div>
 
-                  <div className=" items-center">
-                    {newspaperData.map((newspaper, index) => (
-                      <div className="mt-4 mb-4">
-                        <div key={index} className="flex justify-between">
-                          <div className="w-25">
-                            <h2 className="text-lg font-semibold ">
-                              {newspaper.name}
-                            </h2>
-                          </div>
-                          <p>{newspaper.articles}</p>
+                  <div className="flex mb-4 justify-between">
+                    <div className="text-md font-bold ml-5 w-1/5">
+                      Newspaper
+                    </div>
 
-                          <div className="w-1/2">
-                            <BigSingleHorizontalBar
-                              positiveValue={10}
-                              negativeValue={10}
-                              neutralValue={10}
-                            />
-                            {/* <SingleHorizontalBar
+                    <div className="text-md font-bold ml-5">
+                      Articles Published
+                    </div>
+
+                    <div className="flex w-1/2">
+                      <div className="text-md font-bold ml-5">
+                        Perception of
+                      </div>
+                      <div className="flex">
+                        <div className="w-4 h-4 mt-1 bg-green-500 ml-3 rounded-sm"></div>
+                        <div className="ml-2 text-sm">Positive</div>
+                        <div className="w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"></div>
+                        <div className="ml-2 text-sm">Negative</div>
+
+                        <div className="w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
+                        <div className="ml-2 text-sm">Neutral</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr className="border-t-1 border-black w-full" />
+
+                  {newspaperData && (
+                    <div className=" items-center">
+                      {newspaperData.map((newspaper, index) => (
+                        <div className="mt-4 mb-4">
+                          <div key={index} className="flex justify-between">
+                            <div className="flex w-1/5">
+                              <div className="mb-3 ml-3 mr-2 overflow-hidden">
+                                {newspaper.logo && (
+                                  <img
+                                    src={newspaper.logo}
+                                    alt="Logo"
+                                    className="w-12"
+                                  />
+                                )}
+                              </div>
+                              <h2 className="text-md font-semibold">
+                                {newspaper.newspaper_name}
+                              </h2>
+                            </div>
+
+                            <p>
+                              {newspaper.positive +
+                                newspaper.negative +
+                                newspaper.neutral}
+                            </p>
+
+                            <div className="w-1/2">
+                              <BigSingleHorizontalBar
+                                positiveValue={newspaper.positive}
+                                negativeValue={newspaper.negative}
+                                neutralValue={newspaper.neutral}
+                              />
+                              {/* <SingleHorizontalBar
                               positiveValue={10}
                               negativeValue={10}
                               neutralValue={10}
                             /> */}
+                            </div>
                           </div>
+                          <hr className="border-t-2 border-black w-full" />
                         </div>
-                        <hr className="border-t-2 border-black w-full" />
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -818,50 +986,60 @@ function CountryDetails() {
                       Most Read Newspapers of {countryData.name}
                     </h2>
                   </div>
-                  <div className=" items-center min-h-screen">
-                    {newspaperData.map((newspaper, index) => (
-                      <div className="">
-                        <div key={index} className="grid grid-cols-5  gap-4">
-                          <p>Logo</p>
-                          <h2 className=" ">{newspaper.name}</h2>
-                          <div className="flex ">
-                            <p className="text-lg mt-2">57</p>
-                            <MicroPieChart
-                            hoveredPositive={10}
-                            hoveredNegative={30}
-                            fillType="positive"
-                          />
-                          </div>
+                  {newspaperData && (
+                    <div className=" items-center min-h-screen">
+                      {newspaperData.map((newspaper, index) => (
+                        <div className="">
+                          <div key={index} className="grid grid-cols-4  gap-4">
 
-                          <div className="flex ">
-                            <p className="text-lg mt-2">57</p>
-                            <MicroPieChart
-                            hoveredPositive={10}
-                            hoveredNegative={30}
-                            fillType="negative"
-                          />
-                          </div>
+                            <div className="mb-3 ml-3 mr-2 overflow-hidden">
+                              {newspaper.logo && (
+                                <img
+                                  src={newspaper.logo}
+                                  alt="Logo"
+                                  className="w-12"
+                                />
+                              )}
+                            </div>
 
-                          <div className="flex ">
-                            <p className="text-lg mt-2">57</p>
-                            <MicroPieChart
-                            hoveredPositive={10}
-                            hoveredNegative={30}
-                            fillType="neutral"
-                          />
+                            <div className="flex ">
+                              <p className="text-lg mt-2">57</p>
+                              <MicroPieChart
+                                hoveredPositive={10}
+                                hoveredNegative={30}
+                                fillType="positive"
+                              />
+                            </div>
+
+                            <div className="flex ">
+                              <p className="text-lg mt-2">57</p>
+                              <MicroPieChart
+                                hoveredPositive={10}
+                                hoveredNegative={30}
+                                fillType="negative"
+                              />
+                            </div>
+
+                            <div className="flex ">
+                              <p className="text-lg mt-2">57</p>
+                              <MicroPieChart
+                                hoveredPositive={10}
+                                hoveredNegative={30}
+                                fillType="neutral"
+                              />
+                            </div>
                           </div>
+                          <hr className="border-t-2 border-black w-full" />
                         </div>
-                        <hr className="border-t-2 border-black w-full" />
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 }

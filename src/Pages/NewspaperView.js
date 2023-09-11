@@ -387,7 +387,7 @@ function NewspaperView() {
 
                     <div className="flex w-1/2">
                       <div className="text-md font-bold ml-5">
-                        Perception of India
+                        Perception
                       </div>
                       <div className="flex">
                         <div className="w-4 h-4 mt-1 bg-green-500 ml-3 rounded-sm"></div>
