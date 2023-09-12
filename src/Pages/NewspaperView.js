@@ -53,7 +53,8 @@ function NewspaperView() {
 
     // Iterate through the monthwiseData array and accumulate data for each newspaper
     monthwiseData.forEach((data) => {
-      const { newspaper_name, positive, negative, neutral, country, logo } =
+      
+      const { newspaper_name, positive, negative, neutral, country, logo, monthly_readers } =
         data;
 
       if (!aggregatedData[newspaper_name]) {
@@ -64,6 +65,7 @@ function NewspaperView() {
           neutral,
           country,
           logo,
+          monthly_readers,
         };
       } else {
         aggregatedData[newspaper_name].positive += positive;
@@ -97,6 +99,9 @@ function NewspaperView() {
       foundNewspaper.country
     );
     window.localStorage.setItem("hoveredNewspaperLogo", foundNewspaper.logo);
+    window.localStorage.setItem("hoveredNewspaperReaders", foundNewspaper.monthly_readers);
+
+    
 
     window.dispatchEvent(new Event("storage"));
     window.location.href = "/newspaper-detail";
@@ -165,6 +170,7 @@ function NewspaperView() {
           Object.entries(newspaper.articles).map(([month, stats]) => ({
             newspaper_id: newspaper.newspaper_id,
             newspaper_name: newspaper.newspaper_name,
+            monthly_readers: newspaper.monthly_readers,
             link: newspaper.link,
             country: newspaper.country,
             logo: newspaper.logo,
@@ -268,6 +274,7 @@ function NewspaperView() {
             neutral: dataItem.neutral,
             newspaper_name: dataItem.newspaper_name,
             newspaper_id: dataItem.newspaper_id,
+            monthly_readers: dataItem.monthly_readers,
             link: dataItem.link,
             logo: dataItem.logo,
             month: dataItem.month,
@@ -492,7 +499,7 @@ function NewspaperView() {
                           key={index}
                           onClick={() => handleClick(newspaper)}
                         >
-                          <div className="flex justify-between">
+                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 transition-transform duration-300 ease-in-out">
                             <div className="flex w-1/5">
                               <div className="mb-3 ml-3 mr-2 overflow-hidden">
                                 {newspaper.logo && (
@@ -612,7 +619,7 @@ function NewspaperView() {
             </div>
 
             <div className=" items-center min-h-screen">
-              <div className="flex justify-between">
+              <div className="flex justify-between ">
                 <div onClick={sortAlphabeticallyNewspaper} >Newspaper</div>
                 <div onClick={sortDataByPositive}>Positive</div>
                 <div onClick={sortDataByNegative}>Negative</div>

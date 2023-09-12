@@ -18,6 +18,7 @@ import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
 import NewspaperCountryCard from "../components/NewspaperCountryCard";
+import NewspaperReaderCard from "../components/NewspaperReaderCard";
 
 // import bricsImg from "../assets/newspaperStats/brics.png";
 // import fiveEyesImg from "../assets/newspaperStats/fiveEyes.png";
@@ -117,8 +118,7 @@ function NewspaperDetails() {
     const tempNeutral = localStorage.getItem("hoveredNewspaperNeutral");
     const tempNewsCountry = localStorage.getItem("hoveredNewspaperCountry");
     const tempNewsLogo = localStorage.getItem("hoveredNewspaperLogo");
-    
-
+    const tempReaders = localStorage.getItem("hoveredNewspaperReaders");
 
     // const getStats = async () => {
     //   try {
@@ -184,8 +184,9 @@ function NewspaperDetails() {
       positive: tempPositive,
       negative: tempNegative,
       neutral: tempNeutral,
-      country: tempNewsCountry, 
-      logo: tempNewsLogo
+      country: tempNewsCountry,
+      logo: tempNewsLogo,
+      readers: tempReaders,
     });
 
     const fetchAllCountries = async () => {
@@ -193,7 +194,7 @@ function NewspaperDetails() {
         const requestData = {
           newspaperName: tempName,
         };
-  
+
         const response = await fetch(
           "https://kutniti-server.onrender.com/api/newspaper/getAllDataForNewspaper",
           {
@@ -204,30 +205,38 @@ function NewspaperDetails() {
             body: JSON.stringify(requestData),
           }
         );
-  
+
         if (response.ok) {
           const responseData = await response.json();
 
-          
-
           function generateMonthlyData() {
             const months = [
-              'January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December'
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
             ];
-          
+
             const monthlyData = months.map((month) => {
               const monthInfo = responseData.articles[month];
-          
+
               return {
                 name: month,
-                neg: (monthInfo && monthInfo.Negative) ? monthInfo.Negative : 0,
-                pos: (monthInfo && monthInfo.Positive) ? monthInfo.Positive : 0,
-                neu: (monthInfo && monthInfo.Neutral) ? monthInfo.Neutral : 0,
+                neg: monthInfo && monthInfo.Negative ? monthInfo.Negative : 0,
+                pos: monthInfo && monthInfo.Positive ? monthInfo.Positive : 0,
+                neu: monthInfo && monthInfo.Neutral ? monthInfo.Neutral : 0,
                 grey: 0,
               };
             });
-          
+
             return monthlyData;
           }
 
@@ -237,9 +246,8 @@ function NewspaperDetails() {
             ...month,
             name: month.name.slice(0, 3), // Shorten the month name to the first 3 characters
           }));
-         
-          setDataForBar(shortenedMonthlyData);
 
+          setDataForBar(shortenedMonthlyData);
         } else {
           console.error("API call failed");
         }
@@ -251,60 +259,59 @@ function NewspaperDetails() {
     fetchAllCountries();
   }, [tempName]);
 
-
   console.log(monthwiseData);
 
-  useEffect(() => {
-    //--------Map through newspaperStats looking for item.brics, item.about etc  and if tempName matches update its state-----------------------------------
+  // useEffect(() => {
+  //   //--------Map through newspaperStats looking for item.brics, item.about etc  and if tempName matches update its state-----------------------------------
 
-    const tempContName = localStorage.getItem("hoveredNewspaper");
+  //   const tempContName = localStorage.getItem("hoveredNewspaper");
 
-    newspaperStats.forEach((newspaper) => {
-      if (newspaper.unsc === tempContName) {
-        setUnsc(true);
-      }
-      if (newspaper.brics === tempContName) {
-        setBrics(true);
-      }
-      if (newspaper.nuclear === tempContName) {
-        setNuclear(true);
-      }
-      if (newspaper.fiveEyes === tempContName) {
-        setFiveEyes(true);
-      }
-      if (newspaper.qsd === tempContName) {
-        setQsd(true);
-      }
-      if (newspaper.borDisp === tempContName) {
-        setBorDisp(true);
-      }
-    });
+  //   newspaperStats.forEach((newspaper) => {
+  //     if (newspaper.unsc === tempContName) {
+  //       setUnsc(true);
+  //     }
+  //     if (newspaper.brics === tempContName) {
+  //       setBrics(true);
+  //     }
+  //     if (newspaper.nuclear === tempContName) {
+  //       setNuclear(true);
+  //     }
+  //     if (newspaper.fiveEyes === tempContName) {
+  //       setFiveEyes(true);
+  //     }
+  //     if (newspaper.qsd === tempContName) {
+  //       setQsd(true);
+  //     }
+  //     if (newspaper.borDisp === tempContName) {
+  //       setBorDisp(true);
+  //     }
+  //   });
 
-    // Map through newspaperStats looking for tempContName attribute in each object and extract 1st object's value as ...
+  //   // Map through newspaperStats looking for tempContName attribute in each object and extract 1st object's value as ...
 
-    let i = 0;
-    newspaperStats.forEach((item) => {
-      if (i == 0) {
-        setEcoRank(item[tempContName]);
-      }
-      if (i == 1) {
-        setDiaspRank(item[tempContName]);
-      }
-      if (i == 2) {
-        setImportRank(item[tempContName]);
-      }
-      if (i == 3) {
-        setExportRank(item[tempContName]);
-      }
-      if (i == 4) {
-        srtDefenseRank(item[tempContName]);
-      }
-      if (i == 5) {
-        setTourismRank(item[tempContName]);
-      }
-      i++;
-    });
-  }, [newspaperStats]);
+  //   let i = 0;
+  //   newspaperStats.forEach((item) => {
+  //     if (i == 0) {
+  //       setEcoRank(item[tempContName]);
+  //     }
+  //     if (i == 1) {
+  //       setDiaspRank(item[tempContName]);
+  //     }
+  //     if (i == 2) {
+  //       setImportRank(item[tempContName]);
+  //     }
+  //     if (i == 3) {
+  //       setExportRank(item[tempContName]);
+  //     }
+  //     if (i == 4) {
+  //       srtDefenseRank(item[tempContName]);
+  //     }
+  //     if (i == 5) {
+  //       setTourismRank(item[tempContName]);
+  //     }
+  //     i++;
+  //   });
+  // }, [newspaperStats]);
 
   // console.log(diaspRank, ecoRank);
 
@@ -487,8 +494,7 @@ function NewspaperDetails() {
                 <p className="mx-2 mt-2 mb-4">
                   Why {newspaperData.name} matters to India
                 </p>
-                <div className="flex justify-between">
-
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
                   {/* <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
                     {diaspRank !== 0 && (
                       <div className="">
@@ -606,13 +612,19 @@ function NewspaperDetails() {
                   </div> */}
                   {flagObjectSelected && (
                     <div>
-                    <NewspaperCountryCard 
-                      firstValue={flagObjectSelected.flagLogo}
-                      secondValue={newspaperData.country}
-                    />
+                      <NewspaperCountryCard
+                        firstValue={flagObjectSelected.flagLogo}
+                        secondValue={newspaperData.country}
+                      />
                     </div>
-                    )}
-
+                  )}
+                  {newspaperData.readers && (
+                    <div>
+                      <NewspaperReaderCard
+                        firstValue={newspaperData.readers}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -653,7 +665,7 @@ function NewspaperDetails() {
                       </div>
                     )}
                     {isLaptop && (
-                      <div className="ml-10 ">
+                      <div className="">
                         <div className="flex justify-center">
                           <PieChartComponent
                             hoveredPositive={newspaperData.positive}
@@ -661,8 +673,8 @@ function NewspaperDetails() {
                             hoveredNeutral={newspaperData.neutral}
                           />
                         </div>
-                        <div className="flex">
-                          <p className="text-green-500 ml-10 m-3">
+                        <div className="flex justify-center">
+                          <p className="text-green-500 m-3">
                             Positive: {newspaperData.positive}
                           </p>
                           <p className="text-red-500 m-3">
