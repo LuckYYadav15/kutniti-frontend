@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.787a46c5.css",
+    "main.js": "/static/js/main.26bfea1a.js",
+    "static/media/backgroundMain.jpg": "/static/media/backgroundMain.f951bf3ac47f4ea39662.jpg",
+    "static/media/sampleCardImage.png": "/static/media/sampleCardImage.b65aaf5f61e2621901fb.png",
+    "static/media/unsc.png": "/static/media/unsc.8ad94af56b0ecc688eaa.png",
+    "static/media/fiveEyes.png": "/static/media/fiveEyes.362e2c525125fa72bc81.png",
+    "static/media/brics.png": "/static/media/brics.d37969e81502f9f8cb59.png",
+    "static/media/twitter.svg": "/static/media/twitter.84eb702b8708424fac59aedaeb6bf017.svg",
+    "static/media/qsd.png": "/static/media/qsd.7748b4f769d31daec3d7.png",
+    "static/media/Beta.svg": "/static/media/Beta.6848af0d923f48c216577bfe6b838579.svg",
+    "static/media/kutniti-logo.svg": "/static/media/kutniti-logo.4ea0bc42685705c061ea7223726915c7.svg",
+    "index.html": "/index.html",
+    "static/media/linkedin.svg": "/static/media/linkedin.d1dd4ea50125e28e332d5c1b6c0c1c2d.svg",
+    "static/media/youtube.svg": "/static/media/youtube.9ceadbc4e097f77bc69b2974a38cfc7a.svg",
+    "static/media/Vector.svg": "/static/media/Vector.649f99f34998c9508967b7764782e4ff.svg",
+    "static/media/Arrow 1.svg": "/static/media/Arrow 1.cde0be87d4e66a0b8827707f15b2c147.svg",
+    "static/media/Arrow 2.svg": "/static/media/Arrow 2.f77f0bb9c1b50c29cf7a688ac2e1a9ef.svg",
+    "static/media/updownarrow.svg": "/static/media/updownarrow.1fc184fd1f535e1cd86d26c49e4754d6.svg",
+    "main.787a46c5.css.map": "/static/css/main.787a46c5.css.map",
+    "main.26bfea1a.js.map": "/static/js/main.26bfea1a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.787a46c5.css",
+    "static/js/main.26bfea1a.js"
+  ]
+}
