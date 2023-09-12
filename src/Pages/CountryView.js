@@ -44,6 +44,8 @@ function CountryView() {
   const [allFlags, setAllFlags] = useState([]);
   const [allCountryData, setAllCountryData] = useState([]);
 
+  const [clickCount, setClickCount] = useState(false);
+
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
@@ -359,9 +361,19 @@ function CountryView() {
   };
 
   const sortAlphabetically = () => {
-    const sortedData = [...allCountryData].sort((a, b) => {
-      return a.countryName.localeCompare(b.countryName);
-    });
+    setClickCount(!clickCount);
+
+    let sortedData;
+    if(clickCount){
+       sortedData = [...allCountryData].sort((a, b) => {
+        return a.countryName.localeCompare(b.countryName);
+      });
+    }else{
+       sortedData = [...allCountryData].sort((a, b) => {
+        return b.countryName.localeCompare(a.countryName);
+      });
+    }
+    
 
     setAllCountryData(sortedData);
   };
@@ -457,26 +469,25 @@ function CountryView() {
                     <div className="flex">
                       <div className="flex">
                         <div
-                          onClick={sortAlphabetically}
-                          className="cursor-pointer  ml-10 font-semibold  "
+                          
+                          className=" font-semibold  "
                         >
                           Country
                         </div>
-                        <img src={updown} alt="" className="ml-1" />
+                        <img onClick={sortAlphabetically} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
 
                      <div className="invisible">
-                      dfghjkl;
+                      aaaaaaaaaaaaaa
                      </div>
 
                       <div className="flex">
                         <h2
-                          onClick={sortDataByTotal}
-                          className="cursor-pointer ml-20 font-semibold "
+                          className=" ml-20 font-semibold "
                         >
                           Articles Published
                         </h2>
-                        <img src={updown} alt="" className="ml-1" />
+                        <img onClick={sortDataByTotal} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
 
                       {/* <div className="text-xl invisible font-semibold ml-4">
