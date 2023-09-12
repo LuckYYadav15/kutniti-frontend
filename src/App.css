@@ -26,6 +26,9 @@
   color: white;
 } */
 
+.world-map-container figure {
+  background: transparent;
+}
 .App-link {
   color: #61dafb;
 }

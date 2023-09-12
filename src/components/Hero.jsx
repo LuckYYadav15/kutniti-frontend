@@ -56,7 +56,6 @@ const Hero = () => {
   // console.log(selectedMonth);
 
   // SAMPLE DATA FOR COUNTRY
-
   const [countryData, setCountryData] = useState({});
 
   const [clickedData, setClickedData] = useState({
@@ -871,10 +870,12 @@ const Hero = () => {
               color="gray"
               // title="Top 10 Populous Countries"
               value-suffix="people"
-              size="xl"
+              size= {isMobile ? "responsive" :  700}
               data={data}
               onClickFunction={clickAction}
               styleFunction={getStyle}
+              backgroundColor="transparent"
+              
             />
           </div>
         </div>
