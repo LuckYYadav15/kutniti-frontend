@@ -17,12 +17,13 @@ import { useMediaQuery } from "react-responsive";
 import SmallPieChart from "../graphs/SmallPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
 
-import bricsImg from "../assets/countryStats/brics.png";
-import fiveEyesImg from "../assets/countryStats/fiveEyes.png";
-import nuclearImg from "../assets/countryStats/nuclear.png";
-import qsdImg from "../assets/countryStats/qsd.png";
-import unscImg from "../assets/countryStats/unsc.png";
-import borDispImg from "../assets/countryStats/borDisp.png";
+import fiveEyesImg from "../assets/countryStats/five eyes 1.svg";
+import bricsImg from "../assets/countryStats/brics 1.svg";
+import nuclearImg from "../assets/countryStats/nuclear 1.svg";
+import qsdImg from "../assets/countryStats/qsd 1.svg";
+import unscImg from "../assets/countryStats/unsc 1.svg";
+import borDispImg from "../assets/countryStats/shield 1.svg";
+
 import CountryImportCard from "../components/CountryImportCard";
 import CountryExportCard from "../components/CountryExportCard";
 import CountryDefenseCard from "../components/CountryDefenseCard";
@@ -731,63 +732,86 @@ function CountryDetails() {
                       </div>
                     )}
 
+            
+
                     {brics && (
-                      <div className="">
-                        <img
-                          src={bricsImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={bricsImg}
+                            alt="Relation Image"
+                            className="w-13 h-8 ml-1"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">BRICS founding member</div>
                       </div>
                     )}
 
                     {qsd && (
-                      <div className="">
-                        <img
-                          src={qsdImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={qsdImg}
+                            alt="Relation Image"
+                            className="w-13 h-8 ml-1 mt-3 mb-2"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">Member of QSD</div>
                       </div>
                     )}
 
                     {unsc && (
-                      <div className="">
-                        <img
-                          src={unscImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={unscImg}
+                            alt="Relation Image"
+                            className="w-15 h-12 ml-1 mt-1"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">Member of UNSC</div>
                       </div>
                     )}
+            
 
                     {nuclear && (
-                      <div className="">
-                        <img
-                          src={nuclearImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={nuclearImg}
+                            alt="Relation Image"
+                            className="w-13 h-12 ml-1"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">Nuclear Power</div>
                       </div>
                     )}
 
+                    
+
                     {borDisp && (
-                      <div className="">
-                        <img
-                          src={borDispImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={borDispImg}
+                            alt="Relation Image"
+                            className="w-13 h-8 ml-1"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">Border dispute with India</div>
                       </div>
                     )}
 
                     {fiveEyes && (
-                      <div className="">
-                        <img
-                          src={fiveEyesImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
+                      <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
+                        <div className="flex justify-center items-center">
+                          <img
+                            src={fiveEyesImg}
+                            alt="Relation Image"
+                            className="w-13 h-8 ml-1"
+                          />
+                        </div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">Members of five eyes intelligence alliance</div>
                       </div>
                     )}
                   </div>
@@ -802,9 +826,9 @@ function CountryDetails() {
                 </div> */}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 mr-12">
               {/* 1 */}
-              <div>
+              <div className=" p-0 m-0 max-w-[520px] ml-3">
                 <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
                   <div className="pb-2 ">
                     <p className="flex justify-center text-2xl mt-5 ml-2 lg:ml-5 ">
@@ -876,8 +900,8 @@ function CountryDetails() {
                         Articles Published by {countryData.name}
                       </p>
 
-                      <div className="w-px h-6 bg-gray-800 mx-8"></div>
-                      <p className="text-gray-700 text-base mx-8">
+                      <div className="w-px h-6 bg-gray-800 ml-8"></div>
+                      <p className="text-gray-700 text-base ml-8">
                         {parseInt(countryData.positive) +
                           parseInt(countryData.negative) +
                           parseInt(countryData.neutral)}
@@ -889,7 +913,7 @@ function CountryDetails() {
 
               {/* 2 */}
 
-              <div className="w-[340px] mt-5 lg:w-[550px]">
+              <div className="w-[340px] mt-5 lg:w-[600px] ">
                 <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
@@ -991,7 +1015,6 @@ function CountryDetails() {
                       {newspaperData.map((newspaper, index) => (
                         <div className="">
                           <div key={index} className="grid grid-cols-4  gap-4">
-
                             <div className="mb-3 ml-3 mr-2 overflow-hidden">
                               {newspaper.logo && (
                                 <img

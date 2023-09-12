@@ -12,6 +12,8 @@ function NewspaperView() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [monthwiseData, setMonthwiseData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [clickCountNews, setClickCountNews] = useState(false);
+  const [clickCountCountry, setClickCountCountry] = useState(false);
 
   const [newspaperData, setNewspaperData] = useState([]);
 
@@ -53,9 +55,15 @@ function NewspaperView() {
 
     // Iterate through the monthwiseData array and accumulate data for each newspaper
     monthwiseData.forEach((data) => {
-      
-      const { newspaper_name, positive, negative, neutral, country, logo, monthly_readers } =
-        data;
+      const {
+        newspaper_name,
+        positive,
+        negative,
+        neutral,
+        country,
+        logo,
+        monthly_readers,
+      } = data;
 
       if (!aggregatedData[newspaper_name]) {
         aggregatedData[newspaper_name] = {
@@ -99,9 +107,10 @@ function NewspaperView() {
       foundNewspaper.country
     );
     window.localStorage.setItem("hoveredNewspaperLogo", foundNewspaper.logo);
-    window.localStorage.setItem("hoveredNewspaperReaders", foundNewspaper.monthly_readers);
-
-    
+    window.localStorage.setItem(
+      "hoveredNewspaperReaders",
+      foundNewspaper.monthly_readers
+    );
 
     window.dispatchEvent(new Event("storage"));
     window.location.href = "/newspaper-detail";
@@ -333,18 +342,35 @@ function NewspaperView() {
   };
 
   const sortAlphabeticallyNewspaper = () => {
-    const sortedData = [...allNewspaperData].sort((a, b) => {
-      return a.newspaper_name.localeCompare(b.newspaper_name);
-    });
+    setClickCountNews(!clickCountNews);
+    let sortedData;
+    if (clickCountNews) {
+      sortedData = [...allNewspaperData].sort((a, b) => {
+        return a.newspaper_name.localeCompare(b.newspaper_name);
+      });
+    } else {
+      sortedData = [...allNewspaperData].sort((a, b) => {
+        return b.newspaper_name.localeCompare(a.newspaper_name);
+      });
+    }
 
     setAllNewspaperData(sortedData);
   };
 
-
   const sortAlphabeticallyCountry = () => {
-    const sortedData = [...allNewspaperData].sort((a, b) => {
-      return a.country.localeCompare(b.country);
-    });
+    setClickCountCountry(!clickCountCountry);
+
+    let sortedData;
+    if(clickCountCountry){
+       sortedData = [...allNewspaperData].sort((a, b) => {
+        return a.country.localeCompare(b.country);
+      });
+    }else{
+       sortedData = [...allNewspaperData].sort((a, b) => {
+        return b.country.localeCompare(a.country);
+      });
+    }
+    
 
     setAllNewspaperData(sortedData);
   };
@@ -437,37 +463,70 @@ function NewspaperView() {
                 </div>
                 <div className="bg-white bg-opacity-0 backdrop-blur-[3px] shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4 justify-between">
-                    <div onClick={sortAlphabeticallyNewspaper} className="cursor-pointer flex text-md font-semibold ml-5 w-1/5">
+                    <div className=" flex text-md font-semibold ml-5 w-1/6">
                       Newspaper
-                      <img src={updown} alt="" className="ml-1" />
+                      <img
+                        onClick={sortAlphabeticallyNewspaper}
+                        src={updown}
+                        alt=""
+                        className="ml-2 cursor-pointer"
+                      />
                     </div>
 
-                    <div onClick={sortAlphabeticallyCountry} className=" cursor-pointer flex text-md font-semibold">
+                    <div className="flex text-md font-semibold ">
                       Country
-                      <img src={updown} alt="" className="ml-1" />
+                      <img
+                        onClick={sortAlphabeticallyCountry}
+                        src={updown}
+                        alt=""
+                        className="ml-2 cursor-pointer"
+                      />
                     </div>
 
-                    <div onClick={sortDataByTotal} className="cursor-pointer flex text-md font-semibold ml-5">
+                    <div className=" flex text-md font-semibold ">
                       Articles Published
-                      <img src={updown} alt="" className="ml-1" />
+                      <img
+                        onClick={sortDataByTotal}
+                        src={updown}
+                        alt=""
+                        className="ml-2 cursor-pointer"
+                      />
                     </div>
 
-                    <div className="flex w-1/2 pl-20">
+                    <div className="flex w-2/5 ">
                       <div className="text-md font-semibold ml-5">
                         Perception
                       </div>
                       <div className="flex">
-                        <div onClick={sortDataByPositive} className="cursor-pointer w-4 h-4 mt-1 bg-green-500 ml-5 rounded-sm"></div>
-                        <div onClick={sortDataByPositive} className="cursor-pointer ml-2 text-sm font-semibold">
+                        <div
+                          onClick={sortDataByPositive}
+                          className="cursor-pointer w-4 h-4 mt-1 bg-green-500 ml-5 rounded-sm"
+                        ></div>
+                        <div
+                          onClick={sortDataByPositive}
+                          className="cursor-pointer ml-2 text-sm font-semibold"
+                        >
                           Positive
                         </div>
-                        <div onClick={sortDataByNegative} className="cursor-pointer w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"></div>
-                        <div onClick={sortDataByNegative} className="cursor-pointer ml-2 text-sm font-semibold">
+                        <div
+                          onClick={sortDataByNegative}
+                          className="cursor-pointer w-4 h-4 mt-1 bg-red-500 ml-3 rounded-sm"
+                        ></div>
+                        <div
+                          onClick={sortDataByNegative}
+                          className="cursor-pointer ml-2 text-sm font-semibold"
+                        >
                           Negative
                         </div>
 
-                        <div onClick={sortDataByNeutral} className="cursor-pointer w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"></div>
-                        <div onClick={sortDataByNeutral} className="cursor-pointer ml-2 text-sm font-semibold">
+                        <div
+                          onClick={sortDataByNeutral}
+                          className="cursor-pointer w-4 h-4 mt-1 bg-yellow-300 ml-3  rounded-sm"
+                        ></div>
+                        <div
+                          onClick={sortDataByNeutral}
+                          className="cursor-pointer ml-2 text-sm font-semibold"
+                        >
                           Neutral
                         </div>
                       </div>
@@ -620,10 +679,12 @@ function NewspaperView() {
 
             <div className=" items-center min-h-screen">
               <div className="flex justify-between ">
-                <div onClick={sortAlphabeticallyNewspaper} >Newspaper</div>
+                <div onClick={sortAlphabeticallyNewspaper}>Newspaper</div>
                 <div onClick={sortDataByPositive}>Positive</div>
                 <div onClick={sortDataByNegative}>Negative</div>
-                <div onClick={sortDataByNeutral} className="mr-2">Neutral</div>
+                <div onClick={sortDataByNeutral} className="mr-2">
+                  Neutral
+                </div>
               </div>
               <hr className="border-t-1 mt-3 mb-3 border-black w-full" />
 

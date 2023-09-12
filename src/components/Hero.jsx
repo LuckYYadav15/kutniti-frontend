@@ -792,7 +792,7 @@ const Hero = () => {
     <div className="mb-auto w-full">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       {!isMobile && (
-        <h1 className="font-custom font-bold text-3xl lg:ml-5 lg:mt-20 ">
+        <h1 className="font-custom font-bold text-3xl lg:ml-10 lg:mt-20 ">
           What is the perception of{" "}
           <span className="text-blue-500">India </span>
           in the world ?
@@ -809,49 +809,46 @@ const Hero = () => {
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
       <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-10 pb-10 pt-5">
-        <div
-          id="worldmap"
-          className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-5 md:w-3/5 lg:w-2/3"
-        >
+        <div id="worldmap" className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3">
           {!isLaptop && (
             <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
                 <button
-                  className="bg-red-600 hover:bg-red-800 text-white transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
+                  className="bg-red-600 hover:bg-red-800 transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
                   onClick={changeToRed}
                 >
-                  <div className="text-xs">0%</div>
+                  <div className="text-xs font-thin">0%</div>
                 </button>
                 <button
-                  className="bg-orange-400 hover:bg-orange-600 text-white my-2 px-1 transform -rotate-90   "
+                  className="bg-orange-400 hover:bg-orange-600  my-2 px-1 transform -rotate-90   "
                   onClick={changeToOrange}
                 >
-                  <div className="text-xs">25%</div>
+                  <div className="text-xs font-thin">25%</div>
                 </button>
                 <button
-                  className="bg-yellow-300 hover:bg-yellow-500 text-white my-2 px-1 transform -rotate-90  "
+                  className="bg-yellow-300 hover:bg-yellow-500 my-2 px-1 transform -rotate-90  "
                   onClick={changeToYellow}
                 >
-                  <div className="text-xs">50%</div>
+                  <div className="text-xs font-thin">50%</div>
                 </button>
                 <button
-                  className="bg-green-300 hover:bg-green-500 text-white my-2 px-1 transform -rotate-90"
+                  className="bg-green-300 hover:bg-green-500 my-2 px-1 transform -rotate-90"
                   onClick={changeToLightGreen}
                 >
-                  <div className="text-xs">75%</div>
+                  <div className="text-xs font-thin">75%</div>
                 </button>
                 <button
-                  className="bg-green-600 hover:bg-green-800 text-white my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
+                  className="bg-green-600 hover:bg-green-800 my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
                   onClick={changeToGreen}
                 >
-                  <div className="text-xs">100%</div>
+                  <div className="text-xs font-thin">100%</div>
                 </button>
               </div>
             </div>
           )}
 
           <div className="world-map-container ">
-            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg  ">
+            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg">
               <div className="text-center flex flex-col">
                 <button
                   className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
@@ -880,7 +877,7 @@ const Hero = () => {
         </div>
 
         {!isMobile && (
-          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-2xl  md:mr-10  lg:mr-5 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-2xl  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
             <div className=" m-auto p-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -1002,35 +999,35 @@ const Hero = () => {
       </div>
 
       {!isMobile && (
-        <div className="ml-1 font-custom flex w-[99%] justify-around lg:mb-5 ">
-          <div className=" bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
-            <div>
+        <div className="ml-2 mr-2 font-custom flex w-[99%] justify-around lg:mb-5 ">
+          <div className="w-1/4 bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
+            <div >
               <button
-                className="bg-red-600 hover:bg-red-800 text-white font-bold px-4 rounded-bl-2xl rounded-tl-2xl"
+                className="bg-red-600 hover:bg-red-800 text-xs px-4 h-6 font-thin rounded-bl-2xl rounded-tl-2xl"
                 onClick={changeToRed}
               >
                 0%
               </button>
               <button
-                className="bg-orange-400 hover:bg-orange-600 text-white font-bold  px-4 "
+                className="bg-orange-400 hover:bg-orange-600 h-6 font-thin text-xs  px-4 "
                 onClick={changeToOrange}
               >
                 25%
               </button>
               <button
-                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold px-4 "
+                className="bg-yellow-300 hover:bg-yellow-500 h-6 font-thin text-xs px-4 "
                 onClick={changeToYellow}
               >
                 50%
               </button>
               <button
-                className="bg-green-300 hover:bg-green-500 text-white font-bold px-4 "
+                className="bg-green-300 hover:bg-green-500 h-6 font-thin text-xs px-4 "
                 onClick={changeToLightGreen}
               >
                 75%
               </button>
               <button
-                className="bg-green-600 hover:bg-green-800 text-white font-bold  px-4 rounded-br-2xl rounded-tr-2xl"
+                className="bg-green-600 hover:bg-green-800 h-6 font-thin text-xs px-4 rounded-br-2xl rounded-tr-2xl"
                 onClick={changeToGreen}
               >
                 100%
