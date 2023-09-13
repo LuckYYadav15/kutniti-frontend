@@ -175,17 +175,20 @@ const Navbar = () => {
       )}
 
       <div onClick={handleNav} className="block md:hidden">
-        {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+        {nav ? (null) : <AiOutlineMenu size={20} />}
       </div>
 
       <ul
         className={
           nav
-            ? "fixed left-0 top-0 w-[60%] h-full border-r border-r-gray-900  ease-in-out duration-500 backdrop-blur-[3px] bg-opacity-0"
+            ? "fixed right-0 top-0 w-[60%] h-full border-r border-r-gray-900  ease-in-out duration-500  backdrop-blur-[10px] bg-opacity-0"
             : "ease-in-out duration-500 fixed left-[-100%] "
         }
       >
         <div className="">
+        <div onClick={handleNav} className="block md:hidden fixed right-7 top-10 ">
+        {nav ? <AiOutlineClose size={20} /> : (null)}
+      </div>
           {/* <h1 className='w-full text-3xl font-bold  m-4'>REACT.</h1> */}
           <li className="mt-20 p-4 border-b border-gray-600">
             <a href="/">Home</a>
