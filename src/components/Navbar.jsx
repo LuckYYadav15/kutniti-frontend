@@ -70,15 +70,9 @@ const Navbar = () => {
   const shareText = "Check out this awesome pie chart!"; // Change as needed
   const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
 
-  const handleTwitterShare = () => {
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-    window.open(twitterShareUrl, "_blank");
-  };
 
-  const handleLinkedInShare = () => {
-    const linkedInShareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${shareText}`;
-    window.open(linkedInShareUrl, "_blank");
-  };
+
+ 
 
   // const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
@@ -160,15 +154,15 @@ const Navbar = () => {
       </ul>
       {isLaptop && (
         <div className="flex">
-          <button onClick={handleTwitterShare} className="mx-2">
+          <button  className="mx-2">
             <img src={twitter} alt="global " className="m-auto w-8" />
           </button>
 
-          <button onClick={handleLinkedInShare} className="mx-2">
+          <button  className="mx-2">
             <img src={linkedin} alt="global " className="m-auto w-8" />
           </button>
 
-          <button onClick={handleTwitterShare} className="mx-2">
+          <button  className="mx-2">
             <img src={youtube} alt="global " className="m-auto w-8" />
           </button>
         </div>

@@ -47,13 +47,12 @@ const Hero = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [isLoading, setIsLoading] = useState(false);
+  const [isAllTime, setIsAllTime] = useState(true);
 
   const handleSliderChange = (value) => {
+    setIsAllTime(false);
     setSelectedMonth(value);
-
-    // console.log("Selected Month:", months[value]);
   };
-  // console.log(selectedMonth);
 
   // SAMPLE DATA FOR COUNTRY
 
@@ -173,6 +172,15 @@ const Hero = () => {
       negative: 10,
       neutral: 10,
     }, // uae
+    {
+      country: "gb",
+      value: 13,
+      name: "United Kingdom",
+      code: "UK",
+      positive: 0,
+      negative: 0,
+      neutral: 0,
+    }, // united states
   ]);
 
   const [selectedColor, setSelectedColor] = useState(0);
@@ -205,8 +213,6 @@ const Hero = () => {
               uniqueCountries.push({ countryName, flagLogo });
             }
           });
-
-          // console.log(uniqueCountries);
 
           setAllFlags(uniqueCountries);
         } else {
@@ -258,12 +264,14 @@ const Hero = () => {
               }
             });
           });
-
-          // console.log(transformedData);
-
           const combinedData = [];
 
-          transformedData.forEach((dataObj) => {
+          console.log(transformedData);
+
+// -----------------------------------------------BUG UPCOMING-------------------------------
+         
+
+        transformedData.forEach((dataObj) => {
             const { countryName, month, type, numArticles } = dataObj;
 
             let existingEntry = combinedData.find(
@@ -291,7 +299,7 @@ const Hero = () => {
             }
           });
 
-          // console.log(combinedData);
+
 
           const generateNewData = (data) => {
             const newData = [];
@@ -336,11 +344,8 @@ const Hero = () => {
           const newData = generateNewData(combinedData);
 
           setMonthwiseData(newData);
-
           //-----------------------Get data for the selectedMonth -----------------------------------------
 
-          // console.log(newData);
-          // console.log(selectedMonth);
           const filteredData = newData
             .filter((item) => parseInt(item.month) === selectedMonth + 1)
             .map(({ month, ...rest }) => rest);
@@ -351,7 +356,6 @@ const Hero = () => {
             .sort((a, b) => b.negative - a.negative)
             .map((item, index) => ({ ...item, value: index + 1 }));
 
-          // console.log(rankedData);
           //----------------------Traverse through data to update values--------------------------
 
           const newArray = data.map((item) => {
@@ -359,7 +363,8 @@ const Hero = () => {
               (rankItem) =>
                 rankItem.countryName === item.name ||
                 (rankItem.countryName === "USA" &&
-                  item.name === "United States")
+                  item.name === "United States") ||(rankItem.countryName === "UK" &&
+                  item.name === "United Kingdom")
             );
 
             if (matchingRank) {
@@ -374,9 +379,6 @@ const Hero = () => {
 
             return item;
           });
-
-          // console.log(newArray);
-          // setData(newArray);
 
           // ----------------UPDATING ACC TO ALL TIME BUTTON ----------------
 
@@ -409,7 +411,6 @@ const Hero = () => {
             .sort((a, b) => b.negative - a.negative)
             .map((item, index) => ({ ...item, value: index + 1 }));
 
-          // console.log(rankedData);
           //----------------------Traverse through data to update values--------------------------
 
           const newwArray = data.map((item) => {
@@ -417,7 +418,9 @@ const Hero = () => {
               (rankItem) =>
                 rankItem.countryName === item.name ||
                 (rankItem.countryName === "USA" &&
-                  item.name === "United States")
+                  item.name === "United States")||
+                  (rankItem.countryName === "UK" &&
+                    item.name === "United Kingdom")
             );
 
             if (matchingRank) {
@@ -454,7 +457,6 @@ const Hero = () => {
       .filter((item) => parseInt(item.month) === selectedMonth + 1)
       .map(({ month, ...rest }) => rest);
 
-    console.log(filteredData);
     const rankedData = filteredData
       .slice() // Create a copy of the filteredData array
       .sort((a, b) => b.negative - a.negative)
@@ -464,7 +466,8 @@ const Hero = () => {
       const matchingRank = rankedData.find(
         (rankItem) =>
           rankItem.countryName === item.name ||
-          (rankItem.countryName === "USA" && item.name === "United States")
+          (rankItem.countryName === "USA" && item.name === "United States") ||
+          (rankItem.countryName === "UK" && item.name === "United Kingdom")
       );
 
       if (matchingRank) {
@@ -479,8 +482,6 @@ const Hero = () => {
 
       return item;
     });
-
-    // console.log(newArray);
 
     setData(newArray);
 
@@ -510,7 +511,6 @@ const Hero = () => {
   //     );
 
   //     if (selectedCountryObject) {
-  //       console.log(selectedCountryObject);
   //       setCountryData({
   //         positive: selectedCountryObject.positive,
   //         negative: selectedCountryObject.negative,
@@ -553,6 +553,7 @@ const Hero = () => {
   }, [data]);
 
   const allTimeData = () => {
+    setIsAllTime(true);
     // Create an object to store the accumulated data for each country
     const aggregatedData = {};
 
@@ -583,7 +584,6 @@ const Hero = () => {
       .sort((a, b) => b.negative - a.negative)
       .map((item, index) => ({ ...item, value: index + 1 }));
 
-    // console.log(rankedData);
     //----------------------Traverse through data to update values--------------------------
 
     const newArray = data.map((item) => {
@@ -591,6 +591,8 @@ const Hero = () => {
         (rankItem) =>
           rankItem.countryName === item.name ||
           (rankItem.countryName === "USA" && item.name === "United States")
+          ||
+          (rankItem.countryName === "UK" && item.name === "United Kingdom")
       );
 
       if (matchingRank) {
@@ -611,13 +613,14 @@ const Hero = () => {
 
   const clickAction = async (countryDetails) => {
     console.log(countryDetails);
-
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
     }
+    if (countryDetails.countryName === "United Kingdom") {
+      countryDetails.countryName = "UK";
+    }
     let countryName;
     try {
-      // console.log(countryDetails);
       //---------------------------------For FLAG-------------------------------
       const matchedCountry = allFlags.find(
         (country) => country.countryName === countryDetails.countryName
@@ -628,11 +631,14 @@ const Hero = () => {
         countryDetails.countryName = "United States";
       }
 
+      if (countryDetails.countryName === "UK") {
+        countryDetails.countryName = "United Kingdom";
+      }
+
       //----------------------------------For Other Data--------------------------------
       const foundCountry = data.find(
         (item) => item.name === countryDetails.countryName
       );
-      // console.log(foundCountry);
 
       if (foundCountry) {
         window.localStorage.setItem("hoveredPositive", foundCountry.positive);
@@ -691,31 +697,31 @@ const Hero = () => {
       countryValue <= 3 &&
       (selectedColor === 0 || selectedColor === 1)
     ) {
-      fillColor = "rgb(217, 22, 22)"; // Red
+      fillColor = "rgba(255, 0, 0, 1)"; // Red
     } else if (
       countryValue >= 4 &&
       countryValue <= 5 &&
       (selectedColor === 0 || selectedColor === 2)
     ) {
-      fillColor = "rgb(255, 153, 51)"; // Orange
+      fillColor = "rgba(255, 193, 0, 1)"; // Orange
     } else if (
       countryValue >= 6 &&
       countryValue <= 7 &&
       (selectedColor === 0 || selectedColor === 3)
     ) {
-      fillColor = "rgb(235, 231, 9)"; // Yellow
+      fillColor = "rgba(255, 255, 0, 1)"; // Yellow
     } else if (
       countryValue >= 8 &&
       countryValue <= 10 &&
       (selectedColor === 0 || selectedColor === 4)
     ) {
-      fillColor = "rgb(102, 255, 51)"; // Green
+      fillColor = "rgba(214, 255, 0, 1)"; // Green
     } else if (
       countryValue >= 11 &&
       countryValue <= 13 &&
       (selectedColor === 0 || selectedColor === 5)
     ) {
-      fillColor = "rgb(51, 204, 51)"; // Dark Green
+      fillColor = "rgba(4, 206, 0, 1)"; // Dark Green
     }
 
     return {
@@ -734,7 +740,7 @@ const Hero = () => {
   };
 
   const handleDownload = async () => {
-    const chartRef = document.getElementById("worldmap"); // Get the chart element
+    const chartRef = document.getElementById("capture"); // Get the chart element
 
     try {
       const canvas = await html2canvas(chartRef);
@@ -742,7 +748,7 @@ const Hero = () => {
 
       const link = document.createElement("a");
       link.href = imageUri;
-      link.download = "pie-chart.png";
+      link.download = "capture.png";
       link.click();
     } catch (error) {
       console.error("Error generating image:", error);
@@ -768,6 +774,7 @@ const Hero = () => {
 
   const sendToDetails = (countryData) => {
     if (countryData.Name === "United States") countryData.Name = "USA";
+    if (countryData.Name === "United Kingdom") countryData.Name = "UK";
 
     window.localStorage.setItem("hoveredCountry", countryData.Name);
     window.localStorage.setItem("hoveredPositive", countryData.positive);
@@ -775,7 +782,6 @@ const Hero = () => {
     window.localStorage.setItem("hoveredNeutral", countryData.neutral);
     window.dispatchEvent(new Event("storage"));
 
-    // console.log(countryData.Name);
     window.location.href = "/country-detail";
   };
 
@@ -785,6 +791,11 @@ const Hero = () => {
   // };
 
   // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
+
+
+
+  
+
 
   return (
     <div className="mb-auto w-full">
@@ -806,40 +817,45 @@ const Hero = () => {
       )}
 
       {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
-      <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-10 pb-10 pt-5">
+      <div
+        id="capture"
+        className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-5 pb-5 pt-5"
+      >
         <div
           id="worldmap"
-          className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-2xl rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3"
+          className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-lg rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3"
         >
           {!isLaptop && (
             <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
               <div className="text-center flex flex-col ">
                 <button
-                  className="bg-red-600 hover:bg-red-800 transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
+                  className="bg-custom-red hover:bg-red-800 transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
                   onClick={changeToRed}
                 >
                   <div className="text-xs font-thin">0%</div>
                 </button>
+
                 <button
-                  className="bg-orange-400 hover:bg-orange-600  my-2 px-1 transform -rotate-90   "
+                  className="bg-custom-orange hover:bg-orange-600  my-2 px-1 transform -rotate-90   "
                   onClick={changeToOrange}
                 >
                   <div className="text-xs font-thin">25%</div>
                 </button>
                 <button
-                  className="bg-yellow-300 hover:bg-yellow-500 my-2 px-1 transform -rotate-90  "
+                  className="bg-custom-yellow hover:bg-yellow-500 my-2 px-1 transform -rotate-90  "
                   onClick={changeToYellow}
                 >
                   <div className="text-xs font-thin">50%</div>
                 </button>
                 <button
-                  className="bg-green-300 hover:bg-green-500 my-2 px-1 transform -rotate-90"
+                  className="bg-custom-yellowishGreen hover:bg-green-500 my-2 px-1 transform -rotate-90"
                   onClick={changeToLightGreen}
                 >
                   <div className="text-xs font-thin">75%</div>
                 </button>
+
                 <button
-                  className="bg-green-600 hover:bg-green-800 my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
+                  className="bg-custom-green hover:bg-green-800 my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
                   onClick={changeToGreen}
                 >
                   <div className="text-xs font-thin">100%</div>
@@ -879,7 +895,7 @@ const Hero = () => {
         </div>
 
         {!isMobile && (
-          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-2xl  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-lg  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
             <div className=" m-auto pr-4 pt-4 pl-2">
               <div className=" p-5 cursor-pointer flex space-x-6 items-center">
                 <div className=" overflow-hidden">
@@ -982,29 +998,30 @@ const Hero = () => {
                       ) : null}
                     </div>
 
-                    <div className="flex items-center justify-around text-12">
-                  <div className="">
-                    {months[selectedMonth] ? (
-                      <div className="font-custom ">
-                        Articles published in {months[selectedMonth]}
-                      </div>
-                    ) : null}
-                  </div>
+                    {!isAllTime && (
+                      <div className="flex items-center justify-around text-12">
+                        <div className="">
+                          {months[selectedMonth] ? (
+                            <div className="font-custom ">
+                              Articles published in {months[selectedMonth]}
+                            </div>
+                          ) : null}
+                        </div>
 
-                  <div className="font-custom h-12 bg-gray-300 w-px mx-2 mt-2 "></div>
-                  <div className="flex ">
-                    {(countryData.positive ||
-                      countryData.negative ||
-                      countryData.neutral) && (
-                      <div className="">
-                        {countryData.positive +
-                          countryData.negative +
-                          countryData.neutral}
+                        <div className="font-custom h-12 bg-gray-300 w-px mx-2 mt-2 "></div>
+                        <div className="flex ">
+                          {(countryData.positive ||
+                            countryData.negative ||
+                            countryData.neutral) && (
+                            <div className="">
+                              {countryData.positive +
+                                countryData.negative +
+                                countryData.neutral}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
-                  </div>
-                </div>
-
                   </div>
                 )}
               </div>
@@ -1018,31 +1035,31 @@ const Hero = () => {
           <div className="w-1/4 bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
             <div>
               <button
-                className="bg-red-600 hover:bg-red-800 text-xs px-4 h-6 font-thin rounded-bl-2xl rounded-tl-2xl"
+                className="bg-custom-red hover:bg-red-800 text-xs px-4 h-6 font-thin rounded-bl-2xl rounded-tl-2xl"
                 onClick={changeToRed}
               >
                 0%
               </button>
               <button
-                className="bg-orange-400 hover:bg-orange-600 h-6 font-thin text-xs  px-4 "
+                className="bg-custom-orange hover:bg-orange-600 h-6 font-thin text-xs  px-4 "
                 onClick={changeToOrange}
               >
                 25%
               </button>
               <button
-                className="bg-yellow-300 hover:bg-yellow-500 h-6 font-thin text-xs px-4 "
+                className="bg-custom-yellow hover:bg-yellow-500 h-6 font-thin text-xs px-4 "
                 onClick={changeToYellow}
               >
                 50%
               </button>
               <button
-                className="bg-green-300 hover:bg-green-500 h-6 font-thin text-xs px-4 "
+                className="bg-custom-yellowishGreen hover:bg-green-500 h-6 font-thin text-xs px-4 "
                 onClick={changeToLightGreen}
               >
                 75%
               </button>
               <button
-                className="bg-green-600 hover:bg-green-800 h-6 font-thin text-xs px-4 rounded-br-2xl rounded-tr-2xl"
+                className="bg-custom-green hover:bg-green-800 h-6 font-thin text-xs px-4 rounded-br-2xl rounded-tr-2xl"
                 onClick={changeToGreen}
               >
                 100%

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import backgroundImage from "../assets/backgroundMain.jpg";
 
 const Methodology = () => {
@@ -68,8 +67,7 @@ console.log(data);
       ))}
     </div>
     </div>
-    
-    <Footer />
+  
     </div>
 
   );

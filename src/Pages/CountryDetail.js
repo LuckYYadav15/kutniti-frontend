@@ -32,6 +32,7 @@ import CountryTourismCard from "../components/CountryTourismCard";
 function CountryDetails() {
   // const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
+  
 
   const [newspaperData, setNewspaperData] = useState([]);
 
@@ -44,6 +45,9 @@ function CountryDetails() {
   });
   const [flagObjectSelected, setFlagObjectSelected] = useState("");
   const [countryStats, setCountryStats] = useState([]);
+  const [isWideScreen, setIsWideScreen] = useState(false);
+
+  
 
   const [brics, setBrics] = useState(false);
   const [fiveEyes, setFiveEyes] = useState(false);
@@ -65,6 +69,24 @@ function CountryDetails() {
   //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
 
   let tempName;
+
+  useEffect(() => {
+    // Update the state based on the window width when the component mounts
+    const handleResize = () => {
+      setIsWideScreen(window.innerWidth > 1380);
+    };
+
+    // Add an event listener to update the state when the window is resized
+    window.addEventListener("resize", handleResize);
+
+    // Initialize the state based on the window width
+    handleResize();
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     tempName = localStorage.getItem("hoveredCountry");
@@ -507,7 +529,7 @@ function CountryDetails() {
   const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
 
   const handleDownload = async () => {
-    const chartRef = document.getElementById("pie-chart"); // Get the chart element
+    const chartRef = document.getElementById("capture"); // Get the chart element
 
     try {
       const canvas = await html2canvas(chartRef);
@@ -515,7 +537,7 @@ function CountryDetails() {
 
       const link = document.createElement("a");
       link.href = imageUri;
-      link.download = "pie-chart.png";
+      link.download = "capture.png";
       link.click();
     } catch (error) {
       console.error("Error generating image:", error);
@@ -631,13 +653,13 @@ function CountryDetails() {
   return (
     <div style={containerStyle} className="w-full font-custom">
       <Navbar />
-      <div className="flex ">
+      <div id="capture" className="flex ">
         <div className="">
           <h1 className="font-bold text-3xl p-5 invisible">
             Providing Free spacing
           </h1>
 
-          <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
+          <div  className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
             <div className="">
               <div className="lg:w-full bg-opacity-0 backdrop-blur-[3px] flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
                 <div className="flex m-1">
@@ -678,7 +700,7 @@ function CountryDetails() {
                 </p>
                 <div className="flex justify-between">
                   <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-                    {diaspRank !== 0 && (
+                    {diaspRank == 0 ? null : (
                       <div className="">
                         <CountryDsipoCard
                           firstValue={diaspRank}
@@ -687,7 +709,7 @@ function CountryDetails() {
                       </div>
                     )}
 
-                    {ecoRank !== 0 && (
+                    {ecoRank == 0 ? null : (
                       <div className="">
                         <CountryEcoCard
                           firstValue={ecoRank}
@@ -696,7 +718,7 @@ function CountryDetails() {
                       </div>
                     )}
 
-                    {importRank !== 0 && (
+                    {importRank == 0 ? null : (
                       <div className="">
                         <CountryImportCard
                           firstValue={importRank}
@@ -705,7 +727,7 @@ function CountryDetails() {
                       </div>
                     )}
 
-                    {exportRank != 0 && (
+                    {exportRank == 0 ? null : (
                       <div className="">
                         <CountryExportCard
                           firstValue={exportRank}
@@ -714,7 +736,7 @@ function CountryDetails() {
                       </div>
                     )}
 
-                    {defenseRank !== 0 && (
+                    {defenseRank == 0 ? null : (
                       <div className="">
                         <CountryDefenseCard
                           firstValue={defenseRank}
@@ -723,7 +745,7 @@ function CountryDetails() {
                       </div>
                     )}
 
-                    {tourismRank != 0 && (
+                    {tourismRank == 0 ? null : (
                       <div className="">
                         <CountryTourismCard
                           firstValue={tourismRank}
@@ -826,12 +848,16 @@ function CountryDetails() {
                 </div> */}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 mr-12">
+
+            {/* className="grid grid-cols-1 lg:grid-cols-2 mr-12 overflow-x-auto" */}
+            <div 
+            className={` ${isWideScreen ? "flex justify-between" : "grid grid-cols-1 lg:grid-cols-2 lg:mr-8"}  overflow-x-auto`}
+            >
               {/* 1 */}
               <div className=" p-0 m-0 max-w-[520px] ml-3">
-                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
+                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0 mt-5">
                   <div className="pb-2 ">
-                    <p className="flex justify-center text-2xl mt-5 ml-2 lg:ml-5 ">
+                    <p className="flex justify-center text-2xl mt-10 ml-2 lg:ml-5 ">
                       Sentiment of {countryData.name} towards India
                     </p>
                     {isMobile && (
@@ -913,7 +939,10 @@ function CountryDetails() {
 
               {/* 2 */}
 
-              <div className="w-[340px] mt-5 lg:w-[600px] ">
+              <div 
+            className={` ${isWideScreen ? "w-2/3" : "w-full"}   mt-5`}
+              
+              >
                 <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
