@@ -26,7 +26,7 @@ chartData.forEach(entry => {
     return (
 
         <BarChart
-          width={800}
+          width={1000}
           height={420}
           data={chartData}
           margin={{
@@ -35,16 +35,17 @@ chartData.forEach(entry => {
             left: 20,
             bottom: 5,
           }}
+          
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis dataKey="name" />
           {/* <YAxis /> */}
           {/* <Tooltip /> */}
           {/* <Legend /> */}
-          <Bar dataKey="neg" stackId="a" fill="#ff2b47" barSize={50}/>
-          <Bar dataKey="pos" stackId="a" fill="#00f050" barSize={50}/>
-          <Bar dataKey="neu" stackId="a" fill="#fff000" barSize={50}/>
-          <Bar dataKey="max" stackId="a" fill="#a6a6a6" barSize={50}/>
+          <Bar dataKey="neg" stackId="a" fill="#ff2b47" barSize={100}/>
+          <Bar dataKey="pos" stackId="a" fill="#00f050" barSize={100}/>
+          <Bar dataKey="neu" stackId="a" fill="#fff000" barSize={100}/>
+          <Bar dataKey="max" stackId="a" fill="#a6a6a6" barSize={100}/>
         </BarChart>
     
     );
