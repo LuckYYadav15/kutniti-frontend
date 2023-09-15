@@ -376,47 +376,58 @@ function CountryDetails() {
 
           // console.log(combinedData);
 
-          const generateNewData = (data) => {
-            const newData = [];
-
-            const countries = [
-              ...new Set(data.map((item) => item.countryName)),
-            ];
-            const months = Array.from({ length: 12 }, (_, i) => i + 1);
-
-            countries.forEach((country) => {
-              months.forEach((month) => {
-                const formattedMonth = String(month);
-                const existingData = data.find(
-                  (item) =>
-                    item.countryName === country &&
-                    item.month.includes(formattedMonth)
-                );
-
-                if (existingData) {
-                  newData.push({
-                    countryName: country,
-                    month: formattedMonth,
-                    positive: existingData.positive,
-                    negative: existingData.negative,
-                    neutral: existingData.neutral,
-                  });
-                } else {
-                  newData.push({
-                    countryName: country,
-                    month: formattedMonth,
-                    positive: 0,
-                    negative: 0,
-                    neutral: 0,
-                  });
-                }
-              });
-            });
-
-            return newData;
-          };
-
-          const newData = generateNewData(combinedData);
+          const part1Data = combinedData.map((data) => {
+            const monthParts = data.month.split('-');
+            const monthNumber = parseInt(monthParts[1], 10);
+          
+            return {
+              countryName: data.countryName,
+              month: monthNumber, // Use the numeric month
+              positive: data.positive,
+              negative: data.negative,
+              neutral: data.neutral,
+            };
+          });
+          
+          
+          
+          
+          
+          function createTemplateObject(countryName, month) {
+            return {
+              countryName,
+              month,
+              positive: 0,
+              negative: 0,
+              neutral: 0,
+            };
+          }
+          const countryDataMap = {};
+          
+          // Initialize the countryDataMap with the template objects
+          part1Data.forEach((data) => {
+            if (!countryDataMap[data.countryName]) {
+              countryDataMap[data.countryName] = [];
+            }
+            countryDataMap[data.countryName][data.month - 1] = data;
+          });
+          
+          // Generate the complete set of data for each country
+          const newData = [];
+          for (const countryName in countryDataMap) {
+            const countryData = countryDataMap[countryName];
+          
+            for (let month = 1; month <= 12; month++) {
+              if (!countryData[month - 1]) {
+                // If the month data doesn't exist, create a template object
+                const templateObject = createTemplateObject(countryName, month);
+                newData.push(templateObject);
+              } else {
+                newData.push(countryData[month - 1]);
+              }
+            }
+          }
+          
 
           // setMonthwiseData(newData);
 
