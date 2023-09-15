@@ -558,7 +558,7 @@ function NewspaperView() {
                           key={index}
                           onClick={() => handleClick(newspaper)}
                         >
-                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 transition-transform duration-300 ease-in-out">
+                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 hover:transition-transform transition hover:duration-500 ">
                             <div className="flex w-1/5">
                               <div className="mb-3 ml-3 mr-2 overflow-hidden">
                                 {newspaper.logo && (
