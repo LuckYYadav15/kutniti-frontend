@@ -14,7 +14,8 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 import BarChartComponent from "../graphs/BarChartComponent";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import { useMediaQuery } from "react-responsive";
-import SmallPieChart from "../graphs/SmallPieChart";
+// import SmallPieChart from "../graphs/SmallPieChart";
+import SmallPieChart from "../graphs/SmallCopyPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
 
 import fiveEyesImg from "../assets/countryStats/five eyes 1.svg";
@@ -32,7 +33,6 @@ import CountryTourismCard from "../components/CountryTourismCard";
 function CountryDetails() {
   // const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
-  
 
   const [newspaperData, setNewspaperData] = useState([]);
 
@@ -46,8 +46,9 @@ function CountryDetails() {
   const [flagObjectSelected, setFlagObjectSelected] = useState("");
   const [countryStats, setCountryStats] = useState([]);
   const [isWideScreen, setIsWideScreen] = useState(false);
-
-  
+  const [positiveSmall, setPositiveSmall] = useState(0);
+  const [negativeSmall, setNegativeSmall] = useState(0);
+  const [neutralSmall, setNeutralSmall] = useState(0);
 
   const [brics, setBrics] = useState(false);
   const [fiveEyes, setFiveEyes] = useState(false);
@@ -377,9 +378,9 @@ function CountryDetails() {
           // console.log(combinedData);
 
           const part1Data = combinedData.map((data) => {
-            const monthParts = data.month.split('-');
+            const monthParts = data.month.split("-");
             const monthNumber = parseInt(monthParts[1], 10);
-          
+
             return {
               countryName: data.countryName,
               month: monthNumber, // Use the numeric month
@@ -388,11 +389,7 @@ function CountryDetails() {
               neutral: data.neutral,
             };
           });
-          
-          
-          
-          
-          
+
           function createTemplateObject(countryName, month) {
             return {
               countryName,
@@ -403,7 +400,7 @@ function CountryDetails() {
             };
           }
           const countryDataMap = {};
-          
+
           // Initialize the countryDataMap with the template objects
           part1Data.forEach((data) => {
             if (!countryDataMap[data.countryName]) {
@@ -411,12 +408,12 @@ function CountryDetails() {
             }
             countryDataMap[data.countryName][data.month - 1] = data;
           });
-          
+
           // Generate the complete set of data for each country
           const newData = [];
           for (const countryName in countryDataMap) {
             const countryData = countryDataMap[countryName];
-          
+
             for (let month = 1; month <= 12; month++) {
               if (!countryData[month - 1]) {
                 // If the month data doesn't exist, create a template object
@@ -427,7 +424,6 @@ function CountryDetails() {
               }
             }
           }
-          
 
           // setMonthwiseData(newData);
 
@@ -477,6 +473,16 @@ function CountryDetails() {
 
     fetchAllCountries();
   }, [tempName]);
+
+  useEffect(() => {
+    const tempPositive = localStorage.getItem("hoveredPositive");
+    const tempNegative = localStorage.getItem("hoveredNegative");
+    const tempNeutral = localStorage.getItem("hoveredNeutral");
+
+    setPositiveSmall(tempPositive);
+    setNegativeSmall(tempNegative);
+    setNeutralSmall(tempNeutral);
+  }, [countryData]);
 
   useEffect(() => {
     //--------Map through countryStats looking for item.brics, item.about etc  and if tempName matches update its state-----------------------------------
@@ -661,6 +667,8 @@ function CountryDetails() {
   ];
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
+  console.log(countryData);
+
   return (
     <div style={containerStyle} className="w-full font-custom">
       <Navbar />
@@ -670,7 +678,7 @@ function CountryDetails() {
             Providing Free spacing
           </h1>
 
-          <div  className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
+          <div className=" lg:m-7 lg:p-5 m-2 p-2 rounded-2xl border border-gray-600 ">
             <div className="">
               <div className="lg:w-full bg-opacity-0 backdrop-blur-[3px] flex justify-between items-center rounded-xl shadow-2xl p-1 mb-5">
                 <div className="flex m-1">
@@ -765,8 +773,6 @@ function CountryDetails() {
                       </div>
                     )}
 
-            
-
                     {brics && (
                       <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
                         <div className="flex justify-center items-center">
@@ -776,7 +782,9 @@ function CountryDetails() {
                             className="w-13 h-8 ml-1"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">BRICS founding member</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          BRICS founding member
+                        </div>
                       </div>
                     )}
 
@@ -789,7 +797,9 @@ function CountryDetails() {
                             className="w-13 h-8 ml-1 mt-3 mb-2"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">Member of QSD</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          Member of QSD
+                        </div>
                       </div>
                     )}
 
@@ -802,10 +812,11 @@ function CountryDetails() {
                             className="w-15 h-12 ml-1 mt-1"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">Member of UNSC</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          Member of UNSC
+                        </div>
                       </div>
                     )}
-            
 
                     {nuclear && (
                       <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-1">
@@ -816,11 +827,11 @@ function CountryDetails() {
                             className="w-13 h-12 ml-1"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">Nuclear Power</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          Nuclear Power
+                        </div>
                       </div>
                     )}
-
-                    
 
                     {borDisp && (
                       <div className="bg-opacity-50 bg-white backdrop-blur-[3px] w-30 h-20 rounded-lg shadow-2xl border p-2 pt-1">
@@ -831,7 +842,9 @@ function CountryDetails() {
                             className="w-13 h-8 ml-1"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">Border dispute with India</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          Border dispute with India
+                        </div>
                       </div>
                     )}
 
@@ -844,7 +857,9 @@ function CountryDetails() {
                             className="w-13 h-8 ml-1"
                           />
                         </div>
-                        <div className="flex justify-center text-center text-gray-600 text-sm">Members of five eyes intelligence alliance</div>
+                        <div className="flex justify-center text-center text-gray-600 text-sm">
+                          Members of five eyes intelligence alliance
+                        </div>
                       </div>
                     )}
                   </div>
@@ -859,33 +874,39 @@ function CountryDetails() {
                 </div> */}
             </div>
 
-
             {/* className="grid grid-cols-1 lg:grid-cols-2 mr-12 overflow-x-auto" */}
-            <div 
-            className={` ${isWideScreen ? "flex justify-between" : "grid grid-cols-1 lg:grid-cols-2 lg:mr-8"}  overflow-x-auto`}
+            <div
+              className={` ${
+                isWideScreen
+                  ? "flex justify-between"
+                  : "grid grid-cols-1 lg:grid-cols-2 lg:mr-8"
+              }  overflow-x-auto`}
             >
               {/* 1 */}
               <div className=" p-0 m-0 max-w-[520px] ml-3">
                 <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-lg rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0 mt-5">
                   <div className="pb-2 ">
-                    <p className="flex justify-center text-2xl mt-10 ml-2 lg:ml-5 ">
+                    <p className="flex justify-center text-xl mt-10 ml-2 lg:ml-5 ">
                       Sentiment of {countryData.name} towards India
                     </p>
                     {isMobile && (
                       <div className="flex">
-                        <SmallPieChart
-                          hoveredPositive={countryData.positive}
-                          hoveredNegative={countryData.negative}
-                          hoveredNeutral={countryData.neutral}
-                        />
+                        <div className=" m-auto">
+                          <SmallPieChart
+                            // hoveredPositive={countryData.positive}
+                            // hoveredNegative={countryData.negative}
+                            // hoveredNeutral={countryData.neutral}
+                          />
+                        </div>
+
                         <div>
-                          <p className="text-green-500 m-3">
+                          <p className="text-green-500 m-1">
                             Positive: {countryData.positive}
                           </p>
-                          <p className="text-red-500 m-3">
+                          <p className="text-red-500 m-1">
                             Negative: {countryData.negative}
                           </p>
-                          <p className="text-yellow-300 m-3">
+                          <p className="text-yellow-300 m-1">
                             Neutral: {countryData.neutral}
                           </p>
                         </div>
@@ -950,10 +971,7 @@ function CountryDetails() {
 
               {/* 2 */}
 
-              <div 
-            className={` ${isWideScreen ? "w-2/3" : "w-full"}   mt-5`}
-              
-              >
+              <div className={` ${isWideScreen ? "w-2/3" : "w-full"}   mt-5`}>
                 <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-lg rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
@@ -1066,28 +1084,46 @@ function CountryDetails() {
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">{newspaper.positive}</p>
+                              <p className="text-lg mt-2">
+                                {newspaper.positive}
+                              </p>
                               <MicroPieChart
                                 hoveredPositive={newspaper.positive}
-                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
+                                hoveredNegative={
+                                  newspaper.positive +
+                                  newspaper.negative +
+                                  newspaper.neutral
+                                }
                                 fillType="positive"
                               />
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">{newspaper.negative}</p>
+                              <p className="text-lg mt-2">
+                                {newspaper.negative}
+                              </p>
                               <MicroPieChart
                                 hoveredPositive={newspaper.negative}
-                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
+                                hoveredNegative={
+                                  newspaper.positive +
+                                  newspaper.negative +
+                                  newspaper.neutral
+                                }
                                 fillType="negative"
                               />
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">{newspaper.neutral}</p>
+                              <p className="text-lg mt-2">
+                                {newspaper.neutral}
+                              </p>
                               <MicroPieChart
                                 hoveredPositive={newspaper.neutral}
-                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
+                                hoveredNegative={
+                                  newspaper.positive +
+                                  newspaper.negative +
+                                  newspaper.neutral
+                                }
                                 fillType="neutral"
                               />
                             </div>
