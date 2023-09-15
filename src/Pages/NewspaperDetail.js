@@ -15,7 +15,9 @@ import backgroundImage from "../assets/backgroundMain.jpg";
 import BarChartComponent from "../graphs/BarChartComponent";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import { useMediaQuery } from "react-responsive";
-import SmallPieChart from "../graphs/SmallPieChart";
+// import SmallPieChart from "../graphs/SmallPieChart";
+import SmallPieChart from "../graphs/SmallCopyNewsPieChart";
+
 import MicroPieChart from "../graphs/MicroPieChart";
 import NewspaperCountryCard from "../components/NewspaperCountryCard";
 import NewspaperReaderCard from "../components/NewspaperReaderCard";
