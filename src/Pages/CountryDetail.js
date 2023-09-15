@@ -863,9 +863,9 @@ function CountryDetails() {
                     {isMobile && (
                       <div className="flex">
                         <SmallPieChart
-                          hoveredPositive={10}
-                          hoveredNegative={20}
-                          hoveredNeutral={5}
+                          hoveredPositive={countryData.positive}
+                          hoveredNegative={countryData.negative}
+                          hoveredNeutral={countryData.neutral}
                         />
                         <div>
                           <p className="text-green-500 m-3">
@@ -1055,28 +1055,28 @@ function CountryDetails() {
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">57</p>
+                              <p className="text-lg mt-2">{newspaper.positive}</p>
                               <MicroPieChart
-                                hoveredPositive={10}
-                                hoveredNegative={30}
+                                hoveredPositive={newspaper.positive}
+                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
                                 fillType="positive"
                               />
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">57</p>
+                              <p className="text-lg mt-2">{newspaper.negative}</p>
                               <MicroPieChart
-                                hoveredPositive={10}
-                                hoveredNegative={30}
+                                hoveredPositive={newspaper.negative}
+                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
                                 fillType="negative"
                               />
                             </div>
 
                             <div className="flex ">
-                              <p className="text-lg mt-2">57</p>
+                              <p className="text-lg mt-2">{newspaper.neutral}</p>
                               <MicroPieChart
-                                hoveredPositive={10}
-                                hoveredNegative={30}
+                                hoveredPositive={newspaper.neutral}
+                                hoveredNegative={newspaper.positive + newspaper.negative + newspaper.neutral} 
                                 fillType="neutral"
                               />
                             </div>

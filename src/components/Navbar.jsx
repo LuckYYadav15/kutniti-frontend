@@ -92,7 +92,10 @@ const Navbar = () => {
           onMouseLeave={handle1MouseLeave}
         >
           <div className="mr-1">
-            <Home stroke={strokeHome} />
+          <a href="/">
+          <Home stroke={strokeHome} />
+          </a>
+            
           </div>
 
           <div className="">
@@ -106,7 +109,10 @@ const Navbar = () => {
           onMouseLeave={handle2MouseLeave}
         >
           <div className="mr-1">
-            <Global stroke={strokeGlobal} />
+          <a href="/country-view">
+          <Global stroke={strokeGlobal} />
+          </a>
+            
           </div>
           <div className="">
             <a href="/country-view">Countries</a>
@@ -119,7 +125,10 @@ const Navbar = () => {
           onMouseLeave={handle3MouseLeave}
         >
           <div className="mr-1">
-            <Newspaper stroke={strokeNewspaper} />
+          <a href="/newspaper-view">
+          <Newspaper stroke={strokeNewspaper} />
+          </a>
+            
           </div>
           <div className="">
             <a href="/newspaper-view">Newspapers</a>
@@ -132,7 +141,10 @@ const Navbar = () => {
           onMouseLeave={handle4MouseLeave}
         >
           <div className="mr-1">
-            <Bulb stroke={strokeBulb} />
+          <a href="/methodology">
+          <Bulb stroke={strokeBulb} />
+          </a>
+            
           </div>
           <div className="">
             <a href="/methodology">Methodology</a>
@@ -145,7 +157,10 @@ const Navbar = () => {
           onMouseLeave={handle5MouseLeave}
         >
           <div className="mr-1">
-            <About stroke={strokeAbout} />
+          <a href="/about">
+          <About stroke={strokeAbout} />
+          </a>
+            
           </div>
           <div className="">
             <a href="/about">About</a>
