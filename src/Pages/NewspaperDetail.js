@@ -647,9 +647,9 @@ function NewspaperDetails() {
                     {isMobile && (
                       <div className="flex">
                         <SmallPieChart
-                          hoveredPositive={10}
-                          hoveredNegative={20}
-                          hoveredNeutral={5}
+                          hoveredPositive={newspaperData.positive}
+                          hoveredNegative={newspaperData.negative}
+                          hoveredNeutral={newspaperData.neutral}
                         />
                         <div>
                           <p className="text-green-500 m-3">
