@@ -568,7 +568,7 @@ function CountryView() {
                           key={index}
                           onClick={() => handleClick(country)}
                         >
-                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 hover:transition-transform hover:duration-500 hover:ease-in-out">
+                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 hover:transition-transform transition hover:duration-500 ">
                             <div className="flex w-1/5">
                               <div className="mb-3 rounded-lg overflow-hidden">
                                 {country.flagLogo && (
