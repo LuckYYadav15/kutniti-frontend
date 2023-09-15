@@ -866,7 +866,7 @@ function CountryDetails() {
             >
               {/* 1 */}
               <div className=" p-0 m-0 max-w-[520px] ml-3">
-                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0 mt-5">
+                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-lg rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0 mt-5">
                   <div className="pb-2 ">
                     <p className="flex justify-center text-2xl mt-10 ml-2 lg:ml-5 ">
                       Sentiment of {countryData.name} towards India
@@ -954,7 +954,7 @@ function CountryDetails() {
             className={` ${isWideScreen ? "w-2/3" : "w-full"}   mt-5`}
               
               >
-                <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
+                <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-lg rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
