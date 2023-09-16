@@ -36,6 +36,8 @@ import NewspaperReaderCard from "../components/NewspaperReaderCard";
 function NewspaperDetails() {
   const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
+  const [isWideScreen, setIsWideScreen] = useState(false);
+
 
   const newspaperArticles = [
     {
@@ -112,6 +114,24 @@ function NewspaperDetails() {
   //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
 
   let tempName;
+
+  useEffect(() => {
+    // Update the state based on the window width when the component mounts
+    const handleResize = () => {
+      setIsWideScreen(window.innerWidth > 1380);
+    };
+
+    // Add an event listener to update the state when the window is resized
+    window.addEventListener("resize", handleResize);
+
+    // Initialize the state based on the window width
+    handleResize();
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     tempName = localStorage.getItem("hoveredNewspaper");
@@ -325,7 +345,7 @@ function NewspaperDetails() {
   const shareUrl = encodeURIComponent("http://localhost:3000/newspaper-view"); // Get the current URL
 
   const handleDownload = async () => {
-    const chartRef = document.getElementById("pie-chart"); // Get the chart element
+    const chartRef = document.getElementById("capture"); // Get the chart element
 
     try {
       const canvas = await html2canvas(chartRef);
@@ -333,7 +353,7 @@ function NewspaperDetails() {
 
       const link = document.createElement("a");
       link.href = imageUri;
-      link.download = "pie-chart.png";
+      link.download = "capture.png";
       link.click();
     } catch (error) {
       console.error("Error generating image:", error);
@@ -451,7 +471,7 @@ function NewspaperDetails() {
   return (
     <div style={containerStyle} className="w-full font-custom">
       <Navbar />
-      <div className="flex ">
+      <div  className="flex ">
         <div className="">
           <h1 className="font-bold text-3xl p-5 invisible">
             Providing Free spacing
@@ -490,6 +510,8 @@ function NewspaperDetails() {
                 </div>
               </div>
             </div>
+
+
 
             <div className="bg-opacity-0 backdrop-blur-[3px] items-center rounded-xl shadow-lg p-2 h-30">
               <div className="text-2xl">
@@ -638,10 +660,21 @@ function NewspaperDetails() {
                 </div> */}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2">
+
+
+            {/* <div className="grid grid-cols-1 lg:grid-cols-2"> */}
+            <div id="capture">
+            <div
+              className={` ${
+                isWideScreen
+                  ? "flex justify-between"
+                  : "grid grid-cols-1 lg:grid-cols-2 lg:mr-8"
+              }  overflow-x-auto`}
+            >
               {/* 1 */}
+              
               <div>
-                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-2xl rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
+                <div className="bg-opacity-0 backdrop-blur-[3px] items-center shadow-lg rounded-2xl max-w-[500px] max-h-[400px] justify-between flex mt-3 mb-3 r-0">
                   <div className="pb-2 ">
                     <p className="flex justify-center text-2xl mt-5 ml-2 lg:ml-5 ">
                       Sentiment of {newspaperData.name} towards India
@@ -667,7 +700,7 @@ function NewspaperDetails() {
                       </div>
                     )}
                     {isLaptop && (
-                      <div className="">
+                      <div className="ml-10">
                         <div className="flex justify-center">
                           <PieChartComponent
                             hoveredPositive={newspaperData.positive}
@@ -725,19 +758,25 @@ function NewspaperDetails() {
 
               {/* 2 */}
 
-              <div className="w-[340px] mt-5 lg:w-[550px]">
-                <div className="backdrop-blur-[3px] bg-opacity-0 m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
+              <div className={` ${isWideScreen ? "w-2/3" : "w-full"}   mt-5`}>
+                <div className=" bg-opacity-0 backdrop-blur-[3px] m-auto shadow-lg rounded-3xl w-full h-1000 overflow-x-auto">
                   <BarChartComponent chartData={dataForBar} />
                 </div>
               </div>
-            </div>
 
+              {/* <div className="w-[340px] mt-5 lg:w-[550px]">
+                <div className="backdrop-blur-[3px] bg-opacity-0 m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
+                  <BarChartComponent chartData={dataForBar} />
+                </div>
+              </div> */}
+            </div>
+</div>
             {isLaptop && (
               <div className="flex bg-opacity-0 backdrop-blur-[3px] shadow-2xl">
                 <div className="mr-5 mb-5 mt-5 p-2 w-full">
                   <div className=" my-1">
                     <h2 className="text-xl font-bold mb-5  ">
-                      Recent Articles by {newspaperData.name}
+                      Latest Articles by {newspaperData.name}
                     </h2>
                   </div>
                   <div className="grid grid-cols-2  gap-2">
@@ -782,7 +821,7 @@ function NewspaperDetails() {
                 <div className=" mb-5 mt-5 p-1 w-full">
                   <div className=" my-1">
                     <h2 className="text-xl font-bold mb-5  ">
-                      Recent Articles by {newspaperData.name}
+                      Latest Articles by {newspaperData.name}
                     </h2>
                   </div>
                   <div className="grid grid-cols-1">
