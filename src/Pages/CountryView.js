@@ -435,11 +435,11 @@ function CountryView() {
           <div className="flex">
             <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
               <div className="m-5 p-5 w-full">
-                <div className="flex mb-10">
-                  <h2 className="text-xl font-bold mb-5 mt-5">
+                <div className="flex mb-10 mr-5 ml-5 justify-between">
+                  <h2 className="text-[25px]  w-1/2 font-bold mb-5 mt-5">
                     Countries ranked by their perception of India
                   </h2>
-                  <div className="ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 backdrop-blur-[3px] bg-opacity-0 p-0 justify-between">
+                  <div className="max-h-20 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 backdrop-blur-[3px] bg-opacity-0 p-0 justify-between">
                     <div className="pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
@@ -475,38 +475,34 @@ function CountryView() {
                     </div>
                   </div>
                 </div>
+
                 <div className=" bg-opacity-0 backdrop-blur-[3px] shadow-2xl rounded-xl p-10">
                   <div className="flex mb-4 justify-between">
-                    <div className="flex">
-                      <div className="flex">
-                        <div
-                          
-                          className=" font-semibold  "
-                        >
+                  
+                      <div className="flex w-1/5 ">
+                        <div className="font-semibold ">
                           Country
                         </div>
                         <img onClick={sortAlphabetically} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
 
-                     <div className="invisible">
+                     {/* <div className="invisible">
                       aaaaaaaaaaaaaa
-                     </div>
+                     </div> */}
 
-                      <div className="flex">
+                      <div className="flex w-1/6 justify-center items-center">
+                      
                         <h2
-                          className=" ml-20 font-semibold "
+                          className=" font-semibold "
                         >
                           Articles Published
                         </h2>
                         <img onClick={sortDataByTotal} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
 
-                      {/* <div className="text-xl invisible font-semibold ml-4">
-                      Perception
-                    </div> */}
-                    </div>
+                   
 
-                    <div className="flex w-1/2 px-2">
+                    <div className="flex w-1/2 pl-7">
                       <div className=" font-semibold ">Perception</div>
                       <div
                         onClick={sortDataByPositive}
@@ -585,7 +581,7 @@ function CountryView() {
                               </h2>
                             </div>
 
-                            <div className="">
+                            <div className="w-1/6 flex justify-center items-center">
                               {country.positive +
                                 country.negative +
                                 country.neutral}

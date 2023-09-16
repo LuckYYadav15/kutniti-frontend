@@ -988,15 +988,15 @@ function CountryDetails() {
                   </div>
 
                   <div className="flex mb-4 justify-between">
-                    <div className="text-md font-bold ml-5 w-1/5">
+                    <div className="text-md font-bold w-1/5">
                       Newspaper
                     </div>
 
-                    <div className="text-md font-bold ml-5">
+                    <div className="text-md font-bold w-1/5 flex justify-center items-center">
                       Articles Published
                     </div>
 
-                    <div className="flex w-1/2">
+                    <div className="flex w-1/2 pl-2">
                       <div className="text-md font-bold ml-5">
                         Perception of
                       </div>
@@ -1020,7 +1020,7 @@ function CountryDetails() {
                         <div className="mt-4 mb-4">
                           <div key={index} className="flex justify-between">
                             <div className="flex w-1/5">
-                              <div className="mb-3 ml-3 mr-2 overflow-hidden">
+                              <div className="mb-3 mr-2 overflow-hidden">
                                 {newspaper.logo && (
                                   <img
                                     src={newspaper.logo}
@@ -1034,7 +1034,7 @@ function CountryDetails() {
                               </h2>
                             </div>
 
-                            <p>
+                            <p className="w-1/5 flex justify-center items-center ">
                               {newspaper.positive +
                                 newspaper.negative +
                                 newspaper.neutral}

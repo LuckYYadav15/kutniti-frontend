@@ -421,11 +421,11 @@ function NewspaperView() {
           <div className="flex">
             <div className="m-7  rounded-2xl border border-gray-600 w-full mt-20">
               <div className="m-5 p-5 w-full">
-                <div className="flex mb-10">
-                  <h2 className="text-xl font-bold mb-5 mt-5">
+                <div className="flex mb-10 mr-5 ml-5 justify-between">
+                  <h2 className="text-[25px]  w-1/2 font-bold mb-5 mt-5">
                     Newspapers ranked by their perception of India
                   </h2>
-                  <div className="ml-5 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
+                  <div className="max-h-20 w-1/2 inline-flex rounded-2xl shadow-2xl border border-black-800 bg-white p-0 justify-between">
                     <div className="pb-7 pt-3 px-5 w-5/6">
                       <div className="ml-2 mt-2">
                         <Slider
@@ -462,8 +462,8 @@ function NewspaperView() {
                   </div>
                 </div>
                 <div className="bg-white bg-opacity-0 backdrop-blur-[3px] shadow-2xl rounded-xl p-10">
-                  <div className="flex mb-4 justify-between">
-                    <div className=" flex text-md font-semibold ml-5 w-1/6">
+                  <div className="flex mb-4">
+                    <div className=" flex text-sm font-semibold w-1/4">
                       Newspaper
                       <img
                         onClick={sortAlphabeticallyNewspaper}
@@ -473,17 +473,17 @@ function NewspaperView() {
                       />
                     </div>
 
-                    <div className="flex text-md font-semibold ">
+                    <div className="flex text-sm font-semibold w-1/6">
                       Country
                       <img
                         onClick={sortAlphabeticallyCountry}
                         src={updown}
-                        alt=""
-                        className="ml-2 cursor-pointer"
+                        alt="" 
+                        className="ml-2  cursor-pointer"
                       />
                     </div>
 
-                    <div className=" flex text-md font-semibold ">
+                    <div className=" flex text-sm font-semibold w-1/6 justify-center items-center">
                       Articles Published
                       <img
                         onClick={sortDataByTotal}
@@ -493,8 +493,8 @@ function NewspaperView() {
                       />
                     </div>
 
-                    <div className="flex w-2/5 ">
-                      <div className="text-md font-semibold ml-5">
+                    <div className="flex w-1/2 pl-2">
+                      <div className="text-sm font-semibold ml-5">
                         Perception
                       </div>
                       <div className="flex">
@@ -558,9 +558,9 @@ function NewspaperView() {
                           key={index}
                           onClick={() => handleClick(newspaper)}
                         >
-                          <div className="flex justify-between transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 hover:transition-transform transition hover:duration-500 ">
-                            <div className="flex w-1/5">
-                              <div className="mb-3 ml-3 mr-2 overflow-hidden">
+                          <div className="flex  transform hover:scale-105 hover:m-2 hover:shadow-2xl  hover:rounded-lg hover:p-2 hover:transition-transform transition hover:duration-500 ">
+                            <div className="flex w-1/4">
+                              <div className="mb-3 mr-2 overflow-hidden">
                                 {newspaper.logo && (
                                   <img
                                     src={newspaper.logo}
@@ -569,12 +569,12 @@ function NewspaperView() {
                                   />
                                 )}
                               </div>
-                              <h2 className="text-md font-semibold">
+                              <h2 className="text-sm font-semibold">
                                 {newspaper.newspaper_name}
                               </h2>
                             </div>
 
-                            <div className="flex w-15">
+                            <div className="flex w-1/6 ">
                               <div className="mb-3 mr-2 overflow-hidden">
                                 {newspaper.flagLogo && (
                                   <img
@@ -584,12 +584,12 @@ function NewspaperView() {
                                   />
                                 )}
                               </div>
-                              <h2 className="text-md font-semibold">
+                              <h2 className="text-sm font-semibold">
                                 {newspaper.country}
                               </h2>
                             </div>
 
-                            <div className=" ">
+                            <div className=" text-sm w-1/6 flex justify-center items-center">
                               {newspaper.positive +
                                 newspaper.negative +
                                 newspaper.neutral}

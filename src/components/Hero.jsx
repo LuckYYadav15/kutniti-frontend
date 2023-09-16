@@ -266,12 +266,9 @@ const Hero = () => {
           });
           const combinedData = [];
 
-          
+          // -----------------------------------------------BUG UPCOMING-------------------------------
 
-// -----------------------------------------------BUG UPCOMING-------------------------------
-         
-
-        transformedData.forEach((dataObj) => {
+          transformedData.forEach((dataObj) => {
             const { countryName, month, type, numArticles } = dataObj;
 
             let existingEntry = combinedData.find(
@@ -299,59 +296,54 @@ const Hero = () => {
             }
           });
 
-//----------------------------------------------Bug area--------------------------------
-const part1Data = combinedData.map((data) => {
-  const monthParts = data.month.split('-');
-  const monthNumber = parseInt(monthParts[1], 10);
+          //----------------------------------------------Bug area--------------------------------
+          const part1Data = combinedData.map((data) => {
+            const monthParts = data.month.split("-");
+            const monthNumber = parseInt(monthParts[1], 10);
 
-  return {
-    countryName: data.countryName,
-    month: monthNumber, // Use the numeric month
-    positive: data.positive,
-    negative: data.negative,
-    neutral: data.neutral,
-  };
-});
+            return {
+              countryName: data.countryName,
+              month: monthNumber, // Use the numeric month
+              positive: data.positive,
+              negative: data.negative,
+              neutral: data.neutral,
+            };
+          });
 
+          function createTemplateObject(countryName, month) {
+            return {
+              countryName,
+              month,
+              positive: 0,
+              negative: 0,
+              neutral: 0,
+            };
+          }
+          const countryDataMap = {};
 
+          // Initialize the countryDataMap with the template objects
+          part1Data.forEach((data) => {
+            if (!countryDataMap[data.countryName]) {
+              countryDataMap[data.countryName] = [];
+            }
+            countryDataMap[data.countryName][data.month - 1] = data;
+          });
 
+          // Generate the complete set of data for each country
+          const finalData = [];
+          for (const countryName in countryDataMap) {
+            const countryData = countryDataMap[countryName];
 
-
-function createTemplateObject(countryName, month) {
-  return {
-    countryName,
-    month,
-    positive: 0,
-    negative: 0,
-    neutral: 0,
-  };
-}
-const countryDataMap = {};
-
-// Initialize the countryDataMap with the template objects
-part1Data.forEach((data) => {
-  if (!countryDataMap[data.countryName]) {
-    countryDataMap[data.countryName] = [];
-  }
-  countryDataMap[data.countryName][data.month - 1] = data;
-});
-
-// Generate the complete set of data for each country
-const finalData = [];
-for (const countryName in countryDataMap) {
-  const countryData = countryDataMap[countryName];
-
-  for (let month = 1; month <= 12; month++) {
-    if (!countryData[month - 1]) {
-      // If the month data doesn't exist, create a template object
-      const templateObject = createTemplateObject(countryName, month);
-      finalData.push(templateObject);
-    } else {
-      finalData.push(countryData[month - 1]);
-    }
-  }
-}
-
+            for (let month = 1; month <= 12; month++) {
+              if (!countryData[month - 1]) {
+                // If the month data doesn't exist, create a template object
+                const templateObject = createTemplateObject(countryName, month);
+                finalData.push(templateObject);
+              } else {
+                finalData.push(countryData[month - 1]);
+              }
+            }
+          }
 
           // const generateNewData = (data) => {
           //   const newData = [];
@@ -394,8 +386,8 @@ for (const countryName in countryDataMap) {
           // };
 
           // const newData = generateNewData(combinedData);
-         
-//----------------------------------------------Bug area ends--------------------------------
+
+          //----------------------------------------------Bug area ends--------------------------------
 
           setMonthwiseData(finalData);
           //-----------------------Get data for the selectedMonth -----------------------------------------
@@ -417,7 +409,8 @@ for (const countryName in countryDataMap) {
               (rankItem) =>
                 rankItem.countryName === item.name ||
                 (rankItem.countryName === "USA" &&
-                  item.name === "United States") ||(rankItem.countryName === "UK" &&
+                  item.name === "United States") ||
+                (rankItem.countryName === "UK" &&
                   item.name === "United Kingdom")
             );
 
@@ -472,9 +465,9 @@ for (const countryName in countryDataMap) {
               (rankItem) =>
                 rankItem.countryName === item.name ||
                 (rankItem.countryName === "USA" &&
-                  item.name === "United States")||
-                  (rankItem.countryName === "UK" &&
-                    item.name === "United Kingdom")
+                  item.name === "United States") ||
+                (rankItem.countryName === "UK" &&
+                  item.name === "United Kingdom")
             );
 
             if (matchingRank) {
@@ -644,8 +637,7 @@ for (const countryName in countryDataMap) {
       const matchingRank = rankedData.find(
         (rankItem) =>
           rankItem.countryName === item.name ||
-          (rankItem.countryName === "USA" && item.name === "United States")
-          ||
+          (rankItem.countryName === "USA" && item.name === "United States") ||
           (rankItem.countryName === "UK" && item.name === "United Kingdom")
       );
 
@@ -666,7 +658,6 @@ for (const countryName in countryDataMap) {
   };
 
   const clickAction = async (countryDetails) => {
-  
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
     }
@@ -846,14 +837,10 @@ for (const countryName in countryDataMap) {
 
   // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
 
-
-
-  
-
-
   return (
-    <div className="mb-auto w-full">
+    <div className="mb-auto w-full ">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
+      <div id="capture">
       {!isMobile && (
         <h1 className="font-custom font-bold text-3xl lg:ml-10 lg:mt-20 ">
           What is the perception of{" "}
@@ -861,229 +848,226 @@ for (const countryName in countryDataMap) {
           in the world ?
         </h1>
       )}
+      
+        {!isLaptop && (
+          <h1 className="font-custom mt-20 ml-5 mr-5 text-xl font-bold">
+            What is the perception of{" "}
+            <span className="text-blue-500">India </span>
+            in the world
+          </h1>
+        )}
 
-      {!isLaptop && (
-        <h1 className="font-custom mt-20 ml-5 mr-5 text-xl font-bold">
-          What is the perception of{" "}
-          <span className="text-blue-500">India </span>
-          in the world
-        </h1>
-      )}
+        {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
+        <div className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-5 pb-5 pt-5">
+          <div
+            id="worldmap"
+            className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-lg rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3"
+          >
+            {!isLaptop && (
+              <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
+                <div className="text-center flex flex-col ">
+                  <button
+                    className="bg-custom-red hover:bg-red-800 transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
+                    onClick={changeToRed}
+                  >
+                    <div className="text-xs font-thin">0%</div>
+                  </button>
 
-      {/* DISPLAYING THE INTERACTIVE WORLD MAP WITH POPUP */}
-      <div
-        id="capture"
-        className=" relative parent-div overflow-hidden flex justify-between flex-col md:flex-row mt-4 md:mt-8 lg:mt-5 lg:mb-5 pb-5 pt-5"
-      >
-        <div
-          id="worldmap"
-          className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-lg rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3"
-        >
-          {!isLaptop && (
-            <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
-              <div className="text-center flex flex-col ">
-                <button
-                  className="bg-custom-red hover:bg-red-800 transform -rotate-90 my-2 px-1 rounded-br-2xl rounded-tr-2xl"
-                  onClick={changeToRed}
-                >
-                  <div className="text-xs font-thin">0%</div>
-                </button>
+                  <button
+                    className="bg-custom-orange hover:bg-orange-600  my-2 px-1 transform -rotate-90   "
+                    onClick={changeToOrange}
+                  >
+                    <div className="text-xs font-thin">25%</div>
+                  </button>
+                  <button
+                    className="bg-custom-yellow hover:bg-yellow-500 my-2 px-1 transform -rotate-90  "
+                    onClick={changeToYellow}
+                  >
+                    <div className="text-xs font-thin">50%</div>
+                  </button>
+                  <button
+                    className="bg-custom-yellowishGreen hover:bg-green-500 my-2 px-1 transform -rotate-90"
+                    onClick={changeToLightGreen}
+                  >
+                    <div className="text-xs font-thin">75%</div>
+                  </button>
 
-                <button
-                  className="bg-custom-orange hover:bg-orange-600  my-2 px-1 transform -rotate-90   "
-                  onClick={changeToOrange}
-                >
-                  <div className="text-xs font-thin">25%</div>
-                </button>
-                <button
-                  className="bg-custom-yellow hover:bg-yellow-500 my-2 px-1 transform -rotate-90  "
-                  onClick={changeToYellow}
-                >
-                  <div className="text-xs font-thin">50%</div>
-                </button>
-                <button
-                  className="bg-custom-yellowishGreen hover:bg-green-500 my-2 px-1 transform -rotate-90"
-                  onClick={changeToLightGreen}
-                >
-                  <div className="text-xs font-thin">75%</div>
-                </button>
-
-                <button
-                  className="bg-custom-green hover:bg-green-800 my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
-                  onClick={changeToGreen}
-                >
-                  <div className="text-xs font-thin">100%</div>
-                </button>
+                  <button
+                    className="bg-custom-green hover:bg-green-800 my-2 px-1  rounded-tl-2xl rounded-bl-2xl transform -rotate-90"
+                    onClick={changeToGreen}
+                  >
+                    <div className="text-xs font-thin">100%</div>
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <div className="world-map-container ">
-            <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg">
-              <div className="text-center flex flex-col">
-                <button
-                  className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
-                  onClick={handleDownload}
-                >
-                  <img
-                    src={share}
-                    alt="Share Button"
-                    className="w-18 h-10 rounded-lg"
-                  />
-                </button>
-              </div>
-            </div>
-
-            <WorldMap
-              className="world-map"
-              color="gray"
-              // title="Top 10 Populous Countries"
-              value-suffix="people"
-              size={isMobile ? "responsive" : 700}
-              data={data}
-              onClickFunction={clickAction}
-              styleFunction={getStyle}
-              backgroundColor="transparent"
-            />
-          </div>
-        </div>
-
-        {!isMobile && (
-          <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-lg  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
-            <div className=" m-auto pr-4 pt-4 pl-2">
-              <div className=" p-5 cursor-pointer flex space-x-6 items-center">
-                <div className=" overflow-hidden">
-                  {flagObjectSelected && (
+            <div className="world-map-container ">
+              <div className="absolute top-4 right-4 ml-2 bg-white p-0 rounded-lg">
+                <div className="text-center flex flex-col">
+                  <button
+                    className="bg-white cursor-pointer text-white font-bold m-auto p-auto rounded-lg shadow-lg"
+                    onClick={handleDownload}
+                  >
                     <img
-                      src={flagObjectSelected.flagLogo}
-                      alt="Country Flag"
-                      className="w-20 rounded-lg"
+                      src={share}
+                      alt="Share Button"
+                      className="w-18 h-10 rounded-lg"
                     />
-                  )}
+                  </button>
                 </div>
+              </div>
 
-                <div className="font-custom flex justify-center items-center ">
-                  <div className="text-3xl">{countryData.Name}</div>
-                </div>
+              <WorldMap
+                className="world-map"
+                color="gray"
+                // title="Top 10 Populous Countries"
+                value-suffix="people"
+                size={isMobile ? "responsive" : 700}
+                data={data}
+                onClickFunction={clickAction}
+                styleFunction={getStyle}
+                backgroundColor="transparent"
+              />
+            </div>
+          </div>
 
-                {/* <div className="h-8 bg-gray-300 w-px m-2"></div> */}
+          {!isMobile && (
+            <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-lg  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
+              <div className=" m-auto pr-4 pt-4 pl-2">
+                <div className=" p-5 cursor-pointer flex space-x-6 items-center">
+                  <div className=" overflow-hidden">
+                    {flagObjectSelected && (
+                      <img
+                        src={flagObjectSelected.flagLogo}
+                        alt="Country Flag"
+                        className="w-20 rounded-lg"
+                      />
+                    )}
+                  </div>
 
-                {/* <div className="text-xl ">
+                  <div className="font-custom flex justify-center items-center ">
+                    <div className="text-3xl">{countryData.Name}</div>
+                  </div>
+
+                  {/* <div className="h-8 bg-gray-300 w-px m-2"></div> */}
+
+                  {/* <div className="text-xl ">
                   <div className="text-sm text-gray-400">Continent</div>
                   <div className="text-2xl">{countryData.continent}</div>
                 </div> */}
-              </div>
+                </div>
 
-              <div className="w-full bg-gray-300 h-px m-2"></div>
-              <div className=" ">
-                {isLoading && (
-                  <div
-                    style={{
-                      display: "flex",
-                      position: "relative",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      zIndex: "2",
-                    }}
-                  >
-                    <div className="spinner-container mt-10">
-                      <CircleLoader color="#3af2d7" size={80} />
-                    </div>
-                  </div>
-                )}
-                {!isLoading && (
-                  <div className="pb-2">
-                    {countryData.positive +
-                    countryData.negative +
-                    countryData.neutral ? (
-                      <div className="flex justify-center">
-                        <PieChartComponent
-                          hoveredPositive={countryData.positive}
-                          hoveredNegative={countryData.negative}
-                          hoveredNeutral={countryData.neutral}
-                        />
+                <div className="w-full bg-gray-300 h-px m-2"></div>
+                <div className=" ">
+                  {isLoading && (
+                    <div
+                      style={{
+                        display: "flex",
+                        position: "relative",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: "2",
+                      }}
+                    >
+                      <div className="spinner-container mt-10">
+                        <CircleLoader color="#3af2d7" size={80} />
                       </div>
-                    ) : (
-                      <div>
-                        <div className="flex text-gray-600 ml-10 my-20">
-                          Click on a country to study
-                        </div>
-
-                        <div className="invisible flex text-gray-600 ml-10 my-20">
-                          Click on a country to study
-                        </div>
-
-                        <div className="invisible flex text-gray-600 ml-10 my-3">
-                          Click on a country to study
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="flex ">
-                      {countryData.positive ? (
-                        <p className="font-custom text-green-500 text-sm m-auto ">
-                          Positive: {countryData.positive}
-                        </p>
-                      ) : null}
-
-                      {countryData.negative ? (
-                        <p className="font-custom text-red-500 text-sm m-auto ">
-                          Negative: {countryData.negative}
-                        </p>
-                      ) : null}
-
-                      {countryData.neutral ? (
-                        <p className="font-custom text-blue-500 text-sm m-auto ">
-                          Neutral: {countryData.neutral}
-                        </p>
-                      ) : null}
                     </div>
-
-                    <div className="font-custom mx-2 mt-3">
+                  )}
+                  {!isLoading && (
+                    <div className="pb-2">
                       {countryData.positive +
                       countryData.negative +
                       countryData.neutral ? (
-                        <button
-                          onClick={() => sendToDetails(countryData)}
-                          className="w-full m-auto  bg-black text-white py-2 px-4 rounded-lg"
-                        >
-                          More About {countryData.Name}
-                        </button>
-                      ) : null}
-                    </div>
-
-                    {!isAllTime && (
-                      <div className="flex items-center justify-around text-12">
-                        <div className="">
-                          {months[selectedMonth] ? (
-                            <div className="font-custom ">
-                              Articles published in {months[selectedMonth]}
-                            </div>
-                          ) : null}
+                        <div className="flex justify-center">
+                          <PieChartComponent
+                            hoveredPositive={countryData.positive}
+                            hoveredNegative={countryData.negative}
+                            hoveredNeutral={countryData.neutral}
+                          />
                         </div>
+                      ) : (
+                        <div>
+                          <div className="flex text-gray-600 ml-10 my-20">
+                            Click on a country to study
+                          </div>
 
-                        <div className="font-custom h-12 bg-gray-300 w-px mx-2 mt-2 "></div>
-                        <div className="flex ">
-                          {(countryData.positive ||
-                            countryData.negative ||
-                            countryData.neutral) && (
-                            <div className="">
-                              {countryData.positive +
-                                countryData.negative +
-                                countryData.neutral}
-                            </div>
-                          )}
+                          <div className="invisible flex text-gray-600 ml-10 my-20">
+                            Click on a country to study
+                          </div>
+
+                          <div className="invisible flex text-gray-600 ml-10 my-3">
+                            Click on a country to study
+                          </div>
                         </div>
+                      )}
+
+                      <div className="flex ">
+                        {countryData.positive ? (
+                          <p className="font-custom text-green-500 text-sm m-auto ">
+                            Positive: {countryData.positive}
+                          </p>
+                        ) : null}
+
+                        {countryData.negative ? (
+                          <p className="font-custom text-red-500 text-sm m-auto ">
+                            Negative: {countryData.negative}
+                          </p>
+                        ) : null}
+
+                        {countryData.neutral ? (
+                          <p className="font-custom text-blue-500 text-sm m-auto ">
+                            Neutral: {countryData.neutral}
+                          </p>
+                        ) : null}
                       </div>
-                    )}
-                  </div>
-                )}
+
+                      <div className="font-custom mx-2 mt-3">
+                        {countryData.positive +
+                        countryData.negative +
+                        countryData.neutral ? (
+                          <button
+                            onClick={() => sendToDetails(countryData)}
+                            className="w-full m-auto  bg-black text-white flex items-center justify-center p-2 rounded-lg"
+                          >
+                            More About {countryData.Name}
+                          </button>
+                        ) : null}
+                      </div>
+
+                      {!isAllTime && (
+                        <div className="flex items-center justify-around text-12">
+                          <div className="">
+                            {months[selectedMonth] ? (
+                              <div className="font-custom ">
+                                Articles published in {months[selectedMonth]}
+                              </div>
+                            ) : null}
+                          </div>
+
+                          <div className="font-custom h-12 bg-gray-300 w-px mx-2 mt-2 "></div>
+                          <div className="flex ">
+                            {(countryData.positive ||
+                              countryData.negative ||
+                              countryData.neutral) && (
+                              <div className="">
+                                {countryData.positive +
+                                  countryData.negative +
+                                  countryData.neutral}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
       {!isMobile && (
         <div className="ml-2 mr-2 font-custom flex w-[99%] justify-around lg:mb-5 ">
           <div className="w-1/4 bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
@@ -1187,9 +1171,14 @@ for (const countryName in countryDataMap) {
               </div>
 
               <div className="font-custom bg-white rounded-lg shadow-lg p-3 flex h-12 my-2">
-                <div className="text-xs">
-                  Articles published in {months[selectedMonth]}
-                </div>
+                {!isAllTime && (
+                  <div className="text-xs">
+                    Articles published in {months[selectedMonth]} :{" "}
+                    {countryData.positive +
+                      countryData.negative +
+                      countryData.neutral}
+                  </div>
+                )}
               </div>
 
               <div className="bg-white rounded-lg shadow-lg p-3 flex h-9 my-1 mb-2">
