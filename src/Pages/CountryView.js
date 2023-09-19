@@ -15,6 +15,7 @@ function CountryView() {
 
   const [countryData, setCountryData] = useState([
     { countryName: "France", positive: 0, negative: 0, neutral: 0 },
+    { countryName: "Brazil", positive: 0, negative: 0, neutral: 0 },
     { countryName: "Australia", positive: 0, negative: 0, neutral: 0 },
     { countryName: "China", positive: 0, negative: 0, neutral: 0 },
     { countryName: "USA", positive: 0, negative: 0, neutral: 0 },
@@ -279,15 +280,7 @@ function CountryView() {
       
 
           //--------------------------Send this to countryData--------------------------------------
-    
-          // setCountryData(filteredData);
-
           setCountryData(filteredData);
-          // Updating countryData with flagLogos from allFlags and filteredData
-
-          // console.log(allFlags);
-
-          //  console.log(mergedArray);
         } else {
           console.error("API call failed");
         }
@@ -299,9 +292,6 @@ function CountryView() {
     fetchAllCountries();
   }, [selectedMonth]);
 
-  // console.log(allFlags);
-
-  // console.log(allFlags);
 
   useEffect(() => {
     const mergedArray = countryData
@@ -486,10 +476,6 @@ function CountryView() {
                         <img onClick={sortAlphabetically} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
 
-                     {/* <div className="invisible">
-                      aaaaaaaaaaaaaa
-                     </div> */}
-
                       <div className="flex w-1/6 justify-center items-center">
                       
                         <h2
@@ -499,8 +485,6 @@ function CountryView() {
                         </h2>
                         <img onClick={sortDataByTotal} src={updown} alt="" className="ml-2 cursor-pointer" />
                       </div>
-
-                   
 
                     <div className="flex w-1/2 pl-7">
                       <div className=" font-semibold ">Perception</div>
@@ -593,7 +577,6 @@ function CountryView() {
                               country.neutral === 0 ? (
                                 <div className="flex">
                                   <div className="invisible">t Enough Data</div>
-                                  {/* <div className="invisible">Not Enough Data</div> */}
                                   <div>Not Enough Data</div>
                                 </div>
                               ) : (

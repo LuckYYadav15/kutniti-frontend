@@ -3,18 +3,13 @@ import Navbar from "../components/Navbar";
 import "../Styles/Staff.css";
 import PieChartComponent from "../graphs/PieChartComponent";
 import html2canvas from "html2canvas";
-// import backgroundImage from "../assets/background.png";
-
 import CountryDsipoCard from "../components/CountryDsipoCard";
 import CountryEcoCard from "../components/CountryEcoCard";
-
 import share from "../assets/shareButton.png";
 import backgroundImage from "../assets/backgroundMain.jpg";
-
 import BarChartComponent from "../graphs/BarChartComponent";
 import BigSingleHorizontalBar from "../graphs/BigSingleHorizontalBar";
 import { useMediaQuery } from "react-responsive";
-// import SmallPieChart from "../graphs/SmallPieChart";
 import SmallPieChart from "../graphs/SmallCopyPieChart";
 import MicroPieChart from "../graphs/MicroPieChart";
 
@@ -31,7 +26,6 @@ import CountryDefenseCard from "../components/CountryDefenseCard";
 import CountryTourismCard from "../components/CountryTourismCard";
 
 function CountryDetails() {
-  // const [monthwiseData, setMonthwiseData] = useState([]);
   const [dataForBar, setDataForBar] = useState([]);
 
   const [newspaperData, setNewspaperData] = useState([]);
@@ -67,7 +61,6 @@ function CountryDetails() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define the mobile breakpoint
   const isLaptop = useMediaQuery({ minWidth: 780 });
 
-  //----------------------------IN THIS USE EFFECT GET COUNTRY NAME FROM LOCAL STORAGE AND GET DATA ACCORDINGLY-----------------------------
 
   let tempName;
 
@@ -343,7 +336,6 @@ function CountryDetails() {
             });
           });
 
-          // console.log(transformedData);
 
           const combinedData = [];
 
@@ -375,15 +367,13 @@ function CountryDetails() {
             }
           });
 
-          // console.log(combinedData);
-
           const part1Data = combinedData.map((data) => {
             const monthParts = data.month.split("-");
             const monthNumber = parseInt(monthParts[1], 10);
 
             return {
               countryName: data.countryName,
-              month: monthNumber, // Use the numeric month
+              month: monthNumber,
               positive: data.positive,
               negative: data.negative,
               neutral: data.neutral,
@@ -425,8 +415,6 @@ function CountryDetails() {
             }
           }
 
-          // setMonthwiseData(newData);
-
           const months = [
             "Jan",
             "Feb",
@@ -455,14 +443,8 @@ function CountryDetails() {
             };
           });
 
-          // console.log(transformedArray);
-
           setDataForBar(transformedArray);
 
-          //----------------------------------Api data updated till here------------------------------
-
-          // console.log(newArray);
-          // setData(newArray);
         } else {
           console.error("API call failed");
         }
@@ -472,6 +454,7 @@ function CountryDetails() {
     };
 
     fetchAllCountries();
+
   }, [tempName]);
 
   useEffect(() => {
@@ -536,14 +519,10 @@ function CountryDetails() {
     });
   }, [countryStats]);
 
-  // console.log(diaspRank, ecoRank);
 
-  // console.log(unsc, qsd, brics, fiveEyes, nuclear);
 
-  //-----------------------------------CHANGE SHARE URL TO WEBSITE HOMEPAGE-----------------------------
-
-  const shareText = "Check out this awesome pie chart!"; // Change as needed
-  const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
+  // const shareText = "Check out this awesome pie chart!"; // Change as needed
+  // const shareUrl = encodeURIComponent("http://localhost:3000/country-view"); // Get the current URL
 
   const handleDownload = async () => {
     const chartRef = document.getElementById("capture"); // Get the chart element
@@ -667,7 +646,7 @@ function CountryDetails() {
   ];
   const texts = ["0%", "25%", "50%", "75%", "100%"];
 
-  console.log(countryData);
+  // console.log(countryData);
 
   return (
     <div style={containerStyle} className="w-full font-custom">

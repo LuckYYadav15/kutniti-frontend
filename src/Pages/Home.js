@@ -44,14 +44,7 @@ let containerStyle;
     <div style={containerStyle} className=' font-custom'>
  
       <Navbar />
-      {/* <WorldMap onCountryClick={handleCountryClick} landColor="green"/> */}
       <Hero />
-      {/* <Newsletter /> */}
-    
-
-   
-     
-     
     </div>
   );
 }
