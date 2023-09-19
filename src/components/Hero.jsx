@@ -12,21 +12,9 @@ import share from "../assets/shareButton.png";
 import html2canvas from "html2canvas";
 import arrowLeft from "../assets/Arrow 2.svg";
 import arrowRight from "../assets/Arrow 1.svg";
-import negative from "../assets/NEGATIVE.png";
-import perception from "../assets/Perception.png";
-import positive from "../assets/POSITIVE.png";
 
 import {
-  BarLoader,
-  BounceLoader,
   CircleLoader,
-  ClimbingBoxLoader,
-  ClipLoader,
-  HashLoader,
-  MoonLoader,
-  PuffLoader,
-  PulseLoader,
-  ScaleLoader,
 } from "react-spinners";
 
 const Hero = () => {
@@ -65,7 +53,6 @@ const Hero = () => {
     neutral: 0,
   });
 
-  const [modal, setModal] = useState(false);
 
   //-----------GET THE NO. NEGATIVE ARTICLES BY EACH COUNTRY CALCULATE THEIR RANKS BASED ON THAT AND UPDATE THE DATA ARRAY--------------------------------
 
@@ -123,6 +110,15 @@ const Hero = () => {
       value: 6,
       name: "Canada",
       code: "CA",
+      positive: 0,
+      negative: 0,
+      neutral: 0,
+    }, // canada
+    {
+      country: "br",
+      value: 7,
+      name: "Brazil",
+      code: "BR",
       positive: 0,
       negative: 0,
       neutral: 0,
@@ -266,7 +262,6 @@ const Hero = () => {
           });
           const combinedData = [];
 
-          // -----------------------------------------------BUG UPCOMING-------------------------------
 
           transformedData.forEach((dataObj) => {
             const { countryName, month, type, numArticles } = dataObj;
@@ -296,7 +291,6 @@ const Hero = () => {
             }
           });
 
-          //----------------------------------------------Bug area--------------------------------
           const part1Data = combinedData.map((data) => {
             const monthParts = data.month.split("-");
             const monthNumber = parseInt(monthParts[1], 10);
@@ -345,49 +339,6 @@ const Hero = () => {
             }
           }
 
-          // const generateNewData = (data) => {
-          //   const newData = [];
-
-          //   const countries = [
-          //     ...new Set(data.map((item) => item.countryName)),
-          //   ];
-          //   const months = Array.from({ length: 12 }, (_, i) => i + 1);
-
-          //   countries.forEach((country) => {
-          //     months.forEach((month) => {
-          //       const formattedMonth = String(month);
-          //       const existingData = data.find(
-          //         (item) =>
-          //           item.countryName === country &&
-          //           item.month.includes(formattedMonth)
-          //       );
-
-          //       if (existingData) {
-          //         newData.push({
-          //           countryName: country,
-          //           month: formattedMonth,
-          //           positive: existingData.positive,
-          //           negative: existingData.negative,
-          //           neutral: existingData.neutral,
-          //         });
-          //       } else {
-          //         newData.push({
-          //           countryName: country,
-          //           month: formattedMonth,
-          //           positive: 0,
-          //           negative: 0,
-          //           neutral: 0,
-          //         });
-          //       }
-          //     });
-          //   });
-
-          //   return newData;
-          // };
-
-          // const newData = generateNewData(combinedData);
-
-          //----------------------------------------------Bug area ends--------------------------------
 
           setMonthwiseData(finalData);
           //-----------------------Get data for the selectedMonth -----------------------------------------
@@ -532,64 +483,9 @@ const Hero = () => {
 
     setData(newArray);
 
-    // const selectedCountryObject = newArray.find((item) => item.name === countryData.countryName);
-
-    // if (selectedCountryObject) {
-    //   selectedCountryPositive = selectedCountryObject.positive;
-    //   selectedCountryNegative = selectedCountryObject.negative;
-    //   selectedCountryNeutral = selectedCountryObject.neutral;
-    //   selectedCountryName = selectedCountryObject.name;
-    // }
-
-    // setCountryData({
-
-    //     });
   }, [selectedMonth]);
 
-  // useEffect(() => {
-  //   let selectedCountryPositive = 0;
-  //   let selectedCountryNegative = 0;
-  //   let selectedCountryNeutral = 0;
-  //   let selectedCountryName;
 
-  //   const fetchTempData = async () => {
-  //     const selectedCountryObject = await data.find(
-  //       (item) => item.name === countryData.countryName
-  //     );
-
-  //     if (selectedCountryObject) {
-  //       setCountryData({
-  //         positive: selectedCountryObject.positive,
-  //         negative: selectedCountryObject.negative,
-  //         neutral: selectedCountryObject.neutral,
-  //         Name: selectedCountryObject.name,
-  //       });
-  //     }
-  //   };
-
-  //   fetchTempData();
-  // }, [selectedMonth]);
-
-  // Call the clickAction function whenever selectedMonth changes
-
-  useEffect(() => {
-    // Define the style function to make the background transparent and scale to 1.3
-    const getDynamicStyle = () => {
-      return {
-        backgroundColor: "transparent",
-        transform: "scale(1.3)",
-      };
-    };
-
-    // Apply the style function to the WorldMap component
-    const worldMapElement = document.querySelector(".world-map"); // Make sure to replace with the actual selector used by your WorldMap library
-    if (worldMapElement) {
-      const style = getDynamicStyle();
-      Object.keys(style).forEach((prop) => {
-        worldMapElement.style[prop] = style[prop];
-      });
-    }
-  }, []);
 
   useEffect(() => {
     const customObject = {
@@ -706,18 +602,12 @@ const Hero = () => {
         });
       }
 
-      setModal(!modal);
     } catch (error) {
       console.error("Error:", error);
       // Handle the error as needed
     }
   };
 
-  if (modal) {
-    document.body.classList.add("active-modal");
-  } else {
-    document.body.classList.remove("active-modal");
-  }
 
   const sliderMarks = months.reduce((acc, month, index) => {
     acc[index] = {
@@ -830,18 +720,12 @@ const Hero = () => {
     window.location.href = "/country-detail";
   };
 
-  // const mapStyle = {
-  //   backgroundColor: "black", // Set background to transparent
-  //   transform: "scale(1.3)", // Set scale to 1.3
-  // };
-
-  // const imageUrl = "https://kutniti-country.s3.ap-south-1.amazonaws.com/flags/Brazil.png";
 
   return (
     <div className="mb-auto w-full ">
       <h1 className="text-2xl invisible lg:ml-5">Adding sample spacing</h1>
       <div id="capture">
-      {!isMobile && (
+      {isLaptop && (
         <h1 className="font-custom font-bold text-3xl lg:ml-10 lg:mt-20 ">
           What is the perception of{" "}
           <span className="text-blue-500">India </span>
@@ -849,7 +733,7 @@ const Hero = () => {
         </h1>
       )}
       
-        {!isLaptop && (
+        {isMobile && (
           <h1 className="font-custom mt-20 ml-5 mr-5 text-xl font-bold">
             What is the perception of{" "}
             <span className="text-blue-500">India </span>
@@ -863,7 +747,7 @@ const Hero = () => {
             id="worldmap"
             className="border backdrop-blur-[3px] border-gray-300 bg-opacity-0 absolute inset-0 flex justify-center items-center shadow-lg rounded-2xl relative child-div w-full  md:ml-5 lg:ml-10 md:w-3/5 lg:w-2/3"
           >
-            {!isLaptop && (
+            {isMobile && (
               <div className="absolute top-10 left-0 ml-2 bg-opacity-0 p-0 rounded-lg ">
                 <div className="text-center flex flex-col ">
                   <button
@@ -932,7 +816,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {!isMobile && (
+          {isLaptop && (
             <div className="border backdrop-blur-[3px] border-gray-300  bg-opacity-0 rounded-2xl shadow-lg  md:mr-10  lg:mr-10 mt-4 md:mt-0 md:w-2/5 lg:w-1/4">
               <div className=" m-auto pr-4 pt-4 pl-2">
                 <div className=" p-5 cursor-pointer flex space-x-6 items-center">
@@ -1068,7 +952,7 @@ const Hero = () => {
           )}
         </div>
       </div>
-      {!isMobile && (
+      {isLaptop && (
         <div className="ml-2 mr-2 font-custom flex w-[99%] justify-around lg:mb-5 ">
           <div className="w-1/4 bg-opacity-0 backdrop-blur-[2px] pt-2 pb-1 border border-gray-300 rounded-2xl shadow-2xl text-center pl-2 pr-2">
             <div>
@@ -1150,7 +1034,7 @@ const Hero = () => {
         </div>
       )}
 
-      {!isLaptop && (
+      {isMobile && (
         <div className="">
           <div className="flex">
             <div className="ml-2 w-1/2">
@@ -1260,10 +1144,6 @@ const Hero = () => {
               </button>
             </div>
           </div>
-          {/* </div>
-            </div>
-                </div>
-              </div> */}
         </div>
       )}
     </div>

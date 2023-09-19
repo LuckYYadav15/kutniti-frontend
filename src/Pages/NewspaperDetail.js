@@ -283,63 +283,6 @@ function NewspaperDetails() {
 
   console.log(monthwiseData);
 
-  // useEffect(() => {
-  //   //--------Map through newspaperStats looking for item.brics, item.about etc  and if tempName matches update its state-----------------------------------
-
-  //   const tempContName = localStorage.getItem("hoveredNewspaper");
-
-  //   newspaperStats.forEach((newspaper) => {
-  //     if (newspaper.unsc === tempContName) {
-  //       setUnsc(true);
-  //     }
-  //     if (newspaper.brics === tempContName) {
-  //       setBrics(true);
-  //     }
-  //     if (newspaper.nuclear === tempContName) {
-  //       setNuclear(true);
-  //     }
-  //     if (newspaper.fiveEyes === tempContName) {
-  //       setFiveEyes(true);
-  //     }
-  //     if (newspaper.qsd === tempContName) {
-  //       setQsd(true);
-  //     }
-  //     if (newspaper.borDisp === tempContName) {
-  //       setBorDisp(true);
-  //     }
-  //   });
-
-  //   // Map through newspaperStats looking for tempContName attribute in each object and extract 1st object's value as ...
-
-  //   let i = 0;
-  //   newspaperStats.forEach((item) => {
-  //     if (i == 0) {
-  //       setEcoRank(item[tempContName]);
-  //     }
-  //     if (i == 1) {
-  //       setDiaspRank(item[tempContName]);
-  //     }
-  //     if (i == 2) {
-  //       setImportRank(item[tempContName]);
-  //     }
-  //     if (i == 3) {
-  //       setExportRank(item[tempContName]);
-  //     }
-  //     if (i == 4) {
-  //       srtDefenseRank(item[tempContName]);
-  //     }
-  //     if (i == 5) {
-  //       setTourismRank(item[tempContName]);
-  //     }
-  //     i++;
-  //   });
-  // }, [newspaperStats]);
-
-  // console.log(diaspRank, ecoRank);
-
-  // console.log(unsc, qsd, brics, fiveEyes, nuclear);
-
-  //-----------------------------------CHANGE SHARE URL TO WEBSITE HOMEPAGE-----------------------------
 
   const shareText = "Check out this awesome pie chart!"; // Change as needed
   const shareUrl = encodeURIComponent("http://localhost:3000/newspaper-view"); // Get the current URL
@@ -519,121 +462,7 @@ function NewspaperDetails() {
                   Why {newspaperData.name} matters to India
                 </p>
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-                  {/* <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-                    {diaspRank !== 0 && (
-                      <div className="">
-                        <NewspaperDsipoCard
-                          firstValue={diaspRank}
-                          secondValue="Indian Dispora in the World"
-                        />
-                      </div>
-                    )}
-
-                    {ecoRank !== 0 && (
-                      <div className="">
-                        <NewspaperEcoCard
-                          firstValue={ecoRank}
-                          secondValue="Economic Power in the World"
-                        />
-                      </div>
-                    )}
-
-                    {importRank !== 0 && (
-                      <div className="">
-                        <NewspaperImportCard
-                          firstValue={importRank}
-                          secondValue="Import partner of India"
-                        />
-                      </div>
-                    )}
-
-                    {exportRank != 0 && (
-                      <div className="">
-                        <NewspaperExportCard
-                          firstValue={exportRank}
-                          secondValue="Export partner of India"
-                        />
-                      </div>
-                    )}
-
-                    {defenseRank !== 0 && (
-                      <div className="">
-                        <NewspaperDefenseCard
-                          firstValue={defenseRank}
-                          secondValue="Defence provider to India"
-                        />
-                      </div>
-                    )}
-
-                    {tourismRank != 0 && (
-                      <div className="">
-                        <NewspaperTourismCard
-                          firstValue={tourismRank}
-                          secondValue="Nation visiting India for tourism"
-                        />
-                      </div>
-                    )}
-
-                    {brics && (
-                      <div className="">
-                        <img
-                          src={bricsImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-
-                    {qsd && (
-                      <div className="">
-                        <img
-                          src={qsdImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-
-                    {unsc && (
-                      <div className="">
-                        <img
-                          src={unscImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-
-                    {nuclear && (
-                      <div className="">
-                        <img
-                          src={nuclearImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-
-                    {borDisp && (
-                      <div className="">
-                        <img
-                          src={borDispImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-
-                    {fiveEyes && (
-                      <div className="">
-                        <img
-                          src={fiveEyesImg}
-                          alt="Relation "
-                          className=" rounded-lg"
-                        />
-                      </div>
-                    )}
-                  </div> */}
+          
                   {flagObjectSelected && (
                     <div>
                       <NewspaperCountryCard
@@ -651,18 +480,9 @@ function NewspaperDetails() {
                   )}
                 </div>
               </div>
-
-              {/* <div className="h-12 bg-gray-300 w-px ml-5 mr-50"></div> */}
-
-              {/* <div className="text-xl ml-10 mr-50">
-                  <div className="text-sm text-gray-400">Continent</div>
-                  <div className="text-2xl">Asia</div>
-                </div> */}
             </div>
 
 
-
-            {/* <div className="grid grid-cols-1 lg:grid-cols-2"> */}
             <div id="capture">
             <div
               className={` ${
@@ -764,11 +584,6 @@ function NewspaperDetails() {
                 </div>
               </div>
 
-              {/* <div className="w-[340px] mt-5 lg:w-[550px]">
-                <div className="backdrop-blur-[3px] bg-opacity-0 m-auto shadow-2xl rounded-3xl w-full h-1000 overflow-x-auto">
-                  <BarChartComponent chartData={dataForBar} />
-                </div>
-              </div> */}
             </div>
 </div>
             {isLaptop && (

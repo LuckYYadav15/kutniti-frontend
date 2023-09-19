@@ -28,13 +28,7 @@ const Methodology = () => {
 
 
 
-console.log(data);
-
-
-
-
-
-
+// console.log(data);
 
 
   const containerStyle = {
