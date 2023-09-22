@@ -553,6 +553,10 @@ const Hero = () => {
     setData(newArray);
   };
 
+  const getLocalizedText = () =>{
+// Using empty function to prevent countryname and value from hovering
+  }
+
   const clickAction = async (countryDetails) => {
     if (countryDetails.countryName === "United States") {
       countryDetails.countryName = "USA";
@@ -812,6 +816,7 @@ const Hero = () => {
                 onClickFunction={clickAction}
                 styleFunction={getStyle}
                 backgroundColor="transparent"
+                tooltipTextFunction={getLocalizedText}
               />
             </div>
           </div>
